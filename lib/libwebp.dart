@@ -6,6 +6,8 @@ import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp_generated_bindings.dart';
 import 'package:libwebp/src/utils.dart';
 
+export 'src/image.dart';
+
 bool get isTest => Platform.environment['FLUTTER_TEST'] == 'true';
 
 const String _libName = 'libwebp_flutter_libs';
@@ -49,16 +51,28 @@ final libwebp = LibwebpFlutterLibsBindings(_dylib);
   });
 }
 
+enum BoxFit {
+  fill,
+  contain,
+}
+
 Uint8List resizeWebp(
   Uint8List input,
-  ({int width, int height}) targetDimensions,
-) =>
+  ({int width, int height}) targetDimensions, {
+  BoxFit fit = BoxFit.fill,
+}) =>
     using((Arena alloc) {
       final data = alloc.uint8Array(input.length);
       data.asList.setAll(0, input);
       final curr = getWebpDimensions(data);
 
-      Uint8List outData = _resizeWebp(alloc, curr, targetDimensions, data);
+      Uint8List outData = _resizeWebp(
+        alloc,
+        curr,
+        targetDimensions,
+        data,
+        fit: fit,
+      );
 
       return outData;
     });
@@ -67,13 +81,14 @@ Uint8List _resizeWebp(
   Arena alloc,
   ({int height, int width}) curr,
   ({int height, int width}) targetDimensions,
-  Uint8Data data,
-) {
+  Uint8Data data, {
+  BoxFit fit = BoxFit.fill,
+}) {
   final encoder = libwebp.WebPAnimEncoderNewInternal(
     targetDimensions.width,
     targetDimensions.height,
     nullptr,
-    WEBP_DEMUX_ABI_VERSION,
+    WEBP_MUX_ABI_VERSION,
   );
 
   final cfg = alloc<WebPConfig>();
@@ -126,6 +141,7 @@ Uint8List _resizeWebp(
       libwebp.WebPPictureImportRGBA(frame, buf.value, curr.width * 4),
       'Failed to import frame $i to WebPPicture.',
     );
+
     _check(
       libwebp.WebPPictureRescale(
         frame,
@@ -168,9 +184,6 @@ Uint8List _resizeWebp(
 
   return uint8list;
 }
-
-int _hasMoreFrames(Pointer<WebPAnimDecoder> animDecoder) =>
-    libwebp.WebPAnimDecoderHasMoreFrames(animDecoder);
 
 Pointer<WebPAnimDecoder> _animDecoder(Allocator a, Uint8Data data) {
   final webpData = a<WebPData>();
@@ -225,4 +238,29 @@ void _check(int res, [String? message]) {
   if (res == 0) {
     throw LibWebpException(message ?? 'Failed with error code $res.');
   }
+}
+
+({int width, int height, int top, int left}) _contain({
+  required ({int width, int height}) src,
+  required ({int width, int height}) target,
+}) {
+  final srcRatio = src.width / src.height;
+  final targetRatio = target.width / target.height;
+
+  final width =
+      srcRatio > targetRatio ? target.width : (target.height * srcRatio);
+  final height =
+      srcRatio > targetRatio ? (target.width / srcRatio) : target.height;
+
+  final top = (target.height - height) ~/ 2;
+  final left = (target.width - width) ~/ 2;
+
+  return (width: width.toInt(), height: height.toInt(), top: top, left: left);
+}
+
+({int width, int height, int top, int left}) _fill({
+  required ({int width, int height}) src,
+  required ({int width, int height}) target,
+}) {
+  return (width: src.width, height: src.height, top: 0, left: 0);
 }

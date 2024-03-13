@@ -45,9 +45,9 @@ void main() {
 
   test('rescale xdding (animated)', () async {
     print('platform: ${Platform.operatingSystem}');
-    final xdd = await load('xdding.webp');
+    final xdding = await load('xdding.webp');
 
-    final img = resizeWebp(xdd, (width: 512, height: 512));
+    final img = resizeWebp(xdding, (width: 512, height: 512));
 
     await temp.file('xdding-512x512.webp').writeAsBytes(img);
     print('xdding-512x512.webp: ${temp.file('xdding-512x512.webp').path}');
@@ -58,6 +58,72 @@ void main() {
     }
     expect(resized.width, 512);
     expect(resized.height, 512);
+  });
+
+  test('rescale xdding using encoder (animated)', () async {
+    final xdding = await load('xdding.webp');
+
+    final webpImage = WebpImage(xdding);
+    print('frames: ${webpImage.frames.map((e) => e.timestamp).toList()}');
+    final fps = webpImage.fps;
+    print('fps: $fps');
+    final encoder = WebpEncoder(
+      width: 512,
+      height: 512,
+      fps: fps,
+    );
+
+    encoder.add(webpImage);
+
+    final encoded = encoder.encode();
+
+    final decoded = WebpImage(encoded);
+    expect(decoded.info.canvas_width, 512);
+    expect(decoded.info.canvas_height, 512);
+    expect(decoded.info.frame_count, 64);
+
+    final file = temp.file('xdding-512x512-encoder.webp');
+    await file.writeAsBytes(encoded);
+    print('xdding-512x512-encoder.webp: ${file.path}');
+  });
+
+  test('static to animated using encoder', () async {
+    final xdd = await load('xdd.webp');
+
+    final config = WebPConfig();
+
+    final encoder = WebpEncoder(
+      width: 512,
+      height: 512,
+      fps: 30,
+      config: config,
+    );
+
+    encoder.add(WebpImage(xdd));
+    encoder.add(WebpImage(xdd));
+
+    expect(encoder.frameCount, 2);
+
+    final encoded = encoder.encode();
+
+    final decoded = WebpImage(encoded);
+    expect(decoded.info.canvas_width, 512);
+    expect(decoded.info.canvas_height, 512);
+    // expect(decoded.info.frame_count, 2);
+
+    final file = temp.file('xdd-512x512-encoder.webp');
+    await file.writeAsBytes(encoded);
+    print('xdd-512x512-encoder.webp: ${file.path}');
+  });
+
+  test('WebpImage', () async {
+    final xdd = await load('xdding.webp');
+    final img = WebpImage(xdd);
+    final info = img.info;
+    expect(info.canvas_width, 228);
+    expect(info.canvas_height, 128);
+    expect(info.frame_count, 64);
+    expect(img.frames.length, 64);
   });
 }
 
