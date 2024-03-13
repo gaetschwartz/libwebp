@@ -40,11 +40,11 @@ final DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final libwebp = LibwebpFlutterLibsBindings(_dylib);
 
-({int width, int height}) getWebpDimensions(Uint8Data data) {
+({int width, int height}) getWebpDimensions(FfiByteData data) {
   return using((a) {
     final curr = (width: a<Int>(), height: a<Int>());
     final res =
-        libwebp.WebPGetInfo(data.ptr, data.length, curr.width, curr.height);
+        libwebp.WebPGetInfo(data.ptr, data.size, curr.width, curr.height);
     if (res == 0) {
       throw LibWebpException('Failed to get WebP info.');
     }
@@ -63,7 +63,7 @@ Uint8List resizeWebp(
   BoxFit fit = BoxFit.fill,
 }) =>
     using((Arena alloc) {
-      final data = alloc.uint8Array(input.length);
+      final data = alloc.byteData(input.length);
       data.asList.setAll(0, input);
       final curr = getWebpDimensions(data);
 
@@ -82,7 +82,7 @@ Uint8List _resizeWebp(
   Arena alloc,
   ({int height, int width}) curr,
   ({int height, int width}) targetDimensions,
-  Uint8Data data, {
+  FfiByteData data, {
   BoxFit fit = BoxFit.fill,
 }) {
   final log = Logger('resizeWebp');
@@ -186,10 +186,10 @@ Uint8List _resizeWebp(
   return uint8list;
 }
 
-Pointer<WebPAnimDecoder> _animDecoder(Allocator a, Uint8Data data) {
+Pointer<WebPAnimDecoder> _animDecoder(Allocator a, FfiByteData data) {
   final webpData = a<WebPData>();
   webpData.ref.bytes = data.ptr;
-  webpData.ref.size = data.length;
+  webpData.ref.size = data.size;
 
   final opt = a<WebPAnimDecoderOptions>();
   libwebp.WebPAnimDecoderOptionsInitInternal(opt, WEBP_DEMUX_ABI_VERSION);
@@ -214,6 +214,24 @@ class LibWebpException implements Exception {
 
   @override
   String toString() => 'LibWebpException: $message';
+}
+
+class LibWebPAnimEncoderException implements LibWebpException {
+  final String error;
+  final String? context;
+
+  LibWebPAnimEncoderException.of(
+    Pointer<WebPAnimEncoder> encoder, [
+    this.context,
+  ]) : error = libwebp.WebPAnimEncoderGetError(encoder)
+            .cast<Utf8>()
+            .toDartString();
+
+  @override
+  String get message => '$error${context != null ? ' $context' : ''}';
+
+  @override
+  String toString() => 'LibWebpAnimEncoderException: $message';
 }
 
 enum VP8StatusCode {

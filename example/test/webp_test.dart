@@ -23,7 +23,8 @@ void main() {
       print('[${record.loggerName}] ${record.level.name}: ${record.message}');
     });
     temp = Directory(
-        path.join(Directory.systemTemp.path, 'libwebp_flutter_libs', 'tests'));
+      path.join(Directory.systemTemp.path, 'libwebp_flutter_libs', 'tests'),
+    );
     await temp.create(recursive: true);
     print('temp: ${temp.path}');
   });
@@ -70,14 +71,14 @@ void main() {
   test('rescale xdding using encoder (animated)', () async {
     final xdding = await load('xdding.webp');
 
-    final webpImage = WebpImage(xdding);
+    final webpImage = WebPImage(xdding);
     print('frames: ${webpImage.frames.map((e) => e.timestamp).toList()}');
     final frameDuration = webpImage.averageFrameDuration;
     print('frameDuration: $frameDuration');
-    final encoder = WebpEncoder(
+    final encoder = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: WebpAnimationTiming(frameDuration),
+      timing: WebPAnimationTiming(frameDuration),
       verbose: true,
     );
 
@@ -85,7 +86,7 @@ void main() {
 
     final encoded = encoder.assemble();
 
-    final decoded = WebpImage(encoded);
+    final decoded = WebPImage(encoded);
     expect(decoded.info.canvas_width, 512);
     expect(decoded.info.canvas_height, 512);
     expect(decoded.info.frame_count, 64);
@@ -100,22 +101,22 @@ void main() {
 
     final config = WebPConfig();
 
-    final encoder = WebpEncoder(
+    final encoder = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: const WebpAnimationTiming(100),
+      timing: const WebPAnimationTiming(100),
       config: config,
       verbose: true,
     );
 
-    encoder.add(WebpImage(xdd));
-    encoder.add(WebpImage(xdd));
+    encoder.add(WebPImage(xdd));
+    encoder.add(WebPImage(xdd));
 
     expect(encoder.frameCount, 2);
 
     final encoded = encoder.assemble();
 
-    final decoded = WebpImage(encoded);
+    final decoded = WebPImage(encoded);
     expect(decoded.info.canvas_width, 512);
     expect(decoded.info.canvas_height, 512);
     // expect(decoded.info.frame_count, 2);
@@ -127,7 +128,7 @@ void main() {
 
   test('WebpImage', () async {
     final xdd = await load('xdding.webp');
-    final img = WebpImage(xdd);
+    final img = WebPImage(xdd);
     final info = img.info;
     expect(info.canvas_width, 228);
     expect(info.canvas_height, 128);

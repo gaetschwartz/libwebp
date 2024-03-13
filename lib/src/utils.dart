@@ -3,20 +3,50 @@ import 'dart:typed_data';
 
 import 'package:libwebp/libwebp_generated_bindings.dart';
 
-class Uint8Data {
+// ignore: non_constant_identifier_names
+
+class FfiByteData {
   final Pointer<Uint8> ptr;
-  final int length;
+  final int size;
 
-  Uint8Data({required this.ptr, required this.length});
+  FfiByteData.ffi({required this.ptr, required this.size});
 
-  List<int> get asList => ptr.asTypedList(length);
+  factory FfiByteData.allocate(Allocator allocator, int size) {
+    return FfiByteData.ffi(
+      ptr: allocator.call<Uint8>(size),
+      size: size,
+    );
+  }
+
+  factory FfiByteData.fromTypedList(Uint8List list, Allocator allocator) {
+    final data = FfiByteData.ffi(
+      ptr: allocator.call<Uint8>(list.length),
+      size: list.length,
+    );
+    data.ptr.asTypedList(list.length).setAll(0, list);
+    return data;
+  }
+
+  List<int> get asList => ptr.asTypedList(size);
+
+  void setAll(int index, Uint8List list) {
+    ptr.asTypedList(size).setAll(index, list);
+  }
+
+  Pointer<WebPData> toWebPData(Allocator allocator) {
+    final data = allocator<WebPData>();
+    data.ref.size = size;
+    data.ref.bytes = ptr;
+    return data;
+  }
 }
 
 extension AllocatorX on Allocator {
-  Uint8Data uint8Array(int length) {
-    final pointer = call<Uint8>(length);
-    return Uint8Data(ptr: pointer, length: length * sizeOf<Uint8>());
-  }
+  FfiByteData byteData(int size) =>
+      FfiByteData.ffi(ptr: call<Uint8>(size), size: size);
+
+  FfiByteData fromTypedList(Uint8List list) =>
+      FfiByteData.fromTypedList(list, this);
 }
 
 extension RGBAX on WebPRGBABuffer {

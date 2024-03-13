@@ -16,6 +16,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   libwebp_flutter_libs:
     path: libwebp_flutter_libs/
+  ffigen: ^11.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

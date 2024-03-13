@@ -7,36 +7,42 @@ import 'package:libwebp/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
 
-class WebpImage {
-  final Uint8Data _data;
+typedef WebPDecoderFinalizable = ({
+  Arena arena,
+  Pointer<bindings.WebPAnimDecoder> decoder
+});
+
+class WebPImage {
+  final FfiByteData _data;
   final Allocator _alloc;
   final Pointer<bindings.WebPAnimDecoder> _decoder;
 
-  late final Pointer<bindings.WebPAnimInfo> _infoPtr =
-      _alloc<bindings.WebPAnimInfo>();
+  late final _infoPtr = _alloc<bindings.WebPAnimInfo>();
 
-  static final Finalizer<Arena> _finalizer = Finalizer<Arena>((data) {
-    data.releaseAll();
+  static final _finalizer = Finalizer<WebPDecoderFinalizable>((data) {
+    data.arena.releaseAll();
+    libwebp.WebPAnimDecoderDelete(data.decoder);
   });
 
-  factory WebpImage(Uint8List data) {
-    final alloc = Arena(calloc);
-    final d = alloc.uint8Array(data.length);
-    d.asList.setAll(0, data);
-    final webpImage = WebpImage._(
-      data: d,
-      alloc: alloc,
-      decoder: _animDecoder(alloc, d),
+  factory WebPImage(Uint8List data) {
+    final arena = Arena(calloc);
+
+    final d = FfiByteData.fromTypedList(data, arena);
+    final dec = _animDecoder(arena, d);
+    final wrapper = WebPImage._(data: d, alloc: arena, decoder: dec);
+    _finalizer.attach(
+      wrapper,
+      (arena: arena, decoder: dec),
+      detach: wrapper,
     );
-    _finalizer.attach(webpImage, alloc, detach: webpImage);
-    return webpImage;
+    return wrapper;
   }
 
-  WebpImage._(
-      {required Uint8Data data,
-      required Allocator alloc,
-      required Pointer<bindings.WebPAnimDecoder> decoder})
-      : _data = data,
+  WebPImage._({
+    required FfiByteData data,
+    required Allocator alloc,
+    required Pointer<bindings.WebPAnimDecoder> decoder,
+  })  : _data = data,
         _alloc = alloc,
         _decoder = decoder;
 
@@ -47,24 +53,20 @@ class WebpImage {
     return _infoPtr.ref;
   }
 
-  Iterable<WebpFrame> get frames => WebpImageFramesIterable._(
-        _alloc,
-        _animDecoder(_alloc, _data),
-        info,
-      );
+  Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
 
   double get fps => 1000 * info.frame_count / frames.last.timestamp;
 
   int get averageFrameDuration => frames.last.timestamp ~/ info.frame_count;
 }
 
-class WebpFrame {
+class WebPFrame {
   final int timestamp;
   final Pointer<Pointer<Uint8>> _data;
   final int width;
   final int height;
 
-  WebpFrame({
+  WebPFrame({
     required this.timestamp,
     required Pointer<Pointer<Uint8>> data,
     required this.width,
@@ -95,29 +97,40 @@ class WebpFrame {
       });
 }
 
-class WebpImageFramesIterable extends Iterable<WebpFrame> {
-  final Pointer<bindings.WebPAnimDecoder> _decoder;
-  final Allocator _alloc;
-  final bindings.WebPAnimInfo _info;
+class WebPImageFramesIterable extends Iterable<WebPFrame> {
+  final WebPImage _image;
 
-  WebpImageFramesIterable._(this._alloc, this._decoder, this._info);
+  WebPImageFramesIterable(this._image);
 
   @override
-  Iterator<WebpFrame> get iterator =>
-      WebpImageFramesIterator._(_alloc, _decoder, _info);
+  Iterator<WebPFrame> get iterator => WebPImageFramesIterator(_image);
 }
 
-class WebpImageFramesIterator implements Iterator<WebpFrame> {
-  WebpFrame? _current;
+class WebPImageFramesIterator implements Iterator<WebPFrame> {
+  WebPFrame? _current;
 
+  static final _finalizer = Finalizer<Arena>(
+    (data) => data.releaseAll(),
+  );
+
+  final WebPImage _image;
   final Pointer<bindings.WebPAnimDecoder> _decoder;
   final Allocator _alloc;
-  final bindings.WebPAnimInfo _info;
 
-  WebpImageFramesIterator._(this._alloc, this._decoder, this._info);
+  WebPImageFramesIterator._(this._image, this._alloc)
+      : _decoder = _animDecoder(calloc, _image._data);
+
+  factory WebPImageFramesIterator(WebPImage image) {
+    final alloc = Arena(calloc);
+    final iterator = WebPImageFramesIterator._(image, alloc);
+    _finalizer.attach(iterator, alloc, detach: iterator);
+    return iterator;
+  }
 
   @override
-  WebpFrame get current => _current!;
+  WebPFrame get current => _current!;
+
+  late final _info = _image.info;
 
   @override
   bool moveNext() {
@@ -126,7 +139,7 @@ class WebpImageFramesIterator implements Iterator<WebpFrame> {
     if (libwebp.WebPAnimDecoderGetNext(_decoder, frame, ms) == 0) {
       return false;
     }
-    _current = WebpFrame(
+    _current = WebPFrame(
       timestamp: ms.value,
       data: frame,
       width: _info.canvas_width,
@@ -136,7 +149,7 @@ class WebpImageFramesIterator implements Iterator<WebpFrame> {
   }
 }
 
-enum WebpPreset {
+enum WebPPreset {
   default_(bindings.WebPPreset.WEBP_PRESET_DEFAULT),
   picture(bindings.WebPPreset.WEBP_PRESET_PICTURE),
   photo(bindings.WebPPreset.WEBP_PRESET_PHOTO),
@@ -146,57 +159,63 @@ enum WebpPreset {
 
   final int value;
 
-  const WebpPreset(this.value);
+  const WebPPreset(this.value);
 }
 
 class WebPConfig {
-  final Pointer<bindings.WebPConfig> _config;
+  const WebPConfig.ffi(this._ffi);
 
-  static final Finalizer<Arena> _finalizer = Finalizer<Arena>((a) {
-    a.releaseAll();
-  });
+  final Pointer<bindings.WebPConfig> _ffi;
+
+  static final _finalizer = Finalizer<Arena>((a) => a.releaseAll());
 
   factory WebPConfig({
-    WebpPreset preset = WebpPreset.default_,
+    WebPPreset preset = WebPPreset.default_,
     double quality = 75.0,
     bool lossless = false,
+    bool multiThreading = true,
   }) {
     final alloc = Arena(calloc);
 
     final cfg = alloc<bindings.WebPConfig>();
-    if (libwebp.WebPConfigInitInternal(
-          cfg,
-          preset.value,
-          quality,
-          bindings.WEBP_ENCODER_ABI_VERSION,
-        ) ==
-        0) {
-      throw LibWebpException('Failed to init WebPConfig.');
-    }
+    _check(
+      libwebp.WebPConfigInitInternal(
+        cfg,
+        preset.value,
+        quality,
+        bindings.WEBP_ENCODER_ABI_VERSION,
+      ),
+      'Failed to init WebPConfig.',
+    );
     cfg.ref.lossless = lossless ? 1 : 0;
-    cfg.ref.thread_level = 1;
+    cfg.ref.thread_level = multiThreading ? 1 : 0;
 
-    final webpConfig = WebPConfig._(config: cfg);
+    final webpConfig = WebPConfig.ffi(cfg);
 
     _finalizer.attach(webpConfig, alloc, detach: webpConfig);
 
     return webpConfig;
   }
 
-  WebPConfig._({
-    required Pointer<bindings.WebPConfig> config,
-  }) : _config = config;
+  bindings.WebPConfig get ref => _ffi.ref;
 }
 
-class WebpEncoder {
-  static final Finalizer<Arena> _finalizer =
-      Finalizer<Arena>((a) => a.releaseAll());
+typedef WebPEncoderFinalizable = ({
+  Arena arena,
+  Pointer<bindings.WebPAnimEncoder> encoder
+});
+
+class WebPAnimEncoder {
+  static final _finalizer = Finalizer<WebPEncoderFinalizable>((a) {
+    a.arena.releaseAll();
+    libwebp.WebPAnimEncoderDelete(a.encoder);
+  });
   final Allocator _alloc;
   final Pointer<bindings.WebPAnimEncoder> _encoder;
   final WebPConfig? config;
   final int width;
   final int height;
-  final WebpAnimationTiming timing;
+  final WebPAnimationTiming timing;
   final bool verbose;
   final Logger? _logger;
   int _timestamp;
@@ -204,10 +223,10 @@ class WebpEncoder {
 
   int get currentTimestamp => _timestamp;
 
-  factory WebpEncoder({
+  factory WebPAnimEncoder({
     required int width,
     required int height,
-    required WebpAnimationTiming timing,
+    required WebPAnimationTiming timing,
     WebPConfig? config,
     bool verbose = false,
   }) {
@@ -235,7 +254,7 @@ class WebpEncoder {
       throw LibWebpException('Failed to create WebPAnimEncoder.');
     }
 
-    final webpEncoder = WebpEncoder._(
+    final wrapper = WebPAnimEncoder._(
       alloc: alloc,
       encoder: encoder,
       config: config,
@@ -244,11 +263,15 @@ class WebpEncoder {
       timing: timing,
       verbose: verbose,
     );
-    _finalizer.attach(webpEncoder, alloc, detach: webpEncoder);
-    return webpEncoder;
+    _finalizer.attach(
+      wrapper,
+      (arena: alloc, encoder: encoder),
+      detach: wrapper,
+    );
+    return wrapper;
   }
 
-  WebpEncoder._({
+  WebPAnimEncoder._({
     required Allocator alloc,
     required Pointer<bindings.WebPAnimEncoder> encoder,
     required this.config,
@@ -265,7 +288,7 @@ class WebpEncoder {
     _logger?.fine(message);
   }
 
-  void add(WebpImage image, {Duration delay = Duration.zero}) {
+  void add(WebPImage image, {Duration delay = Duration.zero}) {
     _timestamp += delay.inMilliseconds;
 
     final info = image.info;
@@ -314,9 +337,9 @@ class WebpEncoder {
       );
 
       if (added == 0) {
-        final str = libwebp.WebPAnimEncoderGetError(_encoder) as Pointer<Utf8>;
-        throw LibWebpException(
-          'Failed to add frame $_frames to encoder. (${VP8StatusCode.fromValue(pic.ref.error_code)}, ${str.toDartString()})',
+        throw LibWebPAnimEncoderException.of(
+          _encoder,
+          'Failed to add frame $_frames to encoder',
         );
       } else {
         _timestamp += timing.value;
@@ -348,7 +371,10 @@ class WebpEncoder {
 
     final res = libwebp.WebPAnimEncoderAssemble(_encoder, data);
     if (res == 0) {
-      throw LibWebpException('Failed to assemble WebPData.');
+      throw LibWebPAnimEncoderException.of(
+        _encoder,
+        'Failed to assemble WebP.',
+      );
     }
     libwebp.WebPAnimEncoderDelete(_encoder);
 
@@ -362,15 +388,19 @@ void _check(int res, [String? message]) {
   }
 }
 
-Pointer<bindings.WebPAnimDecoder> _animDecoder(Allocator a, Uint8Data data) {
-  final webpData = a<bindings.WebPData>();
-  webpData.ref.bytes = data.ptr;
-  webpData.ref.size = data.length;
+Pointer<bindings.WebPAnimDecoder> _animDecoder(
+  Allocator alloc,
+  FfiByteData data,
+) {
+  final webpData = data.toWebPData(alloc);
 
-  final opt = a<bindings.WebPAnimDecoderOptions>();
+  final opt = alloc<bindings.WebPAnimDecoderOptions>();
   libwebp.WebPAnimDecoderOptionsInitInternal(
-      opt, bindings.WEBP_DEMUX_ABI_VERSION);
+    opt,
+    bindings.WEBP_DEMUX_ABI_VERSION,
+  );
   opt.ref.color_mode = bindings.WEBP_CSP_MODE.MODE_RGBA;
+  opt.ref.use_threads = 1;
 
   final decoder = libwebp.WebPAnimDecoderNewInternal(
     webpData,
@@ -384,17 +414,13 @@ Pointer<bindings.WebPAnimDecoder> _animDecoder(Allocator a, Uint8Data data) {
   return decoder;
 }
 
-extension WebpDataX on Pointer<bindings.WebPData> {
-  Uint8List toList() => Uint8List.fromList(ref.bytes.asTypedList(ref.size));
-}
-
 extension on WebPConfig? {
-  Pointer<bindings.WebPConfig> get ptr => this?._config ?? nullptr;
+  Pointer<bindings.WebPConfig> get ptr => this?._ffi ?? nullptr;
 }
 
-class WebpAnimationTiming {
+class WebPAnimationTiming {
   final int value;
-  const WebpAnimationTiming(this.value);
+  const WebPAnimationTiming(this.value);
 
-  WebpAnimationTiming.fps(double fps) : value = 1000 ~/ fps;
+  WebPAnimationTiming.fps(double fps) : value = 1000 ~/ fps;
 }

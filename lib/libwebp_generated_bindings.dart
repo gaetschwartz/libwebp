@@ -22,2008 +22,6 @@ class LibwebpFlutterLibsBindings {
           lookup)
       : _lookup = lookup;
 
-  /// 7.8.2.1
-  int imaxabs(
-    int j,
-  ) {
-    return _imaxabs(
-      j,
-    );
-  }
-
-  late final _imaxabsPtr =
-      _lookup<ffi.NativeFunction<intmax_t Function(intmax_t)>>('imaxabs');
-  late final _imaxabs = _imaxabsPtr.asFunction<int Function(int)>();
-
-  imaxdiv_t imaxdiv(
-    int __numer,
-    int __denom,
-  ) {
-    return _imaxdiv(
-      __numer,
-      __denom,
-    );
-  }
-
-  late final _imaxdivPtr =
-      _lookup<ffi.NativeFunction<imaxdiv_t Function(intmax_t, intmax_t)>>(
-          'imaxdiv');
-  late final _imaxdiv = _imaxdivPtr.asFunction<imaxdiv_t Function(int, int)>();
-
-  /// 7.8.2.3
-  int strtoimax(
-    ffi.Pointer<ffi.Char> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
-    int __base,
-  ) {
-    return _strtoimax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _strtoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoimax');
-  late final _strtoimax = _strtoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  int strtoumax(
-    ffi.Pointer<ffi.Char> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
-    int __base,
-  ) {
-    return _strtoumax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _strtoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoumax');
-  late final _strtoumax = _strtoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  /// 7.8.2.4
-  int wcstoimax(
-    ffi.Pointer<ffi.WChar> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
-    int __base,
-  ) {
-    return _wcstoimax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _wcstoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoimax');
-  late final _wcstoimax = _wcstoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
-
-  int wcstoumax(
-    ffi.Pointer<ffi.WChar> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
-    int __base,
-  ) {
-    return _wcstoumax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _wcstoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoumax');
-  late final _wcstoumax = _wcstoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
-
-  /// Allocates 'size' bytes of memory. Returns NULL upon error. Memory
-  /// must be deallocated by calling WebPFree(). This function is made available
-  /// by the core 'libwebp' library.
-  ffi.Pointer<ffi.Void> WebPMalloc(
-    int size,
-  ) {
-    return _WebPMalloc(
-      size,
-    );
-  }
-
-  late final _WebPMallocPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
-          'WebPMalloc');
-  late final _WebPMalloc =
-      _WebPMallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
-
-  /// Releases memory returned by the WebPDecode*() functions (from decode.h).
-  void WebPFree(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _WebPFree(
-      ptr,
-    );
-  }
-
-  late final _WebPFreePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'WebPFree');
-  late final _WebPFree =
-      _WebPFreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  /// Return the decoder's version number, packed in hexadecimal using 8bits for
-  /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-  int WebPGetDecoderVersion() {
-    return _WebPGetDecoderVersion();
-  }
-
-  late final _WebPGetDecoderVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDecoderVersion');
-  late final _WebPGetDecoderVersion =
-      _WebPGetDecoderVersionPtr.asFunction<int Function()>();
-
-  /// Retrieve basic header information: width, height.
-  /// This function will also validate the header, returning true on success,
-  /// false otherwise. '*width' and '*height' are only valid on successful return.
-  /// Pointers 'width' and 'height' can be passed NULL if deemed irrelevant.
-  /// Note: The following chunk sequences (before the raw VP8/VP8L data) are
-  /// considered valid by this function:
-  /// RIFF + VP8(L)
-  /// RIFF + VP8X + (optional chunks) + VP8(L)
-  /// ALPH + VP8 <-- Not a valid WebP format: only allowed for internal purpose.
-  /// VP8(L)     <-- Not a valid WebP format: only allowed for internal purpose.
-  int WebPGetInfo(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPGetInfo(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPGetInfoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPGetInfo');
-  late final _WebPGetInfo = _WebPGetInfoPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
-
-  /// Decodes WebP images pointed to by 'data' and returns RGBA samples, along
-  /// with the dimensions in *width and *height. The ordering of samples in
-  /// memory is R, G, B, A, R, G, B, A... in scan order (endian-independent).
-  /// The returned pointer should be deleted calling WebPFree().
-  /// Returns NULL in case of error.
-  ffi.Pointer<ffi.Uint8> WebPDecodeRGBA(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPDecodeRGBA(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPDecodeRGBAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGBA');
-  late final _WebPDecodeRGBA = _WebPDecodeRGBAPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Same as WebPDecodeRGBA, but returning A, R, G, B, A, R, G, B... ordered data.
-  ffi.Pointer<ffi.Uint8> WebPDecodeARGB(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPDecodeARGB(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPDecodeARGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeARGB');
-  late final _WebPDecodeARGB = _WebPDecodeARGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Same as WebPDecodeRGBA, but returning B, G, R, A, B, G, R, A... ordered data.
-  ffi.Pointer<ffi.Uint8> WebPDecodeBGRA(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPDecodeBGRA(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPDecodeBGRAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGRA');
-  late final _WebPDecodeBGRA = _WebPDecodeBGRAPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Same as WebPDecodeRGBA, but returning R, G, B, R, G, B... ordered data.
-  /// If the bitstream contains transparency, it is ignored.
-  ffi.Pointer<ffi.Uint8> WebPDecodeRGB(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPDecodeRGB(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPDecodeRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGB');
-  late final _WebPDecodeRGB = _WebPDecodeRGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Same as WebPDecodeRGB, but returning B, G, R, B, G, R... ordered data.
-  ffi.Pointer<ffi.Uint8> WebPDecodeBGR(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPDecodeBGR(
-      data,
-      data_size,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPDecodeBGRPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGR');
-  late final _WebPDecodeBGR = _WebPDecodeBGRPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Decode WebP images pointed to by 'data' to Y'UV format(*). The pointer
-  /// returned is the Y samples buffer. Upon return, *u and *v will point to
-  /// the U and V chroma data. These U and V buffers need NOT be passed to
-  /// WebPFree(), unlike the returned Y luma one. The dimension of the U and V
-  /// planes are both (*width + 1) / 2 and (*height + 1) / 2.
-  /// Upon return, the Y buffer has a stride returned as '*stride', while U and V
-  /// have a common stride returned as '*uv_stride'.
-  /// 'width' and 'height' may be NULL, the other pointers must not be.
-  /// Returns NULL in case of error.
-  /// (*) Also named Y'CbCr. See: https://en.wikipedia.org/wiki/YCbCr
-  ffi.Pointer<ffi.Uint8> WebPDecodeYUV(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> u,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> v,
-    ffi.Pointer<ffi.Int> stride,
-    ffi.Pointer<ffi.Int> uv_stride,
-  ) {
-    return _WebPDecodeYUV(
-      data,
-      data_size,
-      width,
-      height,
-      u,
-      v,
-      stride,
-      uv_stride,
-    );
-  }
-
-  late final _WebPDecodeYUVPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPDecodeYUV');
-  late final _WebPDecodeYUV = _WebPDecodeYUVPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
-
-  /// These five functions are variants of the above ones, that decode the image
-  /// directly into a pre-allocated buffer 'output_buffer'. The maximum storage
-  /// available in this buffer is indicated by 'output_buffer_size'. If this
-  /// storage is not sufficient (or an error occurred), NULL is returned.
-  /// Otherwise, output_buffer is returned, for convenience.
-  /// The parameter 'output_stride' specifies the distance (in bytes)
-  /// between scanlines. Hence, output_buffer_size is expected to be at least
-  /// output_stride x picture-height.
-  ffi.Pointer<ffi.Uint8> WebPDecodeRGBAInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPDecodeRGBAInto(
-      data,
-      data_size,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPDecodeRGBAIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeRGBAInto');
-  late final _WebPDecodeRGBAInto = _WebPDecodeRGBAIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  ffi.Pointer<ffi.Uint8> WebPDecodeARGBInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPDecodeARGBInto(
-      data,
-      data_size,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPDecodeARGBIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeARGBInto');
-  late final _WebPDecodeARGBInto = _WebPDecodeARGBIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  ffi.Pointer<ffi.Uint8> WebPDecodeBGRAInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPDecodeBGRAInto(
-      data,
-      data_size,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPDecodeBGRAIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeBGRAInto');
-  late final _WebPDecodeBGRAInto = _WebPDecodeBGRAIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  /// RGB and BGR variants. Here too the transparency information, if present,
-  /// will be dropped and ignored.
-  ffi.Pointer<ffi.Uint8> WebPDecodeRGBInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPDecodeRGBInto(
-      data,
-      data_size,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPDecodeRGBIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeRGBInto');
-  late final _WebPDecodeRGBInto = _WebPDecodeRGBIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  ffi.Pointer<ffi.Uint8> WebPDecodeBGRInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPDecodeBGRInto(
-      data,
-      data_size,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPDecodeBGRIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeBGRInto');
-  late final _WebPDecodeBGRInto = _WebPDecodeBGRIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  /// WebPDecodeYUVInto() is a variant of WebPDecodeYUV() that operates directly
-  /// into pre-allocated luma/chroma plane buffers. This function requires the
-  /// strides to be passed: one for the luma plane and one for each of the
-  /// chroma ones. The size of each plane buffer is passed as 'luma_size',
-  /// 'u_size' and 'v_size' respectively.
-  /// Pointer to the luma plane ('*luma') is returned or NULL if an error occurred
-  /// during decoding (or because some buffers were found to be too small).
-  ffi.Pointer<ffi.Uint8> WebPDecodeYUVInto(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<ffi.Uint8> luma,
-    int luma_size,
-    int luma_stride,
-    ffi.Pointer<ffi.Uint8> u,
-    int u_size,
-    int u_stride,
-    ffi.Pointer<ffi.Uint8> v,
-    int v_size,
-    int v_stride,
-  ) {
-    return _WebPDecodeYUVInto(
-      data,
-      data_size,
-      luma,
-      luma_size,
-      luma_stride,
-      u,
-      u_size,
-      u_stride,
-      v,
-      v_size,
-      v_stride,
-    );
-  }
-
-  late final _WebPDecodeYUVIntoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeYUVInto');
-  late final _WebPDecodeYUVInto = _WebPDecodeYUVIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
-
-  /// Internal, version-checked, entry point
-  int WebPInitDecBufferInternal(
-    ffi.Pointer<WebPDecBuffer> arg0,
-    int arg1,
-  ) {
-    return _WebPInitDecBufferInternal(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _WebPInitDecBufferInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDecBuffer>,
-              ffi.Int)>>('WebPInitDecBufferInternal');
-  late final _WebPInitDecBufferInternal = _WebPInitDecBufferInternalPtr
-      .asFunction<int Function(ffi.Pointer<WebPDecBuffer>, int)>();
-
-  /// Free any memory associated with the buffer. Must always be called last.
-  /// Note: doesn't free the 'buffer' structure itself.
-  void WebPFreeDecBuffer(
-    ffi.Pointer<WebPDecBuffer> buffer,
-  ) {
-    return _WebPFreeDecBuffer(
-      buffer,
-    );
-  }
-
-  late final _WebPFreeDecBufferPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDecBuffer>)>>(
-      'WebPFreeDecBuffer');
-  late final _WebPFreeDecBuffer = _WebPFreeDecBufferPtr.asFunction<
-      void Function(ffi.Pointer<WebPDecBuffer>)>();
-
-  /// Creates a new incremental decoder with the supplied buffer parameter.
-  /// This output_buffer can be passed NULL, in which case a default output buffer
-  /// is used (with MODE_RGB). Otherwise, an internal reference to 'output_buffer'
-  /// is kept, which means that the lifespan of 'output_buffer' must be larger than
-  /// that of the returned WebPIDecoder object.
-  /// The supplied 'output_buffer' content MUST NOT be changed between calls to
-  /// WebPIAppend() or WebPIUpdate() unless 'output_buffer.is_external_memory' is
-  /// not set to 0. In such a case, it is allowed to modify the pointers, size and
-  /// stride of output_buffer.u.RGBA or output_buffer.u.YUVA, provided they remain
-  /// within valid bounds.
-  /// All other fields of WebPDecBuffer MUST remain constant between calls.
-  /// Returns NULL if the allocation failed.
-  ffi.Pointer<WebPIDecoder> WebPINewDecoder(
-    ffi.Pointer<WebPDecBuffer> output_buffer,
-  ) {
-    return _WebPINewDecoder(
-      output_buffer,
-    );
-  }
-
-  late final _WebPINewDecoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(
-              ffi.Pointer<WebPDecBuffer>)>>('WebPINewDecoder');
-  late final _WebPINewDecoder = _WebPINewDecoderPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<WebPDecBuffer>)>();
-
-  /// This function allocates and initializes an incremental-decoder object, which
-  /// will output the RGB/A samples specified by 'csp' into a preallocated
-  /// buffer 'output_buffer'. The size of this buffer is at least
-  /// 'output_buffer_size' and the stride (distance in bytes between two scanlines)
-  /// is specified by 'output_stride'.
-  /// Additionally, output_buffer can be passed NULL in which case the output
-  /// buffer will be allocated automatically when the decoding starts. The
-  /// colorspace 'csp' is taken into account for allocating this buffer. All other
-  /// parameters are ignored.
-  /// Returns NULL if the allocation failed, or if some parameters are invalid.
-  ffi.Pointer<WebPIDecoder> WebPINewRGB(
-    int csp,
-    ffi.Pointer<ffi.Uint8> output_buffer,
-    int output_buffer_size,
-    int output_stride,
-  ) {
-    return _WebPINewRGB(
-      csp,
-      output_buffer,
-      output_buffer_size,
-      output_stride,
-    );
-  }
-
-  late final _WebPINewRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(ffi.Int32, ffi.Pointer<ffi.Uint8>,
-              ffi.Size, ffi.Int)>>('WebPINewRGB');
-  late final _WebPINewRGB = _WebPINewRGBPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  /// This function allocates and initializes an incremental-decoder object, which
-  /// will output the raw luma/chroma samples into a preallocated planes if
-  /// supplied. The luma plane is specified by its pointer 'luma', its size
-  /// 'luma_size' and its stride 'luma_stride'. Similarly, the chroma-u plane
-  /// is specified by the 'u', 'u_size' and 'u_stride' parameters, and the chroma-v
-  /// plane by 'v' and 'v_size'. And same for the alpha-plane. The 'a' pointer
-  /// can be pass NULL in case one is not interested in the transparency plane.
-  /// Conversely, 'luma' can be passed NULL if no preallocated planes are supplied.
-  /// In this case, the output buffer will be automatically allocated (using
-  /// MODE_YUVA) when decoding starts. All parameters are then ignored.
-  /// Returns NULL if the allocation failed or if a parameter is invalid.
-  ffi.Pointer<WebPIDecoder> WebPINewYUVA(
-    ffi.Pointer<ffi.Uint8> luma,
-    int luma_size,
-    int luma_stride,
-    ffi.Pointer<ffi.Uint8> u,
-    int u_size,
-    int u_stride,
-    ffi.Pointer<ffi.Uint8> v,
-    int v_size,
-    int v_stride,
-    ffi.Pointer<ffi.Uint8> a,
-    int a_size,
-    int a_stride,
-  ) {
-    return _WebPINewYUVA(
-      luma,
-      luma_size,
-      luma_stride,
-      u,
-      u_size,
-      u_stride,
-      v,
-      v_size,
-      v_stride,
-      a,
-      a_size,
-      a_stride,
-    );
-  }
-
-  late final _WebPINewYUVAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPINewYUVA');
-  late final _WebPINewYUVA = _WebPINewYUVAPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
-
-  /// Deprecated version of the above, without the alpha plane.
-  /// Kept for backward compatibility.
-  ffi.Pointer<WebPIDecoder> WebPINewYUV(
-    ffi.Pointer<ffi.Uint8> luma,
-    int luma_size,
-    int luma_stride,
-    ffi.Pointer<ffi.Uint8> u,
-    int u_size,
-    int u_stride,
-    ffi.Pointer<ffi.Uint8> v,
-    int v_size,
-    int v_stride,
-  ) {
-    return _WebPINewYUV(
-      luma,
-      luma_size,
-      luma_stride,
-      u,
-      u_size,
-      u_stride,
-      v,
-      v_size,
-      v_stride,
-    );
-  }
-
-  late final _WebPINewYUVPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPINewYUV');
-  late final _WebPINewYUV = _WebPINewYUVPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
-
-  /// Deletes the WebPIDecoder object and associated memory. Must always be called
-  /// if WebPINewDecoder, WebPINewRGB or WebPINewYUV succeeded.
-  void WebPIDelete(
-    ffi.Pointer<WebPIDecoder> idec,
-  ) {
-    return _WebPIDelete(
-      idec,
-    );
-  }
-
-  late final _WebPIDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPIDecoder>)>>(
-          'WebPIDelete');
-  late final _WebPIDelete =
-      _WebPIDeletePtr.asFunction<void Function(ffi.Pointer<WebPIDecoder>)>();
-
-  /// Copies and decodes the next available data. Returns VP8_STATUS_OK when
-  /// the image is successfully decoded. Returns VP8_STATUS_SUSPENDED when more
-  /// data is expected. Returns error in other cases.
-  int WebPIAppend(
-    ffi.Pointer<WebPIDecoder> idec,
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-  ) {
-    return _WebPIAppend(
-      idec,
-      data,
-      data_size,
-    );
-  }
-
-  late final _WebPIAppendPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
-              ffi.Size)>>('WebPIAppend');
-  late final _WebPIAppend = _WebPIAppendPtr.asFunction<
-      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// A variant of the above function to be used when data buffer contains
-  /// partial data from the beginning. In this case data buffer is not copied
-  /// to the internal memory.
-  /// Note that the value of the 'data' pointer can change between calls to
-  /// WebPIUpdate, for instance when the data buffer is resized to fit larger data.
-  int WebPIUpdate(
-    ffi.Pointer<WebPIDecoder> idec,
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-  ) {
-    return _WebPIUpdate(
-      idec,
-      data,
-      data_size,
-    );
-  }
-
-  late final _WebPIUpdatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
-              ffi.Size)>>('WebPIUpdate');
-  late final _WebPIUpdate = _WebPIUpdatePtr.asFunction<
-      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// Returns the RGB/A image decoded so far. Returns NULL if output params
-  /// are not initialized yet. The RGB/A output type corresponds to the colorspace
-  /// specified during call to WebPINewDecoder() or WebPINewRGB().
-  /// *last_y is the index of last decoded row in raster scan order. Some pointers
-  /// (*last_y, *width etc.) can be NULL if corresponding information is not
-  /// needed. The values in these pointers are only valid on successful (non-NULL)
-  /// return.
-  ffi.Pointer<ffi.Uint8> WebPIDecGetRGB(
-    ffi.Pointer<WebPIDecoder> idec,
-    ffi.Pointer<ffi.Int> last_y,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-    ffi.Pointer<ffi.Int> stride,
-  ) {
-    return _WebPIDecGetRGB(
-      idec,
-      last_y,
-      width,
-      height,
-      stride,
-    );
-  }
-
-  late final _WebPIDecGetRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<WebPIDecoder>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPIDecGetRGB');
-  late final _WebPIDecGetRGB = _WebPIDecGetRGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<WebPIDecoder>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
-
-  /// Same as above function to get a YUVA image. Returns pointer to the luma
-  /// plane or NULL in case of error. If there is no alpha information
-  /// the alpha pointer '*a' will be returned NULL.
-  ffi.Pointer<ffi.Uint8> WebPIDecGetYUVA(
-    ffi.Pointer<WebPIDecoder> idec,
-    ffi.Pointer<ffi.Int> last_y,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> u,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> v,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> a,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-    ffi.Pointer<ffi.Int> stride,
-    ffi.Pointer<ffi.Int> uv_stride,
-    ffi.Pointer<ffi.Int> a_stride,
-  ) {
-    return _WebPIDecGetYUVA(
-      idec,
-      last_y,
-      u,
-      v,
-      a,
-      width,
-      height,
-      stride,
-      uv_stride,
-      a_stride,
-    );
-  }
-
-  late final _WebPIDecGetYUVAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<WebPIDecoder>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPIDecGetYUVA');
-  late final _WebPIDecGetYUVA = _WebPIDecGetYUVAPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<WebPIDecoder>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
-
-  /// Generic call to retrieve information about the displayable area.
-  /// If non NULL, the left/right/width/height pointers are filled with the visible
-  /// rectangular area so far.
-  /// Returns NULL in case the incremental decoder object is in an invalid state.
-  /// Otherwise returns the pointer to the internal representation. This structure
-  /// is read-only, tied to WebPIDecoder's lifespan and should not be modified.
-  ffi.Pointer<WebPDecBuffer> WebPIDecodedArea(
-    ffi.Pointer<WebPIDecoder> idec,
-    ffi.Pointer<ffi.Int> left,
-    ffi.Pointer<ffi.Int> top,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPIDecodedArea(
-      idec,
-      left,
-      top,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPIDecodedAreaPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPDecBuffer> Function(
-              ffi.Pointer<WebPIDecoder>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPIDecodedArea');
-  late final _WebPIDecodedArea = _WebPIDecodedAreaPtr.asFunction<
-      ffi.Pointer<WebPDecBuffer> Function(
-          ffi.Pointer<WebPIDecoder>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
-
-  /// Internal, version-checked, entry point
-  int WebPGetFeaturesInternal(
-    ffi.Pointer<ffi.Uint8> arg0,
-    int arg1,
-    ffi.Pointer<WebPBitstreamFeatures> arg2,
-    int arg3,
-  ) {
-    return _WebPGetFeaturesInternal(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _WebPGetFeaturesInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<WebPBitstreamFeatures>,
-              ffi.Int)>>('WebPGetFeaturesInternal');
-  late final _WebPGetFeaturesInternal = _WebPGetFeaturesInternalPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<WebPBitstreamFeatures>, int)>();
-
-  /// Internal, version-checked, entry point
-  int WebPInitDecoderConfigInternal(
-    ffi.Pointer<WebPDecoderConfig> arg0,
-    int arg1,
-  ) {
-    return _WebPInitDecoderConfigInternal(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _WebPInitDecoderConfigInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDecoderConfig>,
-              ffi.Int)>>('WebPInitDecoderConfigInternal');
-  late final _WebPInitDecoderConfigInternal = _WebPInitDecoderConfigInternalPtr
-      .asFunction<int Function(ffi.Pointer<WebPDecoderConfig>, int)>();
-
-  /// Instantiate a new incremental decoder object with the requested
-  /// configuration. The bitstream can be passed using 'data' and 'data_size'
-  /// parameter, in which case the features will be parsed and stored into
-  /// config->input. Otherwise, 'data' can be NULL and no parsing will occur.
-  /// Note that 'config' can be NULL too, in which case a default configuration
-  /// is used. If 'config' is not NULL, it must outlive the WebPIDecoder object
-  /// as some references to its fields will be used. No internal copy of 'config'
-  /// is made.
-  /// The return WebPIDecoder object must always be deleted calling WebPIDelete().
-  /// Returns NULL in case of error (and config->status will then reflect
-  /// the error condition, if available).
-  ffi.Pointer<WebPIDecoder> WebPIDecode(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<WebPDecoderConfig> config,
-  ) {
-    return _WebPIDecode(
-      data,
-      data_size,
-      config,
-    );
-  }
-
-  late final _WebPIDecodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPDecoderConfig>)>>('WebPIDecode');
-  late final _WebPIDecode = _WebPIDecodePtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
-
-  /// Non-incremental version. This version decodes the full data at once, taking
-  /// 'config' into account. Returns decoding status (which should be VP8_STATUS_OK
-  /// if the decoding was successful). Note that 'config' cannot be NULL.
-  int WebPDecode(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<WebPDecoderConfig> config,
-  ) {
-    return _WebPDecode(
-      data,
-      data_size,
-      config,
-    );
-  }
-
-  late final _WebPDecodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPDecoderConfig>)>>('WebPDecode');
-  late final _WebPDecode = _WebPDecodePtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
-
-  /// Return the encoder's version number, packed in hexadecimal using 8bits for
-  /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-  int WebPGetEncoderVersion() {
-    return _WebPGetEncoderVersion();
-  }
-
-  late final _WebPGetEncoderVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetEncoderVersion');
-  late final _WebPGetEncoderVersion =
-      _WebPGetEncoderVersionPtr.asFunction<int Function()>();
-
-  /// Returns the size of the compressed data (pointed to by *output), or 0 if
-  /// an error occurred. The compressed data must be released by the caller
-  /// using the call 'WebPFree(*output)'.
-  /// These functions compress using the lossy format, and the quality_factor
-  /// can go from 0 (smaller output, lower quality) to 100 (best quality,
-  /// larger output).
-  int WebPEncodeRGB(
-    ffi.Pointer<ffi.Uint8> rgb,
-    int width,
-    int height,
-    int stride,
-    double quality_factor,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeRGB(
-      rgb,
-      width,
-      height,
-      stride,
-      quality_factor,
-      output,
-    );
-  }
-
-  late final _WebPEncodeRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGB');
-  late final _WebPEncodeRGB = _WebPEncodeRGBPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeBGR(
-    ffi.Pointer<ffi.Uint8> bgr,
-    int width,
-    int height,
-    int stride,
-    double quality_factor,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeBGR(
-      bgr,
-      width,
-      height,
-      stride,
-      quality_factor,
-      output,
-    );
-  }
-
-  late final _WebPEncodeBGRPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGR');
-  late final _WebPEncodeBGR = _WebPEncodeBGRPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeRGBA(
-    ffi.Pointer<ffi.Uint8> rgba,
-    int width,
-    int height,
-    int stride,
-    double quality_factor,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeRGBA(
-      rgba,
-      width,
-      height,
-      stride,
-      quality_factor,
-      output,
-    );
-  }
-
-  late final _WebPEncodeRGBAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGBA');
-  late final _WebPEncodeRGBA = _WebPEncodeRGBAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeBGRA(
-    ffi.Pointer<ffi.Uint8> bgra,
-    int width,
-    int height,
-    int stride,
-    double quality_factor,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeBGRA(
-      bgra,
-      width,
-      height,
-      stride,
-      quality_factor,
-      output,
-    );
-  }
-
-  late final _WebPEncodeBGRAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGRA');
-  late final _WebPEncodeBGRA = _WebPEncodeBGRAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  /// These functions are the equivalent of the above, but compressing in a
-  /// lossless manner. Files are usually larger than lossy format, but will
-  /// not suffer any compression loss.
-  /// Note these functions, like the lossy versions, use the library's default
-  /// settings. For lossless this means 'exact' is disabled. RGB values in
-  /// transparent areas will be modified to improve compression. To avoid this,
-  /// use WebPEncode() and set WebPConfig::exact to 1.
-  int WebPEncodeLosslessRGB(
-    ffi.Pointer<ffi.Uint8> rgb,
-    int width,
-    int height,
-    int stride,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeLosslessRGB(
-      rgb,
-      width,
-      height,
-      stride,
-      output,
-    );
-  }
-
-  late final _WebPEncodeLosslessRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGB');
-  late final _WebPEncodeLosslessRGB = _WebPEncodeLosslessRGBPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeLosslessBGR(
-    ffi.Pointer<ffi.Uint8> bgr,
-    int width,
-    int height,
-    int stride,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeLosslessBGR(
-      bgr,
-      width,
-      height,
-      stride,
-      output,
-    );
-  }
-
-  late final _WebPEncodeLosslessBGRPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGR');
-  late final _WebPEncodeLosslessBGR = _WebPEncodeLosslessBGRPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeLosslessRGBA(
-    ffi.Pointer<ffi.Uint8> rgba,
-    int width,
-    int height,
-    int stride,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeLosslessRGBA(
-      rgba,
-      width,
-      height,
-      stride,
-      output,
-    );
-  }
-
-  late final _WebPEncodeLosslessRGBAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGBA');
-  late final _WebPEncodeLosslessRGBA = _WebPEncodeLosslessRGBAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  int WebPEncodeLosslessBGRA(
-    ffi.Pointer<ffi.Uint8> bgra,
-    int width,
-    int height,
-    int stride,
-    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
-  ) {
-    return _WebPEncodeLosslessBGRA(
-      bgra,
-      width,
-      height,
-      stride,
-      output,
-    );
-  }
-
-  late final _WebPEncodeLosslessBGRAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGRA');
-  late final _WebPEncodeLosslessBGRA = _WebPEncodeLosslessBGRAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
-
-  /// Internal, version-checked, entry point
-  int WebPConfigInitInternal(
-    ffi.Pointer<WebPConfig> arg0,
-    int arg1,
-    double arg2,
-    int arg3,
-  ) {
-    return _WebPConfigInitInternal(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _WebPConfigInitInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int32, ffi.Float,
-              ffi.Int)>>('WebPConfigInitInternal');
-  late final _WebPConfigInitInternal = _WebPConfigInitInternalPtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>, int, double, int)>();
-
-  /// Activate the lossless compression mode with the desired efficiency level
-  /// between 0 (fastest, lowest compression) and 9 (slower, best compression).
-  /// A good default level is '6', providing a fair tradeoff between compression
-  /// speed and final compressed size.
-  /// This function will overwrite several fields from config: 'method', 'quality'
-  /// and 'lossless'. Returns false in case of parameter error.
-  int WebPConfigLosslessPreset(
-    ffi.Pointer<WebPConfig> config,
-    int level,
-  ) {
-    return _WebPConfigLosslessPreset(
-      config,
-      level,
-    );
-  }
-
-  late final _WebPConfigLosslessPresetPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int)>>(
-      'WebPConfigLosslessPreset');
-  late final _WebPConfigLosslessPreset = _WebPConfigLosslessPresetPtr
-      .asFunction<int Function(ffi.Pointer<WebPConfig>, int)>();
-
-  /// Returns true if 'config' is non-NULL and all configuration parameters are
-  /// within their valid ranges.
-  int WebPValidateConfig(
-    ffi.Pointer<WebPConfig> config,
-  ) {
-    return _WebPValidateConfig(
-      config,
-    );
-  }
-
-  late final _WebPValidateConfigPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>)>>(
-          'WebPValidateConfig');
-  late final _WebPValidateConfig = _WebPValidateConfigPtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>)>();
-
-  /// The following must be called first before any use.
-  void WebPMemoryWriterInit(
-    ffi.Pointer<WebPMemoryWriter> writer,
-  ) {
-    return _WebPMemoryWriterInit(
-      writer,
-    );
-  }
-
-  late final _WebPMemoryWriterInitPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
-      'WebPMemoryWriterInit');
-  late final _WebPMemoryWriterInit = _WebPMemoryWriterInitPtr.asFunction<
-      void Function(ffi.Pointer<WebPMemoryWriter>)>();
-
-  /// The following must be called to deallocate writer->mem memory. The 'writer'
-  /// object itself is not deallocated.
-  void WebPMemoryWriterClear(
-    ffi.Pointer<WebPMemoryWriter> writer,
-  ) {
-    return _WebPMemoryWriterClear(
-      writer,
-    );
-  }
-
-  late final _WebPMemoryWriterClearPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
-      'WebPMemoryWriterClear');
-  late final _WebPMemoryWriterClear = _WebPMemoryWriterClearPtr.asFunction<
-      void Function(ffi.Pointer<WebPMemoryWriter>)>();
-
-  /// The custom writer to be used with WebPMemoryWriter as custom_ptr. Upon
-  /// completion, writer.mem and writer.size will hold the coded data.
-  /// writer.mem must be freed by calling WebPMemoryWriterClear.
-  int WebPMemoryWrite(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPMemoryWrite(
-      data,
-      data_size,
-      picture,
-    );
-  }
-
-  late final _WebPMemoryWritePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPPicture>)>>('WebPMemoryWrite');
-  late final _WebPMemoryWrite = _WebPMemoryWritePtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPPicture>)>();
-
-  /// Internal, version-checked, entry point
-  int WebPPictureInitInternal(
-    ffi.Pointer<WebPPicture> arg0,
-    int arg1,
-  ) {
-    return _WebPPictureInitInternal(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _WebPPictureInitInternalPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int)>>(
-      'WebPPictureInitInternal');
-  late final _WebPPictureInitInternal = _WebPPictureInitInternalPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int)>();
-
-  /// Convenience allocation / deallocation based on picture->width/height:
-  /// Allocate y/u/v buffers as per colorspace/width/height specification.
-  /// Note! This function will free the previous buffer if needed.
-  /// Returns false in case of memory error.
-  int WebPPictureAlloc(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureAlloc(
-      picture,
-    );
-  }
-
-  late final _WebPPictureAllocPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureAlloc');
-  late final _WebPPictureAlloc =
-      _WebPPictureAllocPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Release the memory allocated by WebPPictureAlloc() or WebPPictureImport*().
-  /// Note that this function does _not_ free the memory used by the 'picture'
-  /// object itself.
-  /// Besides memory (which is reclaimed) all other fields of 'picture' are
-  /// preserved.
-  void WebPPictureFree(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureFree(
-      picture,
-    );
-  }
-
-  late final _WebPPictureFreePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureFree');
-  late final _WebPPictureFree =
-      _WebPPictureFreePtr.asFunction<void Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Copy the pixels of *src into *dst, using WebPPictureAlloc. Upon return, *dst
-  /// will fully own the copied pixels (this is not a view). The 'dst' picture need
-  /// not be initialized as its content is overwritten.
-  /// Returns false in case of memory allocation error.
-  int WebPPictureCopy(
-    ffi.Pointer<WebPPicture> src,
-    ffi.Pointer<WebPPicture> dst,
-  ) {
-    return _WebPPictureCopy(
-      src,
-      dst,
-    );
-  }
-
-  late final _WebPPictureCopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>,
-              ffi.Pointer<WebPPicture>)>>('WebPPictureCopy');
-  late final _WebPPictureCopy = _WebPPictureCopyPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>)>();
-
-  /// Compute the single distortion for packed planes of samples.
-  /// 'src' will be compared to 'ref', and the raw distortion stored into
-  /// '*distortion'. The refined metric (log(MSE), log(1 - ssim),...' will be
-  /// stored in '*result'.
-  /// 'x_step' is the horizontal stride (in bytes) between samples.
-  /// 'src/ref_stride' is the byte distance between rows.
-  /// Returns false in case of error (bad parameter, memory allocation error, ...).
-  int WebPPlaneDistortion(
-    ffi.Pointer<ffi.Uint8> src,
-    int src_stride,
-    ffi.Pointer<ffi.Uint8> ref,
-    int ref_stride,
-    int width,
-    int height,
-    int x_step,
-    int type,
-    ffi.Pointer<ffi.Float> distortion,
-    ffi.Pointer<ffi.Float> result,
-  ) {
-    return _WebPPlaneDistortion(
-      src,
-      src_stride,
-      ref,
-      ref_stride,
-      width,
-      height,
-      x_step,
-      type,
-      distortion,
-      result,
-    );
-  }
-
-  late final _WebPPlaneDistortionPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Int,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Float>,
-              ffi.Pointer<ffi.Float>)>>('WebPPlaneDistortion');
-  late final _WebPPlaneDistortion = _WebPPlaneDistortionPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          int,
-          int,
-          int,
-          ffi.Pointer<ffi.Float>,
-          ffi.Pointer<ffi.Float>)>();
-
-  /// Compute PSNR, SSIM or LSIM distortion metric between two pictures. Results
-  /// are in dB, stored in result[] in the B/G/R/A/All order. The distortion is
-  /// always performed using ARGB samples. Hence if the input is YUV(A), the
-  /// picture will be internally converted to ARGB (just for the measurement).
-  /// Warning: this function is rather CPU-intensive.
-  int WebPPictureDistortion(
-    ffi.Pointer<WebPPicture> src,
-    ffi.Pointer<WebPPicture> ref,
-    int metric_type,
-    ffi.Pointer<ffi.Float> result,
-  ) {
-    return _WebPPictureDistortion(
-      src,
-      ref,
-      metric_type,
-      result,
-    );
-  }
-
-  late final _WebPPictureDistortionPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>,
-              ffi.Int, ffi.Pointer<ffi.Float>)>>('WebPPictureDistortion');
-  late final _WebPPictureDistortion = _WebPPictureDistortionPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>, int,
-          ffi.Pointer<ffi.Float>)>();
-
-  /// self-crops a picture to the rectangle defined by top/left/width/height.
-  /// Returns false in case of memory allocation error, or if the rectangle is
-  /// outside of the source picture.
-  /// The rectangle for the view is defined by the top-left corner pixel
-  /// coordinates (left, top) as well as its width and height. This rectangle
-  /// must be fully be comprised inside the 'src' source picture. If the source
-  /// picture uses the YUV420 colorspace, the top and left coordinates will be
-  /// snapped to even values.
-  int WebPPictureCrop(
-    ffi.Pointer<WebPPicture> picture,
-    int left,
-    int top,
-    int width,
-    int height,
-  ) {
-    return _WebPPictureCrop(
-      picture,
-      left,
-      top,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPPictureCropPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Int)>>('WebPPictureCrop');
-  late final _WebPPictureCrop = _WebPPictureCropPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int, int, int)>();
-
-  /// Extracts a view from 'src' picture into 'dst'. The rectangle for the view
-  /// is defined by the top-left corner pixel coordinates (left, top) as well
-  /// as its width and height. This rectangle must be fully be comprised inside
-  /// the 'src' source picture. If the source picture uses the YUV420 colorspace,
-  /// the top and left coordinates will be snapped to even values.
-  /// Picture 'src' must out-live 'dst' picture. Self-extraction of view is allowed
-  /// ('src' equal to 'dst') as a mean of fast-cropping (but note that doing so,
-  /// the original dimension will be lost). Picture 'dst' need not be initialized
-  /// with WebPPictureInit() if it is different from 'src', since its content will
-  /// be overwritten.
-  /// Returns false in case of invalid parameters.
-  int WebPPictureView(
-    ffi.Pointer<WebPPicture> src,
-    int left,
-    int top,
-    int width,
-    int height,
-    ffi.Pointer<WebPPicture> dst,
-  ) {
-    return _WebPPictureView(
-      src,
-      left,
-      top,
-      width,
-      height,
-      dst,
-    );
-  }
-
-  late final _WebPPictureViewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Int, ffi.Pointer<WebPPicture>)>>('WebPPictureView');
-  late final _WebPPictureView = _WebPPictureViewPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int, int, int,
-          ffi.Pointer<WebPPicture>)>();
-
-  /// Returns true if the 'picture' is actually a view and therefore does
-  /// not own the memory for pixels.
-  int WebPPictureIsView(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureIsView(
-      picture,
-    );
-  }
-
-  late final _WebPPictureIsViewPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureIsView');
-  late final _WebPPictureIsView = _WebPPictureIsViewPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Rescale a picture to new dimension width x height.
-  /// If either 'width' or 'height' (but not both) is 0 the corresponding
-  /// dimension will be calculated preserving the aspect ratio.
-  /// No gamma correction is applied.
-  /// Returns false in case of error (invalid parameter or insufficient memory).
-  int WebPPictureRescale(
-    ffi.Pointer<WebPPicture> picture,
-    int width,
-    int height,
-  ) {
-    return _WebPPictureRescale(
-      picture,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPPictureRescalePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int,
-              ffi.Int)>>('WebPPictureRescale');
-  late final _WebPPictureRescale = _WebPPictureRescalePtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int)>();
-
-  /// Colorspace conversion function to import RGB samples.
-  /// Previous buffer will be free'd, if any.
-  /// *rgb buffer should have a size of at least height * rgb_stride.
-  /// Returns false in case of memory error.
-  int WebPPictureImportRGB(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> rgb,
-    int rgb_stride,
-  ) {
-    return _WebPPictureImportRGB(
-      picture,
-      rgb,
-      rgb_stride,
-    );
-  }
-
-  late final _WebPPictureImportRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGB');
-  late final _WebPPictureImportRGB = _WebPPictureImportRGBPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// Same, but for RGBA buffer.
-  int WebPPictureImportRGBA(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> rgba,
-    int rgba_stride,
-  ) {
-    return _WebPPictureImportRGBA(
-      picture,
-      rgba,
-      rgba_stride,
-    );
-  }
-
-  late final _WebPPictureImportRGBAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGBA');
-  late final _WebPPictureImportRGBA = _WebPPictureImportRGBAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// Same, but for RGBA buffer. Imports the RGB direct from the 32-bit format
-  /// input buffer ignoring the alpha channel. Avoids needing to copy the data
-  /// to a temporary 24-bit RGB buffer to import the RGB only.
-  int WebPPictureImportRGBX(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> rgbx,
-    int rgbx_stride,
-  ) {
-    return _WebPPictureImportRGBX(
-      picture,
-      rgbx,
-      rgbx_stride,
-    );
-  }
-
-  late final _WebPPictureImportRGBXPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGBX');
-  late final _WebPPictureImportRGBX = _WebPPictureImportRGBXPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// Variants of the above, but taking BGR(A|X) input.
-  int WebPPictureImportBGR(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> bgr,
-    int bgr_stride,
-  ) {
-    return _WebPPictureImportBGR(
-      picture,
-      bgr,
-      bgr_stride,
-    );
-  }
-
-  late final _WebPPictureImportBGRPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGR');
-  late final _WebPPictureImportBGR = _WebPPictureImportBGRPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  int WebPPictureImportBGRA(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> bgra,
-    int bgra_stride,
-  ) {
-    return _WebPPictureImportBGRA(
-      picture,
-      bgra,
-      bgra_stride,
-    );
-  }
-
-  late final _WebPPictureImportBGRAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGRA');
-  late final _WebPPictureImportBGRA = _WebPPictureImportBGRAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  int WebPPictureImportBGRX(
-    ffi.Pointer<WebPPicture> picture,
-    ffi.Pointer<ffi.Uint8> bgrx,
-    int bgrx_stride,
-  ) {
-    return _WebPPictureImportBGRX(
-      picture,
-      bgrx,
-      bgrx_stride,
-    );
-  }
-
-  late final _WebPPictureImportBGRXPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGRX');
-  late final _WebPPictureImportBGRX = _WebPPictureImportBGRXPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
-
-  /// Converts picture->argb data to the YUV420A format. The 'colorspace'
-  /// parameter is deprecated and should be equal to WEBP_YUV420.
-  /// Upon return, picture->use_argb is set to false. The presence of real
-  /// non-opaque transparent values is detected, and 'colorspace' will be
-  /// adjusted accordingly. Note that this method is lossy.
-  /// Returns false in case of error.
-  int WebPPictureARGBToYUVA(
-    ffi.Pointer<WebPPicture> picture,
-    int arg1,
-  ) {
-    return _WebPPictureARGBToYUVA(
-      picture,
-      arg1,
-    );
-  }
-
-  late final _WebPPictureARGBToYUVAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<WebPPicture>, ffi.Int32)>>('WebPPictureARGBToYUVA');
-  late final _WebPPictureARGBToYUVA = _WebPPictureARGBToYUVAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int)>();
-
-  /// Same as WebPPictureARGBToYUVA(), but the conversion is done using
-  /// pseudo-random dithering with a strength 'dithering' between
-  /// 0.0 (no dithering) and 1.0 (maximum dithering). This is useful
-  /// for photographic picture.
-  int WebPPictureARGBToYUVADithered(
-    ffi.Pointer<WebPPicture> picture,
-    int colorspace,
-    double dithering,
-  ) {
-    return _WebPPictureARGBToYUVADithered(
-      picture,
-      colorspace,
-      dithering,
-    );
-  }
-
-  late final _WebPPictureARGBToYUVADitheredPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int32,
-              ffi.Float)>>('WebPPictureARGBToYUVADithered');
-  late final _WebPPictureARGBToYUVADithered = _WebPPictureARGBToYUVADitheredPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>, int, double)>();
-
-  /// Performs 'sharp' RGBA->YUVA420 downsampling and colorspace conversion
-  /// Downsampling is handled with extra care in case of color clipping. This
-  /// method is roughly 2x slower than WebPPictureARGBToYUVA() but produces better
-  /// and sharper YUV representation.
-  /// Returns false in case of error.
-  int WebPPictureSharpARGBToYUVA(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureSharpARGBToYUVA(
-      picture,
-    );
-  }
-
-  late final _WebPPictureSharpARGBToYUVAPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureSharpARGBToYUVA');
-  late final _WebPPictureSharpARGBToYUVA = _WebPPictureSharpARGBToYUVAPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// kept for backward compatibility:
-  int WebPPictureSmartARGBToYUVA(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureSmartARGBToYUVA(
-      picture,
-    );
-  }
-
-  late final _WebPPictureSmartARGBToYUVAPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureSmartARGBToYUVA');
-  late final _WebPPictureSmartARGBToYUVA = _WebPPictureSmartARGBToYUVAPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Converts picture->yuv to picture->argb and sets picture->use_argb to true.
-  /// The input format must be YUV_420 or YUV_420A. The conversion from YUV420 to
-  /// ARGB incurs a small loss too.
-  /// Note that the use of this colorspace is discouraged if one has access to the
-  /// raw ARGB samples, since using YUV420 is comparatively lossy.
-  /// Returns false in case of error.
-  int WebPPictureYUVAToARGB(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureYUVAToARGB(
-      picture,
-    );
-  }
-
-  late final _WebPPictureYUVAToARGBPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureYUVAToARGB');
-  late final _WebPPictureYUVAToARGB = _WebPPictureYUVAToARGBPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Helper function: given a width x height plane of RGBA or YUV(A) samples
-  /// clean-up or smoothen the YUV or RGB samples under fully transparent area,
-  /// to help compressibility (no guarantee, though).
-  void WebPCleanupTransparentArea(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPCleanupTransparentArea(
-      picture,
-    );
-  }
-
-  late final _WebPCleanupTransparentAreaPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPCleanupTransparentArea');
-  late final _WebPCleanupTransparentArea = _WebPCleanupTransparentAreaPtr
-      .asFunction<void Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Scan the picture 'picture' for the presence of non fully opaque alpha values.
-  /// Returns true in such case. Otherwise returns false (indicating that the
-  /// alpha plane can be ignored altogether e.g.).
-  int WebPPictureHasTransparency(
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPPictureHasTransparency(
-      picture,
-    );
-  }
-
-  late final _WebPPictureHasTransparencyPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureHasTransparency');
-  late final _WebPPictureHasTransparency = _WebPPictureHasTransparencyPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
-
-  /// Remove the transparency information (if present) by blending the color with
-  /// the background color 'background_rgb' (specified as 24bit RGB triplet).
-  /// After this call, all alpha values are reset to 0xff.
-  void WebPBlendAlpha(
-    ffi.Pointer<WebPPicture> picture,
-    int background_rgb,
-  ) {
-    return _WebPBlendAlpha(
-      picture,
-      background_rgb,
-    );
-  }
-
-  late final _WebPBlendAlphaPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<WebPPicture>, ffi.Uint32)>>('WebPBlendAlpha');
-  late final _WebPBlendAlpha = _WebPBlendAlphaPtr.asFunction<
-      void Function(ffi.Pointer<WebPPicture>, int)>();
-
-  /// Main encoding call, after config and picture have been initialized.
-  /// 'picture' must be less than 16384x16384 in dimension (cf WEBP_MAX_DIMENSION),
-  /// and the 'config' object must be a valid one.
-  /// Returns false in case of error, true otherwise.
-  /// In case of error, picture->error_code is updated accordingly.
-  /// 'picture' can hold the source samples in both YUV(A) or ARGB input, depending
-  /// on the value of 'picture->use_argb'. It is highly recommended to use
-  /// the former for lossy encoding, and the latter for lossless encoding
-  /// (when config.lossless is true). Automatic conversion from one format to
-  /// another is provided but they both incur some loss.
-  int WebPEncode(
-    ffi.Pointer<WebPConfig> config,
-    ffi.Pointer<WebPPicture> picture,
-  ) {
-    return _WebPEncode(
-      config,
-      picture,
-    );
-  }
-
-  late final _WebPEncodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPConfig>,
-              ffi.Pointer<WebPPicture>)>>('WebPEncode');
-  late final _WebPEncode = _WebPEncodePtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>();
-
   /// ANSI-C
   ffi.Pointer<ffi.Void> memchr(
     ffi.Pointer<ffi.Void> __s,
@@ -3046,6 +1044,148 @@ class LibwebpFlutterLibsBindings {
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('flsll');
   late final _flsll = _flsllPtr.asFunction<int Function(int)>();
 
+  /// 7.8.2.1
+  int imaxabs(
+    int j,
+  ) {
+    return _imaxabs(
+      j,
+    );
+  }
+
+  late final _imaxabsPtr =
+      _lookup<ffi.NativeFunction<intmax_t Function(intmax_t)>>('imaxabs');
+  late final _imaxabs = _imaxabsPtr.asFunction<int Function(int)>();
+
+  imaxdiv_t imaxdiv(
+    int __numer,
+    int __denom,
+  ) {
+    return _imaxdiv(
+      __numer,
+      __denom,
+    );
+  }
+
+  late final _imaxdivPtr =
+      _lookup<ffi.NativeFunction<imaxdiv_t Function(intmax_t, intmax_t)>>(
+          'imaxdiv');
+  late final _imaxdiv = _imaxdivPtr.asFunction<imaxdiv_t Function(int, int)>();
+
+  /// 7.8.2.3
+  int strtoimax(
+    ffi.Pointer<ffi.Char> __nptr,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
+    int __base,
+  ) {
+    return _strtoimax(
+      __nptr,
+      __endptr,
+      __base,
+    );
+  }
+
+  late final _strtoimaxPtr = _lookup<
+      ffi.NativeFunction<
+          intmax_t Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoimax');
+  late final _strtoimax = _strtoimaxPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  int strtoumax(
+    ffi.Pointer<ffi.Char> __nptr,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
+    int __base,
+  ) {
+    return _strtoumax(
+      __nptr,
+      __endptr,
+      __base,
+    );
+  }
+
+  late final _strtoumaxPtr = _lookup<
+      ffi.NativeFunction<
+          uintmax_t Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoumax');
+  late final _strtoumax = _strtoumaxPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  /// 7.8.2.4
+  int wcstoimax(
+    ffi.Pointer<ffi.WChar> __nptr,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
+    int __base,
+  ) {
+    return _wcstoimax(
+      __nptr,
+      __endptr,
+      __base,
+    );
+  }
+
+  late final _wcstoimaxPtr = _lookup<
+      ffi.NativeFunction<
+          intmax_t Function(ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoimax');
+  late final _wcstoimax = _wcstoimaxPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
+
+  int wcstoumax(
+    ffi.Pointer<ffi.WChar> __nptr,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
+    int __base,
+  ) {
+    return _wcstoumax(
+      __nptr,
+      __endptr,
+      __base,
+    );
+  }
+
+  late final _wcstoumaxPtr = _lookup<
+      ffi.NativeFunction<
+          uintmax_t Function(ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoumax');
+  late final _wcstoumax = _wcstoumaxPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
+
+  /// Allocates 'size' bytes of memory. Returns NULL upon error. Memory
+  /// must be deallocated by calling WebPFree(). This function is made available
+  /// by the core 'libwebp' library.
+  ffi.Pointer<ffi.Void> WebPMalloc(
+    int size,
+  ) {
+    return _WebPMalloc(
+      size,
+    );
+  }
+
+  late final _WebPMallocPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
+          'WebPMalloc');
+  late final _WebPMalloc =
+      _WebPMallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
+
+  /// Releases memory returned by the WebPDecode*() functions (from decode.h).
+  void WebPFree(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _WebPFree(
+      ptr,
+    );
+  }
+
+  late final _WebPFreePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'WebPFree');
+  late final _WebPFree =
+      _WebPFreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
   /// Returns the version number of the mux library, packed in hexadecimal using
   /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
   int WebPGetMuxVersion() {
@@ -3117,9 +1257,7 @@ class LibwebpFlutterLibsBindings {
   /// e.g., "ICCP", "XMP ", "EXIF" etc.
   /// chunk_data - (in) the chunk data to be added
   /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied. If the
-  /// data is not copied, it must exist until a call to
-  /// WebPMuxAssemble() is made.
+  /// object and value 0 indicates data will NOT be copied.
   /// Returns:
   /// WEBP_MUX_INVALID_ARGUMENT - if mux, fourcc or chunk_data is NULL
   /// or if fourcc corresponds to an image chunk.
@@ -3213,9 +1351,7 @@ class LibwebpFlutterLibsBindings {
   /// bitstream - (in) can be a raw VP8/VP8L bitstream or a single-image
   /// WebP file (non-animated)
   /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied. If the
-  /// data is not copied, it must exist until a call to
-  /// WebPMuxAssemble() is made.
+  /// object and value 0 indicates data will NOT be copied.
   /// Returns:
   /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL or bitstream is NULL.
   /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
@@ -3249,9 +1385,7 @@ class LibwebpFlutterLibsBindings {
   /// mux - (in/out) object to which the frame is to be added
   /// frame - (in) frame data.
   /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied. If the
-  /// data is not copied, it must exist until a call to
-  /// WebPMuxAssemble() is made.
+  /// object and value 0 indicates data will NOT be copied.
   /// Returns:
   /// WEBP_MUX_INVALID_ARGUMENT - if mux or frame is NULL
   /// or if content of 'frame' is invalid.
@@ -3700,105 +1834,933 @@ class LibwebpFlutterLibsBindings {
   late final _WebPAnimEncoderDelete = _WebPAnimEncoderDeletePtr.asFunction<
       void Function(ffi.Pointer<WebPAnimEncoder>)>();
 
-  /// Adds a chunk with id 'fourcc' and data 'chunk_data' in the enc object.
-  /// Any existing chunk(s) with the same id will be removed.
-  /// Parameters:
-  /// enc - (in/out) object to which the chunk is to be added
-  /// fourcc - (in) a character array containing the fourcc of the given chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF", etc.
-  /// chunk_data - (in) the chunk data to be added
-  /// copy_data - (in) value 1 indicates given data WILL be copied to the enc
-  /// object and value 0 indicates data will NOT be copied. If the
-  /// data is not copied, it must exist until a call to
-  /// WebPAnimEncoderAssemble() is made.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if enc, fourcc or chunk_data is NULL.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPAnimEncoderSetChunk(
-    ffi.Pointer<WebPAnimEncoder> enc,
-    ffi.Pointer<ffi.Char> fourcc,
-    ffi.Pointer<WebPData> chunk_data,
-    int copy_data,
+  /// Return the decoder's version number, packed in hexadecimal using 8bits for
+  /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+  int WebPGetDecoderVersion() {
+    return _WebPGetDecoderVersion();
+  }
+
+  late final _WebPGetDecoderVersionPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDecoderVersion');
+  late final _WebPGetDecoderVersion =
+      _WebPGetDecoderVersionPtr.asFunction<int Function()>();
+
+  /// Retrieve basic header information: width, height.
+  /// This function will also validate the header, returning true on success,
+  /// false otherwise. '*width' and '*height' are only valid on successful return.
+  /// Pointers 'width' and 'height' can be passed NULL if deemed irrelevant.
+  /// Note: The following chunk sequences (before the raw VP8/VP8L data) are
+  /// considered valid by this function:
+  /// RIFF + VP8(L)
+  /// RIFF + VP8X + (optional chunks) + VP8(L)
+  /// ALPH + VP8 <-- Not a valid WebP format: only allowed for internal purpose.
+  /// VP8(L)     <-- Not a valid WebP format: only allowed for internal purpose.
+  int WebPGetInfo(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
   ) {
-    return _WebPAnimEncoderSetChunk(
-      enc,
-      fourcc,
-      chunk_data,
-      copy_data,
+    return _WebPGetInfo(
+      data,
+      data_size,
+      width,
+      height,
     );
   }
 
-  late final _WebPAnimEncoderSetChunkPtr = _lookup<
+  late final _WebPGetInfoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPGetInfo');
+  late final _WebPGetInfo = _WebPGetInfoPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>)>();
+
+  /// Decodes WebP images pointed to by 'data' and returns RGBA samples, along
+  /// with the dimensions in *width and *height. The ordering of samples in
+  /// memory is R, G, B, A, R, G, B, A... in scan order (endian-independent).
+  /// The returned pointer should be deleted calling WebPFree().
+  /// Returns NULL in case of error.
+  ffi.Pointer<ffi.Uint8> WebPDecodeRGBA(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPDecodeRGBA(
+      data,
+      data_size,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPDecodeRGBAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGBA');
+  late final _WebPDecodeRGBA = _WebPDecodeRGBAPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Same as WebPDecodeRGBA, but returning A, R, G, B, A, R, G, B... ordered data.
+  ffi.Pointer<ffi.Uint8> WebPDecodeARGB(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPDecodeARGB(
+      data,
+      data_size,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPDecodeARGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeARGB');
+  late final _WebPDecodeARGB = _WebPDecodeARGBPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Same as WebPDecodeRGBA, but returning B, G, R, A, B, G, R, A... ordered data.
+  ffi.Pointer<ffi.Uint8> WebPDecodeBGRA(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPDecodeBGRA(
+      data,
+      data_size,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPDecodeBGRAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGRA');
+  late final _WebPDecodeBGRA = _WebPDecodeBGRAPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Same as WebPDecodeRGBA, but returning R, G, B, R, G, B... ordered data.
+  /// If the bitstream contains transparency, it is ignored.
+  ffi.Pointer<ffi.Uint8> WebPDecodeRGB(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPDecodeRGB(
+      data,
+      data_size,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPDecodeRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGB');
+  late final _WebPDecodeRGB = _WebPDecodeRGBPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Same as WebPDecodeRGB, but returning B, G, R, B, G, R... ordered data.
+  ffi.Pointer<ffi.Uint8> WebPDecodeBGR(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPDecodeBGR(
+      data,
+      data_size,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPDecodeBGRPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGR');
+  late final _WebPDecodeBGR = _WebPDecodeBGRPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Decode WebP images pointed to by 'data' to Y'UV format(*). The pointer
+  /// returned is the Y samples buffer. Upon return, *u and *v will point to
+  /// the U and V chroma data. These U and V buffers need NOT be passed to
+  /// WebPFree(), unlike the returned Y luma one. The dimension of the U and V
+  /// planes are both (*width + 1) / 2 and (*height + 1) / 2.
+  /// Upon return, the Y buffer has a stride returned as '*stride', while U and V
+  /// have a common stride returned as '*uv_stride'.
+  /// 'width' and 'height' may be NULL, the other pointers must not be.
+  /// Returns NULL in case of error.
+  /// (*) Also named Y'CbCr. See: https://en.wikipedia.org/wiki/YCbCr
+  ffi.Pointer<ffi.Uint8> WebPDecodeYUV(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> u,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> v,
+    ffi.Pointer<ffi.Int> stride,
+    ffi.Pointer<ffi.Int> uv_stride,
+  ) {
+    return _WebPDecodeYUV(
+      data,
+      data_size,
+      width,
+      height,
+      u,
+      v,
+      stride,
+      uv_stride,
+    );
+  }
+
+  late final _WebPDecodeYUVPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('WebPDecodeYUV');
+  late final _WebPDecodeYUV = _WebPDecodeYUVPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>)>();
+
+  /// These five functions are variants of the above ones, that decode the image
+  /// directly into a pre-allocated buffer 'output_buffer'. The maximum storage
+  /// available in this buffer is indicated by 'output_buffer_size'. If this
+  /// storage is not sufficient (or an error occurred), NULL is returned.
+  /// Otherwise, output_buffer is returned, for convenience.
+  /// The parameter 'output_stride' specifies the distance (in bytes)
+  /// between scanlines. Hence, output_buffer_size is expected to be at least
+  /// output_stride x picture-height.
+  ffi.Pointer<ffi.Uint8> WebPDecodeRGBAInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPDecodeRGBAInto(
+      data,
+      data_size,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPDecodeRGBAIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPDecodeRGBAInto');
+  late final _WebPDecodeRGBAInto = _WebPDecodeRGBAIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  ffi.Pointer<ffi.Uint8> WebPDecodeARGBInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPDecodeARGBInto(
+      data,
+      data_size,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPDecodeARGBIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPDecodeARGBInto');
+  late final _WebPDecodeARGBInto = _WebPDecodeARGBIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  ffi.Pointer<ffi.Uint8> WebPDecodeBGRAInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPDecodeBGRAInto(
+      data,
+      data_size,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPDecodeBGRAIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPDecodeBGRAInto');
+  late final _WebPDecodeBGRAInto = _WebPDecodeBGRAIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  /// RGB and BGR variants. Here too the transparency information, if present,
+  /// will be dropped and ignored.
+  ffi.Pointer<ffi.Uint8> WebPDecodeRGBInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPDecodeRGBInto(
+      data,
+      data_size,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPDecodeRGBIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeRGBInto');
+  late final _WebPDecodeRGBInto = _WebPDecodeRGBIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  ffi.Pointer<ffi.Uint8> WebPDecodeBGRInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPDecodeBGRInto(
+      data,
+      data_size,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPDecodeBGRIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeBGRInto');
+  late final _WebPDecodeBGRInto = _WebPDecodeBGRIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  /// WebPDecodeYUVInto() is a variant of WebPDecodeYUV() that operates directly
+  /// into pre-allocated luma/chroma plane buffers. This function requires the
+  /// strides to be passed: one for the luma plane and one for each of the
+  /// chroma ones. The size of each plane buffer is passed as 'luma_size',
+  /// 'u_size' and 'v_size' respectively.
+  /// Pointer to the luma plane ('*luma') is returned or NULL if an error occurred
+  /// during decoding (or because some buffers were found to be too small).
+  ffi.Pointer<ffi.Uint8> WebPDecodeYUVInto(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<ffi.Uint8> luma,
+    int luma_size,
+    int luma_stride,
+    ffi.Pointer<ffi.Uint8> u,
+    int u_size,
+    int u_stride,
+    ffi.Pointer<ffi.Uint8> v,
+    int v_size,
+    int v_stride,
+  ) {
+    return _WebPDecodeYUVInto(
+      data,
+      data_size,
+      luma,
+      luma_size,
+      luma_stride,
+      u,
+      u_size,
+      u_stride,
+      v,
+      v_size,
+      v_stride,
+    );
+  }
+
+  late final _WebPDecodeYUVIntoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPDecodeYUVInto');
+  late final _WebPDecodeYUVInto = _WebPDecodeYUVIntoPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int)>();
+
+  /// Internal, version-checked, entry point
+  int WebPInitDecBufferInternal(
+    ffi.Pointer<WebPDecBuffer> arg0,
+    int arg1,
+  ) {
+    return _WebPInitDecBufferInternal(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _WebPInitDecBufferInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPDecBuffer>,
+              ffi.Int)>>('WebPInitDecBufferInternal');
+  late final _WebPInitDecBufferInternal = _WebPInitDecBufferInternalPtr
+      .asFunction<int Function(ffi.Pointer<WebPDecBuffer>, int)>();
+
+  /// Free any memory associated with the buffer. Must always be called last.
+  /// Note: doesn't free the 'buffer' structure itself.
+  void WebPFreeDecBuffer(
+    ffi.Pointer<WebPDecBuffer> buffer,
+  ) {
+    return _WebPFreeDecBuffer(
+      buffer,
+    );
+  }
+
+  late final _WebPFreeDecBufferPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDecBuffer>)>>(
+      'WebPFreeDecBuffer');
+  late final _WebPFreeDecBuffer = _WebPFreeDecBufferPtr.asFunction<
+      void Function(ffi.Pointer<WebPDecBuffer>)>();
+
+  /// Creates a new incremental decoder with the supplied buffer parameter.
+  /// This output_buffer can be passed NULL, in which case a default output buffer
+  /// is used (with MODE_RGB). Otherwise, an internal reference to 'output_buffer'
+  /// is kept, which means that the lifespan of 'output_buffer' must be larger than
+  /// that of the returned WebPIDecoder object.
+  /// The supplied 'output_buffer' content MUST NOT be changed between calls to
+  /// WebPIAppend() or WebPIUpdate() unless 'output_buffer.is_external_memory' is
+  /// not set to 0. In such a case, it is allowed to modify the pointers, size and
+  /// stride of output_buffer.u.RGBA or output_buffer.u.YUVA, provided they remain
+  /// within valid bounds.
+  /// All other fields of WebPDecBuffer MUST remain constant between calls.
+  /// Returns NULL if the allocation failed.
+  ffi.Pointer<WebPIDecoder> WebPINewDecoder(
+    ffi.Pointer<WebPDecBuffer> output_buffer,
+  ) {
+    return _WebPINewDecoder(
+      output_buffer,
+    );
+  }
+
+  late final _WebPINewDecoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPIDecoder> Function(
+              ffi.Pointer<WebPDecBuffer>)>>('WebPINewDecoder');
+  late final _WebPINewDecoder = _WebPINewDecoderPtr.asFunction<
+      ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<WebPDecBuffer>)>();
+
+  /// This function allocates and initializes an incremental-decoder object, which
+  /// will output the RGB/A samples specified by 'csp' into a preallocated
+  /// buffer 'output_buffer'. The size of this buffer is at least
+  /// 'output_buffer_size' and the stride (distance in bytes between two scanlines)
+  /// is specified by 'output_stride'.
+  /// Additionally, output_buffer can be passed NULL in which case the output
+  /// buffer will be allocated automatically when the decoding starts. The
+  /// colorspace 'csp' is taken into account for allocating this buffer. All other
+  /// parameters are ignored.
+  /// Returns NULL if the allocation failed, or if some parameters are invalid.
+  ffi.Pointer<WebPIDecoder> WebPINewRGB(
+    int csp,
+    ffi.Pointer<ffi.Uint8> output_buffer,
+    int output_buffer_size,
+    int output_stride,
+  ) {
+    return _WebPINewRGB(
+      csp,
+      output_buffer,
+      output_buffer_size,
+      output_stride,
+    );
+  }
+
+  late final _WebPINewRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPIDecoder> Function(ffi.Int32, ffi.Pointer<ffi.Uint8>,
+              ffi.Size, ffi.Int)>>('WebPINewRGB');
+  late final _WebPINewRGB = _WebPINewRGBPtr.asFunction<
+      ffi.Pointer<WebPIDecoder> Function(
+          int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  /// This function allocates and initializes an incremental-decoder object, which
+  /// will output the raw luma/chroma samples into a preallocated planes if
+  /// supplied. The luma plane is specified by its pointer 'luma', its size
+  /// 'luma_size' and its stride 'luma_stride'. Similarly, the chroma-u plane
+  /// is specified by the 'u', 'u_size' and 'u_stride' parameters, and the chroma-v
+  /// plane by 'v' and 'v_size'. And same for the alpha-plane. The 'a' pointer
+  /// can be pass NULL in case one is not interested in the transparency plane.
+  /// Conversely, 'luma' can be passed NULL if no preallocated planes are supplied.
+  /// In this case, the output buffer will be automatically allocated (using
+  /// MODE_YUVA) when decoding starts. All parameters are then ignored.
+  /// Returns NULL if the allocation failed or if a parameter is invalid.
+  ffi.Pointer<WebPIDecoder> WebPINewYUVA(
+    ffi.Pointer<ffi.Uint8> luma,
+    int luma_size,
+    int luma_stride,
+    ffi.Pointer<ffi.Uint8> u,
+    int u_size,
+    int u_stride,
+    ffi.Pointer<ffi.Uint8> v,
+    int v_size,
+    int v_stride,
+    ffi.Pointer<ffi.Uint8> a,
+    int a_size,
+    int a_stride,
+  ) {
+    return _WebPINewYUVA(
+      luma,
+      luma_size,
+      luma_stride,
+      u,
+      u_size,
+      u_stride,
+      v,
+      v_size,
+      v_stride,
+      a,
+      a_size,
+      a_stride,
+    );
+  }
+
+  late final _WebPINewYUVAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPIDecoder> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPINewYUVA');
+  late final _WebPINewYUVA = _WebPINewYUVAPtr.asFunction<
+      ffi.Pointer<WebPIDecoder> Function(
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int)>();
+
+  /// Deprecated version of the above, without the alpha plane.
+  /// Kept for backward compatibility.
+  ffi.Pointer<WebPIDecoder> WebPINewYUV(
+    ffi.Pointer<ffi.Uint8> luma,
+    int luma_size,
+    int luma_stride,
+    ffi.Pointer<ffi.Uint8> u,
+    int u_size,
+    int u_stride,
+    ffi.Pointer<ffi.Uint8> v,
+    int v_size,
+    int v_stride,
+  ) {
+    return _WebPINewYUV(
+      luma,
+      luma_size,
+      luma_stride,
+      u,
+      u_size,
+      u_stride,
+      v,
+      v_size,
+      v_stride,
+    );
+  }
+
+  late final _WebPINewYUVPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPIDecoder> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int)>>('WebPINewYUV');
+  late final _WebPINewYUV = _WebPINewYUVPtr.asFunction<
+      ffi.Pointer<WebPIDecoder> Function(
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int)>();
+
+  /// Deletes the WebPIDecoder object and associated memory. Must always be called
+  /// if WebPINewDecoder, WebPINewRGB or WebPINewYUV succeeded.
+  void WebPIDelete(
+    ffi.Pointer<WebPIDecoder> idec,
+  ) {
+    return _WebPIDelete(
+      idec,
+    );
+  }
+
+  late final _WebPIDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPIDecoder>)>>(
+          'WebPIDelete');
+  late final _WebPIDelete =
+      _WebPIDeletePtr.asFunction<void Function(ffi.Pointer<WebPIDecoder>)>();
+
+  /// Copies and decodes the next available data. Returns VP8_STATUS_OK when
+  /// the image is successfully decoded. Returns VP8_STATUS_SUSPENDED when more
+  /// data is expected. Returns error in other cases.
+  int WebPIAppend(
+    ffi.Pointer<WebPIDecoder> idec,
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+  ) {
+    return _WebPIAppend(
+      idec,
+      data,
+      data_size,
+    );
+  }
+
+  late final _WebPIAppendPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
+              ffi.Size)>>('WebPIAppend');
+  late final _WebPIAppend = _WebPIAppendPtr.asFunction<
+      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// A variant of the above function to be used when data buffer contains
+  /// partial data from the beginning. In this case data buffer is not copied
+  /// to the internal memory.
+  /// Note that the value of the 'data' pointer can change between calls to
+  /// WebPIUpdate, for instance when the data buffer is resized to fit larger data.
+  int WebPIUpdate(
+    ffi.Pointer<WebPIDecoder> idec,
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+  ) {
+    return _WebPIUpdate(
+      idec,
+      data,
+      data_size,
+    );
+  }
+
+  late final _WebPIUpdatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
+              ffi.Size)>>('WebPIUpdate');
+  late final _WebPIUpdate = _WebPIUpdatePtr.asFunction<
+      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// Returns the RGB/A image decoded so far. Returns NULL if output params
+  /// are not initialized yet. The RGB/A output type corresponds to the colorspace
+  /// specified during call to WebPINewDecoder() or WebPINewRGB().
+  /// *last_y is the index of last decoded row in raster scan order. Some pointers
+  /// (*last_y, *width etc.) can be NULL if corresponding information is not
+  /// needed. The values in these pointers are only valid on successful (non-NULL)
+  /// return.
+  ffi.Pointer<ffi.Uint8> WebPIDecGetRGB(
+    ffi.Pointer<WebPIDecoder> idec,
+    ffi.Pointer<ffi.Int> last_y,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+    ffi.Pointer<ffi.Int> stride,
+  ) {
+    return _WebPIDecGetRGB(
+      idec,
+      last_y,
+      width,
+      height,
+      stride,
+    );
+  }
+
+  late final _WebPIDecGetRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<WebPIDecoder>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('WebPIDecGetRGB');
+  late final _WebPIDecGetRGB = _WebPIDecGetRGBPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<WebPIDecoder>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>)>();
+
+  /// Same as above function to get a YUVA image. Returns pointer to the luma
+  /// plane or NULL in case of error. If there is no alpha information
+  /// the alpha pointer '*a' will be returned NULL.
+  ffi.Pointer<ffi.Uint8> WebPIDecGetYUVA(
+    ffi.Pointer<WebPIDecoder> idec,
+    ffi.Pointer<ffi.Int> last_y,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> u,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> v,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> a,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+    ffi.Pointer<ffi.Int> stride,
+    ffi.Pointer<ffi.Int> uv_stride,
+    ffi.Pointer<ffi.Int> a_stride,
+  ) {
+    return _WebPIDecGetYUVA(
+      idec,
+      last_y,
+      u,
+      v,
+      a,
+      width,
+      height,
+      stride,
+      uv_stride,
+      a_stride,
+    );
+  }
+
+  late final _WebPIDecGetYUVAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<WebPIDecoder>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('WebPIDecGetYUVA');
+  late final _WebPIDecGetYUVA = _WebPIDecGetYUVAPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<WebPIDecoder>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>)>();
+
+  /// Generic call to retrieve information about the displayable area.
+  /// If non NULL, the left/right/width/height pointers are filled with the visible
+  /// rectangular area so far.
+  /// Returns NULL in case the incremental decoder object is in an invalid state.
+  /// Otherwise returns the pointer to the internal representation. This structure
+  /// is read-only, tied to WebPIDecoder's lifespan and should not be modified.
+  ffi.Pointer<WebPDecBuffer> WebPIDecodedArea(
+    ffi.Pointer<WebPIDecoder> idec,
+    ffi.Pointer<ffi.Int> left,
+    ffi.Pointer<ffi.Int> top,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPIDecodedArea(
+      idec,
+      left,
+      top,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPIDecodedAreaPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPDecBuffer> Function(
+              ffi.Pointer<WebPIDecoder>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('WebPIDecodedArea');
+  late final _WebPIDecodedArea = _WebPIDecodedAreaPtr.asFunction<
+      ffi.Pointer<WebPDecBuffer> Function(
+          ffi.Pointer<WebPIDecoder>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>)>();
+
+  /// Internal, version-checked, entry point
+  int WebPGetFeaturesInternal(
+    ffi.Pointer<ffi.Uint8> arg0,
+    int arg1,
+    ffi.Pointer<WebPBitstreamFeatures> arg2,
+    int arg3,
+  ) {
+    return _WebPGetFeaturesInternal(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _WebPGetFeaturesInternalPtr = _lookup<
       ffi.NativeFunction<
           ffi.Int32 Function(
-              ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>,
-              ffi.Int)>>('WebPAnimEncoderSetChunk');
-  late final _WebPAnimEncoderSetChunk = _WebPAnimEncoderSetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>, int)>();
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<WebPBitstreamFeatures>,
+              ffi.Int)>>('WebPGetFeaturesInternal');
+  late final _WebPGetFeaturesInternal = _WebPGetFeaturesInternalPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int,
+          ffi.Pointer<WebPBitstreamFeatures>, int)>();
 
-  /// Gets a reference to the data of the chunk with id 'fourcc' in the enc object.
-  /// The caller should NOT free the returned data.
-  /// Parameters:
-  /// enc - (in) object from which the chunk data is to be fetched
-  /// fourcc - (in) a character array containing the fourcc of the chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF", etc.
-  /// chunk_data - (out) returned chunk data
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if enc, fourcc or chunk_data is NULL.
-  /// WEBP_MUX_NOT_FOUND - If enc does not contain a chunk with the given id.
-  /// WEBP_MUX_OK - on success.
-  int WebPAnimEncoderGetChunk(
-    ffi.Pointer<WebPAnimEncoder> enc,
-    ffi.Pointer<ffi.Char> fourcc,
-    ffi.Pointer<WebPData> chunk_data,
+  /// Internal, version-checked, entry point
+  int WebPInitDecoderConfigInternal(
+    ffi.Pointer<WebPDecoderConfig> arg0,
+    int arg1,
   ) {
-    return _WebPAnimEncoderGetChunk(
-      enc,
-      fourcc,
-      chunk_data,
+    return _WebPInitDecoderConfigInternal(
+      arg0,
+      arg1,
     );
   }
 
-  late final _WebPAnimEncoderGetChunkPtr = _lookup<
+  late final _WebPInitDecoderConfigInternalPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>)>>('WebPAnimEncoderGetChunk');
-  late final _WebPAnimEncoderGetChunk = _WebPAnimEncoderGetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>)>();
+          ffi.Int Function(ffi.Pointer<WebPDecoderConfig>,
+              ffi.Int)>>('WebPInitDecoderConfigInternal');
+  late final _WebPInitDecoderConfigInternal = _WebPInitDecoderConfigInternalPtr
+      .asFunction<int Function(ffi.Pointer<WebPDecoderConfig>, int)>();
 
-  /// Deletes the chunk with the given 'fourcc' from the enc object.
-  /// Parameters:
-  /// enc - (in/out) object from which the chunk is to be deleted
-  /// fourcc - (in) a character array containing the fourcc of the chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF", etc.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if enc or fourcc is NULL.
-  /// WEBP_MUX_NOT_FOUND - If enc does not contain a chunk with the given fourcc.
-  /// WEBP_MUX_OK - on success.
-  int WebPAnimEncoderDeleteChunk(
-    ffi.Pointer<WebPAnimEncoder> enc,
-    ffi.Pointer<ffi.Char> fourcc,
+  /// Instantiate a new incremental decoder object with the requested
+  /// configuration. The bitstream can be passed using 'data' and 'data_size'
+  /// parameter, in which case the features will be parsed and stored into
+  /// config->input. Otherwise, 'data' can be NULL and no parsing will occur.
+  /// Note that 'config' can be NULL too, in which case a default configuration
+  /// is used. If 'config' is not NULL, it must outlive the WebPIDecoder object
+  /// as some references to its fields will be used. No internal copy of 'config'
+  /// is made.
+  /// The return WebPIDecoder object must always be deleted calling WebPIDelete().
+  /// Returns NULL in case of error (and config->status will then reflect
+  /// the error condition, if available).
+  ffi.Pointer<WebPIDecoder> WebPIDecode(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<WebPDecoderConfig> config,
   ) {
-    return _WebPAnimEncoderDeleteChunk(
-      enc,
-      fourcc,
+    return _WebPIDecode(
+      data,
+      data_size,
+      config,
     );
   }
 
-  late final _WebPAnimEncoderDeleteChunkPtr = _lookup<
+  late final _WebPIDecodePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<ffi.Char>)>>('WebPAnimEncoderDeleteChunk');
-  late final _WebPAnimEncoderDeleteChunk =
-      _WebPAnimEncoderDeleteChunkPtr.asFunction<
-          int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<ffi.Char>)>();
+          ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<WebPDecoderConfig>)>>('WebPIDecode');
+  late final _WebPIDecode = _WebPIDecodePtr.asFunction<
+      ffi.Pointer<WebPIDecoder> Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
+
+  /// Non-incremental version. This version decodes the full data at once, taking
+  /// 'config' into account. Returns decoding status (which should be VP8_STATUS_OK
+  /// if the decoding was successful). Note that 'config' cannot be NULL.
+  int WebPDecode(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<WebPDecoderConfig> config,
+  ) {
+    return _WebPDecode(
+      data,
+      data_size,
+      config,
+    );
+  }
+
+  late final _WebPDecodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<WebPDecoderConfig>)>>('WebPDecode');
+  late final _WebPDecode = _WebPDecodePtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
 
   /// Returns the version number of the demux library, packed in hexadecimal using
   /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -4207,6 +3169,945 @@ class LibwebpFlutterLibsBindings {
       'WebPAnimDecoderDelete');
   late final _WebPAnimDecoderDelete = _WebPAnimDecoderDeletePtr.asFunction<
       void Function(ffi.Pointer<WebPAnimDecoder>)>();
+
+  /// Return the encoder's version number, packed in hexadecimal using 8bits for
+  /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+  int WebPGetEncoderVersion() {
+    return _WebPGetEncoderVersion();
+  }
+
+  late final _WebPGetEncoderVersionPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetEncoderVersion');
+  late final _WebPGetEncoderVersion =
+      _WebPGetEncoderVersionPtr.asFunction<int Function()>();
+
+  /// Returns the size of the compressed data (pointed to by *output), or 0 if
+  /// an error occurred. The compressed data must be released by the caller
+  /// using the call 'WebPFree(*output)'.
+  /// These functions compress using the lossy format, and the quality_factor
+  /// can go from 0 (smaller output, lower quality) to 100 (best quality,
+  /// larger output).
+  int WebPEncodeRGB(
+    ffi.Pointer<ffi.Uint8> rgb,
+    int width,
+    int height,
+    int stride,
+    double quality_factor,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeRGB(
+      rgb,
+      width,
+      height,
+      stride,
+      quality_factor,
+      output,
+    );
+  }
+
+  late final _WebPEncodeRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Float,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGB');
+  late final _WebPEncodeRGB = _WebPEncodeRGBPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeBGR(
+    ffi.Pointer<ffi.Uint8> bgr,
+    int width,
+    int height,
+    int stride,
+    double quality_factor,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeBGR(
+      bgr,
+      width,
+      height,
+      stride,
+      quality_factor,
+      output,
+    );
+  }
+
+  late final _WebPEncodeBGRPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Float,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGR');
+  late final _WebPEncodeBGR = _WebPEncodeBGRPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeRGBA(
+    ffi.Pointer<ffi.Uint8> rgba,
+    int width,
+    int height,
+    int stride,
+    double quality_factor,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeRGBA(
+      rgba,
+      width,
+      height,
+      stride,
+      quality_factor,
+      output,
+    );
+  }
+
+  late final _WebPEncodeRGBAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Float,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGBA');
+  late final _WebPEncodeRGBA = _WebPEncodeRGBAPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeBGRA(
+    ffi.Pointer<ffi.Uint8> bgra,
+    int width,
+    int height,
+    int stride,
+    double quality_factor,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeBGRA(
+      bgra,
+      width,
+      height,
+      stride,
+      quality_factor,
+      output,
+    );
+  }
+
+  late final _WebPEncodeBGRAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Float,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGRA');
+  late final _WebPEncodeBGRA = _WebPEncodeBGRAPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  /// These functions are the equivalent of the above, but compressing in a
+  /// lossless manner. Files are usually larger than lossy format, but will
+  /// not suffer any compression loss.
+  /// Note these functions, like the lossy versions, use the library's default
+  /// settings. For lossless this means 'exact' is disabled. RGB values in
+  /// transparent areas will be modified to improve compression. To avoid this,
+  /// use WebPEncode() and set WebPConfig::exact to 1.
+  int WebPEncodeLosslessRGB(
+    ffi.Pointer<ffi.Uint8> rgb,
+    int width,
+    int height,
+    int stride,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeLosslessRGB(
+      rgb,
+      width,
+      height,
+      stride,
+      output,
+    );
+  }
+
+  late final _WebPEncodeLosslessRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGB');
+  late final _WebPEncodeLosslessRGB = _WebPEncodeLosslessRGBPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeLosslessBGR(
+    ffi.Pointer<ffi.Uint8> bgr,
+    int width,
+    int height,
+    int stride,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeLosslessBGR(
+      bgr,
+      width,
+      height,
+      stride,
+      output,
+    );
+  }
+
+  late final _WebPEncodeLosslessBGRPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGR');
+  late final _WebPEncodeLosslessBGR = _WebPEncodeLosslessBGRPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeLosslessRGBA(
+    ffi.Pointer<ffi.Uint8> rgba,
+    int width,
+    int height,
+    int stride,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeLosslessRGBA(
+      rgba,
+      width,
+      height,
+      stride,
+      output,
+    );
+  }
+
+  late final _WebPEncodeLosslessRGBAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGBA');
+  late final _WebPEncodeLosslessRGBA = _WebPEncodeLosslessRGBAPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  int WebPEncodeLosslessBGRA(
+    ffi.Pointer<ffi.Uint8> bgra,
+    int width,
+    int height,
+    int stride,
+    ffi.Pointer<ffi.Pointer<ffi.Uint8>> output,
+  ) {
+    return _WebPEncodeLosslessBGRA(
+      bgra,
+      width,
+      height,
+      stride,
+      output,
+    );
+  }
+
+  late final _WebPEncodeLosslessBGRAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGRA');
+  late final _WebPEncodeLosslessBGRA = _WebPEncodeLosslessBGRAPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
+          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+
+  /// Internal, version-checked, entry point
+  int WebPConfigInitInternal(
+    ffi.Pointer<WebPConfig> arg0,
+    int arg1,
+    double arg2,
+    int arg3,
+  ) {
+    return _WebPConfigInitInternal(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _WebPConfigInitInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int32, ffi.Float,
+              ffi.Int)>>('WebPConfigInitInternal');
+  late final _WebPConfigInitInternal = _WebPConfigInitInternalPtr.asFunction<
+      int Function(ffi.Pointer<WebPConfig>, int, double, int)>();
+
+  /// Activate the lossless compression mode with the desired efficiency level
+  /// between 0 (fastest, lowest compression) and 9 (slower, best compression).
+  /// A good default level is '6', providing a fair tradeoff between compression
+  /// speed and final compressed size.
+  /// This function will overwrite several fields from config: 'method', 'quality'
+  /// and 'lossless'. Returns false in case of parameter error.
+  int WebPConfigLosslessPreset(
+    ffi.Pointer<WebPConfig> config,
+    int level,
+  ) {
+    return _WebPConfigLosslessPreset(
+      config,
+      level,
+    );
+  }
+
+  late final _WebPConfigLosslessPresetPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int)>>(
+      'WebPConfigLosslessPreset');
+  late final _WebPConfigLosslessPreset = _WebPConfigLosslessPresetPtr
+      .asFunction<int Function(ffi.Pointer<WebPConfig>, int)>();
+
+  /// Returns true if 'config' is non-NULL and all configuration parameters are
+  /// within their valid ranges.
+  int WebPValidateConfig(
+    ffi.Pointer<WebPConfig> config,
+  ) {
+    return _WebPValidateConfig(
+      config,
+    );
+  }
+
+  late final _WebPValidateConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>)>>(
+          'WebPValidateConfig');
+  late final _WebPValidateConfig = _WebPValidateConfigPtr.asFunction<
+      int Function(ffi.Pointer<WebPConfig>)>();
+
+  /// The following must be called first before any use.
+  void WebPMemoryWriterInit(
+    ffi.Pointer<WebPMemoryWriter> writer,
+  ) {
+    return _WebPMemoryWriterInit(
+      writer,
+    );
+  }
+
+  late final _WebPMemoryWriterInitPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
+      'WebPMemoryWriterInit');
+  late final _WebPMemoryWriterInit = _WebPMemoryWriterInitPtr.asFunction<
+      void Function(ffi.Pointer<WebPMemoryWriter>)>();
+
+  /// The following must be called to deallocate writer->mem memory. The 'writer'
+  /// object itself is not deallocated.
+  void WebPMemoryWriterClear(
+    ffi.Pointer<WebPMemoryWriter> writer,
+  ) {
+    return _WebPMemoryWriterClear(
+      writer,
+    );
+  }
+
+  late final _WebPMemoryWriterClearPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
+      'WebPMemoryWriterClear');
+  late final _WebPMemoryWriterClear = _WebPMemoryWriterClearPtr.asFunction<
+      void Function(ffi.Pointer<WebPMemoryWriter>)>();
+
+  /// The custom writer to be used with WebPMemoryWriter as custom_ptr. Upon
+  /// completion, writer.mem and writer.size will hold the coded data.
+  /// writer.mem must be freed by calling WebPMemoryWriterClear.
+  int WebPMemoryWrite(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPMemoryWrite(
+      data,
+      data_size,
+      picture,
+    );
+  }
+
+  late final _WebPMemoryWritePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
+              ffi.Pointer<WebPPicture>)>>('WebPMemoryWrite');
+  late final _WebPMemoryWrite = _WebPMemoryWritePtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPPicture>)>();
+
+  /// Internal, version-checked, entry point
+  int WebPPictureInitInternal(
+    ffi.Pointer<WebPPicture> arg0,
+    int arg1,
+  ) {
+    return _WebPPictureInitInternal(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _WebPPictureInitInternalPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int)>>(
+      'WebPPictureInitInternal');
+  late final _WebPPictureInitInternal = _WebPPictureInitInternalPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, int)>();
+
+  /// Convenience allocation / deallocation based on picture->width/height:
+  /// Allocate y/u/v buffers as per colorspace/width/height specification.
+  /// Note! This function will free the previous buffer if needed.
+  /// Returns false in case of memory error.
+  int WebPPictureAlloc(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureAlloc(
+      picture,
+    );
+  }
+
+  late final _WebPPictureAllocPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureAlloc');
+  late final _WebPPictureAlloc =
+      _WebPPictureAllocPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Release the memory allocated by WebPPictureAlloc() or WebPPictureImport*().
+  /// Note that this function does _not_ free the memory used by the 'picture'
+  /// object itself.
+  /// Besides memory (which is reclaimed) all other fields of 'picture' are
+  /// preserved.
+  void WebPPictureFree(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureFree(
+      picture,
+    );
+  }
+
+  late final _WebPPictureFreePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureFree');
+  late final _WebPPictureFree =
+      _WebPPictureFreePtr.asFunction<void Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Copy the pixels of *src into *dst, using WebPPictureAlloc. Upon return, *dst
+  /// will fully own the copied pixels (this is not a view). The 'dst' picture need
+  /// not be initialized as its content is overwritten.
+  /// Returns false in case of memory allocation error.
+  int WebPPictureCopy(
+    ffi.Pointer<WebPPicture> src,
+    ffi.Pointer<WebPPicture> dst,
+  ) {
+    return _WebPPictureCopy(
+      src,
+      dst,
+    );
+  }
+
+  late final _WebPPictureCopyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>,
+              ffi.Pointer<WebPPicture>)>>('WebPPictureCopy');
+  late final _WebPPictureCopy = _WebPPictureCopyPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>)>();
+
+  /// Compute the single distortion for packed planes of samples.
+  /// 'src' will be compared to 'ref', and the raw distortion stored into
+  /// '*distortion'. The refined metric (log(MSE), log(1 - ssim),...' will be
+  /// stored in '*result'.
+  /// 'x_step' is the horizontal stride (in bytes) between samples.
+  /// 'src/ref_stride' is the byte distance between rows.
+  /// Returns false in case of error (bad parameter, memory allocation error, ...).
+  int WebPPlaneDistortion(
+    ffi.Pointer<ffi.Uint8> src,
+    int src_stride,
+    ffi.Pointer<ffi.Uint8> ref,
+    int ref_stride,
+    int width,
+    int height,
+    int x_step,
+    int type,
+    ffi.Pointer<ffi.Float> distortion,
+    ffi.Pointer<ffi.Float> result,
+  ) {
+    return _WebPPlaneDistortion(
+      src,
+      src_stride,
+      ref,
+      ref_stride,
+      width,
+      height,
+      x_step,
+      type,
+      distortion,
+      result,
+    );
+  }
+
+  late final _WebPPlaneDistortionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Int,
+              ffi.Size,
+              ffi.Int,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('WebPPlaneDistortion');
+  late final _WebPPlaneDistortion = _WebPPlaneDistortionPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          int,
+          int,
+          int,
+          int,
+          ffi.Pointer<ffi.Float>,
+          ffi.Pointer<ffi.Float>)>();
+
+  /// Compute PSNR, SSIM or LSIM distortion metric between two pictures. Results
+  /// are in dB, stored in result[] in the B/G/R/A/All order. The distortion is
+  /// always performed using ARGB samples. Hence if the input is YUV(A), the
+  /// picture will be internally converted to ARGB (just for the measurement).
+  /// Warning: this function is rather CPU-intensive.
+  int WebPPictureDistortion(
+    ffi.Pointer<WebPPicture> src,
+    ffi.Pointer<WebPPicture> ref,
+    int metric_type,
+    ffi.Pointer<ffi.Float> result,
+  ) {
+    return _WebPPictureDistortion(
+      src,
+      ref,
+      metric_type,
+      result,
+    );
+  }
+
+  late final _WebPPictureDistortionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>,
+              ffi.Int, ffi.Pointer<ffi.Float>)>>('WebPPictureDistortion');
+  late final _WebPPictureDistortion = _WebPPictureDistortionPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>, int,
+          ffi.Pointer<ffi.Float>)>();
+
+  /// self-crops a picture to the rectangle defined by top/left/width/height.
+  /// Returns false in case of memory allocation error, or if the rectangle is
+  /// outside of the source picture.
+  /// The rectangle for the view is defined by the top-left corner pixel
+  /// coordinates (left, top) as well as its width and height. This rectangle
+  /// must be fully be comprised inside the 'src' source picture. If the source
+  /// picture uses the YUV420 colorspace, the top and left coordinates will be
+  /// snapped to even values.
+  int WebPPictureCrop(
+    ffi.Pointer<WebPPicture> picture,
+    int left,
+    int top,
+    int width,
+    int height,
+  ) {
+    return _WebPPictureCrop(
+      picture,
+      left,
+      top,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPPictureCropPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Int)>>('WebPPictureCrop');
+  late final _WebPPictureCrop = _WebPPictureCropPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, int, int, int, int)>();
+
+  /// Extracts a view from 'src' picture into 'dst'. The rectangle for the view
+  /// is defined by the top-left corner pixel coordinates (left, top) as well
+  /// as its width and height. This rectangle must be fully be comprised inside
+  /// the 'src' source picture. If the source picture uses the YUV420 colorspace,
+  /// the top and left coordinates will be snapped to even values.
+  /// Picture 'src' must out-live 'dst' picture. Self-extraction of view is allowed
+  /// ('src' equal to 'dst') as a mean of fast-cropping (but note that doing so,
+  /// the original dimension will be lost). Picture 'dst' need not be initialized
+  /// with WebPPictureInit() if it is different from 'src', since its content will
+  /// be overwritten.
+  /// Returns false in case of invalid parameters.
+  int WebPPictureView(
+    ffi.Pointer<WebPPicture> src,
+    int left,
+    int top,
+    int width,
+    int height,
+    ffi.Pointer<WebPPicture> dst,
+  ) {
+    return _WebPPictureView(
+      src,
+      left,
+      top,
+      width,
+      height,
+      dst,
+    );
+  }
+
+  late final _WebPPictureViewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Int, ffi.Pointer<WebPPicture>)>>('WebPPictureView');
+  late final _WebPPictureView = _WebPPictureViewPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, int, int, int, int,
+          ffi.Pointer<WebPPicture>)>();
+
+  /// Returns true if the 'picture' is actually a view and therefore does
+  /// not own the memory for pixels.
+  int WebPPictureIsView(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureIsView(
+      picture,
+    );
+  }
+
+  late final _WebPPictureIsViewPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureIsView');
+  late final _WebPPictureIsView = _WebPPictureIsViewPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Rescale a picture to new dimension width x height.
+  /// If either 'width' or 'height' (but not both) is 0 the corresponding
+  /// dimension will be calculated preserving the aspect ratio.
+  /// No gamma correction is applied.
+  /// Returns false in case of error (invalid parameter or insufficient memory).
+  int WebPPictureRescale(
+    ffi.Pointer<WebPPicture> picture,
+    int width,
+    int height,
+  ) {
+    return _WebPPictureRescale(
+      picture,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPPictureRescalePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int,
+              ffi.Int)>>('WebPPictureRescale');
+  late final _WebPPictureRescale = _WebPPictureRescalePtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, int, int)>();
+
+  /// Colorspace conversion function to import RGB samples.
+  /// Previous buffer will be free'd, if any.
+  /// *rgb buffer should have a size of at least height * rgb_stride.
+  /// Returns false in case of memory error.
+  int WebPPictureImportRGB(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> rgb,
+    int rgb_stride,
+  ) {
+    return _WebPPictureImportRGB(
+      picture,
+      rgb,
+      rgb_stride,
+    );
+  }
+
+  late final _WebPPictureImportRGBPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportRGB');
+  late final _WebPPictureImportRGB = _WebPPictureImportRGBPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// Same, but for RGBA buffer.
+  int WebPPictureImportRGBA(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> rgba,
+    int rgba_stride,
+  ) {
+    return _WebPPictureImportRGBA(
+      picture,
+      rgba,
+      rgba_stride,
+    );
+  }
+
+  late final _WebPPictureImportRGBAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportRGBA');
+  late final _WebPPictureImportRGBA = _WebPPictureImportRGBAPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// Same, but for RGBA buffer. Imports the RGB direct from the 32-bit format
+  /// input buffer ignoring the alpha channel. Avoids needing to copy the data
+  /// to a temporary 24-bit RGB buffer to import the RGB only.
+  int WebPPictureImportRGBX(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> rgbx,
+    int rgbx_stride,
+  ) {
+    return _WebPPictureImportRGBX(
+      picture,
+      rgbx,
+      rgbx_stride,
+    );
+  }
+
+  late final _WebPPictureImportRGBXPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportRGBX');
+  late final _WebPPictureImportRGBX = _WebPPictureImportRGBXPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// Variants of the above, but taking BGR(A|X) input.
+  int WebPPictureImportBGR(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> bgr,
+    int bgr_stride,
+  ) {
+    return _WebPPictureImportBGR(
+      picture,
+      bgr,
+      bgr_stride,
+    );
+  }
+
+  late final _WebPPictureImportBGRPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportBGR');
+  late final _WebPPictureImportBGR = _WebPPictureImportBGRPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  int WebPPictureImportBGRA(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> bgra,
+    int bgra_stride,
+  ) {
+    return _WebPPictureImportBGRA(
+      picture,
+      bgra,
+      bgra_stride,
+    );
+  }
+
+  late final _WebPPictureImportBGRAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportBGRA');
+  late final _WebPPictureImportBGRA = _WebPPictureImportBGRAPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  int WebPPictureImportBGRX(
+    ffi.Pointer<WebPPicture> picture,
+    ffi.Pointer<ffi.Uint8> bgrx,
+    int bgrx_stride,
+  ) {
+    return _WebPPictureImportBGRX(
+      picture,
+      bgrx,
+      bgrx_stride,
+    );
+  }
+
+  late final _WebPPictureImportBGRXPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
+              ffi.Int)>>('WebPPictureImportBGRX');
+  late final _WebPPictureImportBGRX = _WebPPictureImportBGRXPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+
+  /// Converts picture->argb data to the YUV420A format. The 'colorspace'
+  /// parameter is deprecated and should be equal to WEBP_YUV420.
+  /// Upon return, picture->use_argb is set to false. The presence of real
+  /// non-opaque transparent values is detected, and 'colorspace' will be
+  /// adjusted accordingly. Note that this method is lossy.
+  /// Returns false in case of error.
+  int WebPPictureARGBToYUVA(
+    ffi.Pointer<WebPPicture> picture,
+    int arg1,
+  ) {
+    return _WebPPictureARGBToYUVA(
+      picture,
+      arg1,
+    );
+  }
+
+  late final _WebPPictureARGBToYUVAPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<WebPPicture>, ffi.Int32)>>('WebPPictureARGBToYUVA');
+  late final _WebPPictureARGBToYUVA = _WebPPictureARGBToYUVAPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>, int)>();
+
+  /// Same as WebPPictureARGBToYUVA(), but the conversion is done using
+  /// pseudo-random dithering with a strength 'dithering' between
+  /// 0.0 (no dithering) and 1.0 (maximum dithering). This is useful
+  /// for photographic picture.
+  int WebPPictureARGBToYUVADithered(
+    ffi.Pointer<WebPPicture> picture,
+    int colorspace,
+    double dithering,
+  ) {
+    return _WebPPictureARGBToYUVADithered(
+      picture,
+      colorspace,
+      dithering,
+    );
+  }
+
+  late final _WebPPictureARGBToYUVADitheredPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int32,
+              ffi.Float)>>('WebPPictureARGBToYUVADithered');
+  late final _WebPPictureARGBToYUVADithered = _WebPPictureARGBToYUVADitheredPtr
+      .asFunction<int Function(ffi.Pointer<WebPPicture>, int, double)>();
+
+  /// Performs 'sharp' RGBA->YUVA420 downsampling and colorspace conversion.
+  /// Downsampling is handled with extra care in case of color clipping. This
+  /// method is roughly 2x slower than WebPPictureARGBToYUVA() but produces better
+  /// and sharper YUV representation.
+  /// Returns false in case of error.
+  int WebPPictureSharpARGBToYUVA(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureSharpARGBToYUVA(
+      picture,
+    );
+  }
+
+  late final _WebPPictureSharpARGBToYUVAPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureSharpARGBToYUVA');
+  late final _WebPPictureSharpARGBToYUVA = _WebPPictureSharpARGBToYUVAPtr
+      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// kept for backward compatibility:
+  int WebPPictureSmartARGBToYUVA(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureSmartARGBToYUVA(
+      picture,
+    );
+  }
+
+  late final _WebPPictureSmartARGBToYUVAPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureSmartARGBToYUVA');
+  late final _WebPPictureSmartARGBToYUVA = _WebPPictureSmartARGBToYUVAPtr
+      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Converts picture->yuv to picture->argb and sets picture->use_argb to true.
+  /// The input format must be YUV_420 or YUV_420A. The conversion from YUV420 to
+  /// ARGB incurs a small loss too.
+  /// Note that the use of this colorspace is discouraged if one has access to the
+  /// raw ARGB samples, since using YUV420 is comparatively lossy.
+  /// Returns false in case of error.
+  int WebPPictureYUVAToARGB(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureYUVAToARGB(
+      picture,
+    );
+  }
+
+  late final _WebPPictureYUVAToARGBPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureYUVAToARGB');
+  late final _WebPPictureYUVAToARGB = _WebPPictureYUVAToARGBPtr.asFunction<
+      int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Helper function: given a width x height plane of RGBA or YUV(A) samples
+  /// clean-up or smoothen the YUV or RGB samples under fully transparent area,
+  /// to help compressibility (no guarantee, though).
+  void WebPCleanupTransparentArea(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPCleanupTransparentArea(
+      picture,
+    );
+  }
+
+  late final _WebPCleanupTransparentAreaPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPCleanupTransparentArea');
+  late final _WebPCleanupTransparentArea = _WebPCleanupTransparentAreaPtr
+      .asFunction<void Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Scan the picture 'picture' for the presence of non fully opaque alpha values.
+  /// Returns true in such case. Otherwise returns false (indicating that the
+  /// alpha plane can be ignored altogether e.g.).
+  int WebPPictureHasTransparency(
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPPictureHasTransparency(
+      picture,
+    );
+  }
+
+  late final _WebPPictureHasTransparencyPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureHasTransparency');
+  late final _WebPPictureHasTransparency = _WebPPictureHasTransparencyPtr
+      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+
+  /// Remove the transparency information (if present) by blending the color with
+  /// the background color 'background_rgb' (specified as 24bit RGB triplet).
+  /// After this call, all alpha values are reset to 0xff.
+  void WebPBlendAlpha(
+    ffi.Pointer<WebPPicture> picture,
+    int background_rgb,
+  ) {
+    return _WebPBlendAlpha(
+      picture,
+      background_rgb,
+    );
+  }
+
+  late final _WebPBlendAlphaPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<WebPPicture>, ffi.Uint32)>>('WebPBlendAlpha');
+  late final _WebPBlendAlpha = _WebPBlendAlphaPtr.asFunction<
+      void Function(ffi.Pointer<WebPPicture>, int)>();
+
+  /// Main encoding call, after config and picture have been initialized.
+  /// 'picture' must be less than 16384x16384 in dimension (cf WEBP_MAX_DIMENSION),
+  /// and the 'config' object must be a valid one.
+  /// Returns false in case of error, true otherwise.
+  /// In case of error, picture->error_code is updated accordingly.
+  /// 'picture' can hold the source samples in both YUV(A) or ARGB input, depending
+  /// on the value of 'picture->use_argb'. It is highly recommended to use
+  /// the former for lossy encoding, and the latter for lossless encoding
+  /// (when config.lossless is true). Automatic conversion from one format to
+  /// another is provided but they both incur some loss.
+  int WebPEncode(
+    ffi.Pointer<WebPConfig> config,
+    ffi.Pointer<WebPPicture> picture,
+  ) {
+    return _WebPEncode(
+      config,
+      picture,
+    );
+  }
+
+  late final _WebPEncodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPConfig>,
+              ffi.Pointer<WebPPicture>)>>('WebPEncode');
+  late final _WebPEncode = _WebPEncodePtr.asFunction<
+      int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>();
+}
+
+abstract class VP8LImageTransformType {
+  static const int PREDICTOR_TRANSFORM = 0;
+  static const int CROSS_COLOR_TRANSFORM = 1;
+  static const int SUBTRACT_GREEN_TRANSFORM = 2;
+  static const int COLOR_INDEXING_TRANSFORM = 3;
 }
 
 /// mbstate_t is an opaque object to keep conversion state, during multibyte
@@ -4306,7 +4207,16 @@ final class _opaque_pthread_t extends ffi.Struct {
   external ffi.Array<ffi.Char> __opaque;
 }
 
+typedef errno_t = ffi.Int;
+typedef Darterrno_t = int;
+typedef rsize_t = __darwin_size_t;
+typedef __darwin_size_t = ffi.UnsignedLong;
+typedef Dart__darwin_size_t = int;
+typedef ssize_t = __darwin_ssize_t;
+typedef __darwin_ssize_t = ffi.Long;
+typedef Dart__darwin_ssize_t = int;
 typedef intmax_t = ffi.Long;
+typedef Dartintmax_t = int;
 
 /// 7.8.2.2
 final class imaxdiv_t extends ffi.Struct {
@@ -4318,6 +4228,624 @@ final class imaxdiv_t extends ffi.Struct {
 }
 
 typedef uintmax_t = ffi.UnsignedLong;
+typedef Dartuintmax_t = int;
+
+/// Data type used to describe 'raw' data, e.g., chunk data
+/// (ICC profile, metadata) and WebP compressed image data.
+/// 'bytes' memory must be allocated using WebPMalloc() and such.
+final class WebPData extends ffi.Struct {
+  external ffi.Pointer<ffi.Uint8> bytes;
+
+  @ffi.Size()
+  external int size;
+}
+
+/// VP8X Feature Flags.
+abstract class WebPFeatureFlags {
+  static const int ANIMATION_FLAG = 2;
+  static const int XMP_FLAG = 4;
+  static const int EXIF_FLAG = 8;
+  static const int ALPHA_FLAG = 16;
+  static const int ICCP_FLAG = 32;
+  static const int ALL_VALID_FLAGS = 62;
+}
+
+/// Dispose method (animation only). Indicates how the area used by the current
+/// frame is to be treated before rendering the next frame on the canvas.
+abstract class WebPMuxAnimDispose {
+  /// Do not dispose.
+  static const int WEBP_MUX_DISPOSE_NONE = 0;
+
+  /// Dispose to background color.
+  static const int WEBP_MUX_DISPOSE_BACKGROUND = 1;
+}
+
+/// Blend operation (animation only). Indicates how transparent pixels of the
+/// current frame are blended with those of the previous canvas.
+abstract class WebPMuxAnimBlend {
+  /// Blend.
+  static const int WEBP_MUX_BLEND = 0;
+
+  /// Do not blend.
+  static const int WEBP_MUX_NO_BLEND = 1;
+}
+
+final class WebPMux extends ffi.Opaque {}
+
+/// Encapsulates data about a single frame.
+final class WebPMuxFrameInfo extends ffi.Struct {
+  /// image data: can be a raw VP8/VP8L bitstream
+  /// or a single-image WebP file.
+  external WebPData bitstream;
+
+  /// x-offset of the frame.
+  @ffi.Int()
+  external int x_offset;
+
+  /// y-offset of the frame.
+  @ffi.Int()
+  external int y_offset;
+
+  /// duration of the frame (in milliseconds).
+  @ffi.Int()
+  external int duration;
+
+  /// frame type: should be one of WEBP_CHUNK_ANMF
+  /// or WEBP_CHUNK_IMAGE
+  @ffi.Int32()
+  external int id;
+
+  /// Disposal method for the frame.
+  @ffi.Int32()
+  external int dispose_method;
+
+  /// Blend operation for the frame.
+  @ffi.Int32()
+  external int blend_method;
+
+  /// padding for later use
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Uint32> pad;
+}
+
+/// IDs for different types of chunks.
+abstract class WebPChunkId {
+  /// VP8X
+  static const int WEBP_CHUNK_VP8X = 0;
+
+  /// ICCP
+  static const int WEBP_CHUNK_ICCP = 1;
+
+  /// ANIM
+  static const int WEBP_CHUNK_ANIM = 2;
+
+  /// ANMF
+  static const int WEBP_CHUNK_ANMF = 3;
+
+  /// (deprecated from FRGM)
+  static const int WEBP_CHUNK_DEPRECATED = 4;
+
+  /// ALPH
+  static const int WEBP_CHUNK_ALPHA = 5;
+
+  /// VP8/VP8L
+  static const int WEBP_CHUNK_IMAGE = 6;
+
+  /// EXIF
+  static const int WEBP_CHUNK_EXIF = 7;
+
+  /// XMP
+  static const int WEBP_CHUNK_XMP = 8;
+
+  /// Other chunks.
+  static const int WEBP_CHUNK_UNKNOWN = 9;
+  static const int WEBP_CHUNK_NIL = 10;
+}
+
+/// Animation parameters.
+final class WebPMuxAnimParams extends ffi.Struct {
+  /// Background color of the canvas stored (in MSB order) as:
+  /// Bits 00 to 07: Alpha.
+  /// Bits 08 to 15: Red.
+  /// Bits 16 to 23: Green.
+  /// Bits 24 to 31: Blue.
+  @ffi.Uint32()
+  external int bgcolor;
+
+  /// Number of times to repeat the animation [0 = infinite].
+  @ffi.Int()
+  external int loop_count;
+}
+
+/// Global options.
+final class WebPAnimEncoderOptions extends ffi.Struct {
+  /// Animation parameters.
+  external WebPMuxAnimParams anim_params;
+
+  /// If true, minimize the output size (slow). Implicitly
+  /// disables key-frame insertion.
+  @ffi.Int()
+  external int minimize_size;
+
+  @ffi.Int()
+  external int kmin;
+
+  /// Minimum and maximum distance between consecutive key
+  /// frames in the output. The library may insert some key
+  /// frames as needed to satisfy this criteria.
+  /// Note that these conditions should hold: kmax > kmin
+  /// and kmin >= kmax / 2 + 1. Also, if kmax <= 0, then
+  /// key-frame insertion is disabled; and if kmax == 1,
+  /// then all frames will be key-frames (kmin value does
+  /// not matter for these special cases).
+  @ffi.Int()
+  external int kmax;
+
+  /// If true, use mixed compression mode; may choose
+  /// either lossy and lossless for each frame.
+  @ffi.Int()
+  external int allow_mixed;
+
+  /// If true, print info and warning messages to stderr.
+  @ffi.Int()
+  external int verbose;
+
+  /// Padding for later use.
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint32> padding;
+}
+
+/// Error codes
+abstract class WebPMuxError {
+  static const int WEBP_MUX_OK = 1;
+  static const int WEBP_MUX_NOT_FOUND = 0;
+  static const int WEBP_MUX_INVALID_ARGUMENT = -1;
+  static const int WEBP_MUX_BAD_DATA = -2;
+  static const int WEBP_MUX_MEMORY_ERROR = -3;
+  static const int WEBP_MUX_NOT_ENOUGH_DATA = -4;
+}
+
+final class WebPAnimEncoder extends ffi.Opaque {}
+
+/// Main exchange structure (input samples, output bytes, statistics)
+///
+/// Once WebPPictureInit() has been called, it's ok to make all the INPUT fields
+/// (use_argb, y/u/v, argb, ...) point to user-owned data, even if
+/// WebPPictureAlloc() has been called. Depending on the value use_argb,
+/// it's guaranteed that either *argb or *y/*u/*v content will be kept untouched.
+final class WebPPicture extends ffi.Struct {
+  /// INPUT
+  /// ///////////
+  /// Main flag for encoder selecting between ARGB or YUV input.
+  /// It is recommended to use ARGB input (*argb, argb_stride) for lossless
+  /// compression, and YUV input (*y, *u, *v, etc.) for lossy compression
+  /// since these are the respective native colorspace for these formats.
+  @ffi.Int()
+  external int use_argb;
+
+  /// colorspace: should be YUV420 for now (=Y'CbCr).
+  @ffi.Int32()
+  external int colorspace;
+
+  /// dimensions (less or equal to WEBP_MAX_DIMENSION)
+  @ffi.Int()
+  external int width;
+
+  @ffi.Int()
+  external int height;
+
+  /// pointers to luma/chroma planes.
+  external ffi.Pointer<ffi.Uint8> y;
+
+  external ffi.Pointer<ffi.Uint8> u;
+
+  external ffi.Pointer<ffi.Uint8> v;
+
+  /// luma/chroma strides.
+  @ffi.Int()
+  external int y_stride;
+
+  @ffi.Int()
+  external int uv_stride;
+
+  /// pointer to the alpha plane
+  external ffi.Pointer<ffi.Uint8> a;
+
+  /// stride of the alpha plane
+  @ffi.Int()
+  external int a_stride;
+
+  /// padding for later use
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Uint32> pad1;
+
+  /// Pointer to argb (32 bit) plane.
+  external ffi.Pointer<ffi.Uint32> argb;
+
+  /// This is stride in pixels units, not bytes.
+  @ffi.Int()
+  external int argb_stride;
+
+  /// padding for later use
+  @ffi.Array.multi([3])
+  external ffi.Array<ffi.Uint32> pad2;
+
+  /// can be NULL
+  external WebPWriterFunction writer;
+
+  /// can be used by the writer.
+  external ffi.Pointer<ffi.Void> custom_ptr;
+
+  /// 1: intra type, 2: segment, 3: quant
+  /// 4: intra-16 prediction mode,
+  /// 5: chroma prediction mode,
+  /// 6: bit cost, 7: distortion
+  @ffi.Int()
+  external int extra_info_type;
+
+  /// if not NULL, points to an array of size
+  /// ((width + 15) / 16) * ((height + 15) / 16) that
+  /// will be filled with a macroblock map, depending
+  /// on extra_info_type.
+  external ffi.Pointer<ffi.Uint8> extra_info;
+
+  /// STATS AND REPORTS
+  /// ////////////////////////
+  /// Pointer to side statistics (updated only if not NULL)
+  external ffi.Pointer<WebPAuxStats> stats;
+
+  /// Error code for the latest error encountered during encoding
+  @ffi.Int32()
+  external int error_code;
+
+  /// If not NULL, report progress during encoding.
+  external WebPProgressHook progress_hook;
+
+  /// this field is free to be set to any value and
+  /// used during callbacks (like progress-report e.g.).
+  external ffi.Pointer<ffi.Void> user_data;
+
+  /// padding for later use
+  @ffi.Array.multi([3])
+  external ffi.Array<ffi.Uint32> pad3;
+
+  /// Unused for now
+  external ffi.Pointer<ffi.Uint8> pad4;
+
+  external ffi.Pointer<ffi.Uint8> pad5;
+
+  /// padding for later use
+  @ffi.Array.multi([8])
+  external ffi.Array<ffi.Uint32> pad6;
+
+  /// row chunk of memory for yuva planes
+  external ffi.Pointer<ffi.Void> memory_;
+
+  /// and for argb too.
+  external ffi.Pointer<ffi.Void> memory_argb_;
+
+  /// padding for later use
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Pointer<ffi.Void>> pad7;
+}
+
+/// Color spaces.
+abstract class WebPEncCSP {
+  /// 4:2:0
+  static const int WEBP_YUV420 = 0;
+
+  /// alpha channel variant
+  static const int WEBP_YUV420A = 4;
+
+  /// bit-mask to get the UV sampling factors
+  static const int WEBP_CSP_UV_MASK = 3;
+
+  /// bit that is set if alpha is present
+  static const int WEBP_CSP_ALPHA_BIT = 4;
+}
+
+/// Signature for output function. Should return true if writing was successful.
+/// data/data_size is the segment of data to write, and 'picture' is for
+/// reference (and so one can make use of picture->custom_ptr).
+typedef WebPWriterFunction
+    = ffi.Pointer<ffi.NativeFunction<WebPWriterFunctionFunction>>;
+typedef WebPWriterFunctionFunction = ffi.Int Function(
+    ffi.Pointer<ffi.Uint8> data,
+    ffi.Size data_size,
+    ffi.Pointer<WebPPicture> picture);
+typedef DartWebPWriterFunctionFunction = int Function(
+    ffi.Pointer<ffi.Uint8> data,
+    int data_size,
+    ffi.Pointer<WebPPicture> picture);
+
+/// ------------------------------------------------------------------------------
+/// Input / Output
+/// Structure for storing auxiliary statistics.
+final class WebPAuxStats extends ffi.Struct {
+  /// final size
+  @ffi.Int()
+  external int coded_size;
+
+  /// peak-signal-to-noise ratio for Y/U/V/All/Alpha
+  @ffi.Array.multi([5])
+  external ffi.Array<ffi.Float> PSNR;
+
+  /// number of intra4/intra16/skipped macroblocks
+  @ffi.Array.multi([3])
+  external ffi.Array<ffi.Int> block_count;
+
+  /// approximate number of bytes spent for header
+  /// and mode-partition #0
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Int> header_bytes;
+
+  /// approximate number of bytes spent for
+  /// DC/AC/uv coefficients for each (0..3) segments.
+  @ffi.Array.multi([3, 4])
+  external ffi.Array<ffi.Array<ffi.Int>> residual_bytes;
+
+  /// number of macroblocks in each segments
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int> segment_size;
+
+  /// quantizer values for each segments
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int> segment_quant;
+
+  /// filtering strength for each segments [0..63]
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int> segment_level;
+
+  /// size of the transparency data
+  @ffi.Int()
+  external int alpha_data_size;
+
+  /// size of the enhancement layer data
+  @ffi.Int()
+  external int layer_data_size;
+
+  /// bit0:predictor bit1:cross-color transform
+  /// bit2:subtract-green bit3:color indexing
+  @ffi.Uint32()
+  external int lossless_features;
+
+  /// number of precision bits of histogram
+  @ffi.Int()
+  external int histogram_bits;
+
+  /// precision bits for transform
+  @ffi.Int()
+  external int transform_bits;
+
+  /// number of bits for color cache lookup
+  @ffi.Int()
+  external int cache_bits;
+
+  /// number of color in palette, if used
+  @ffi.Int()
+  external int palette_size;
+
+  /// final lossless size
+  @ffi.Int()
+  external int lossless_size;
+
+  /// lossless header (transform, huffman etc) size
+  @ffi.Int()
+  external int lossless_hdr_size;
+
+  /// lossless image data size
+  @ffi.Int()
+  external int lossless_data_size;
+
+  /// padding for later use
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Uint32> pad;
+}
+
+/// Encoding error conditions.
+abstract class WebPEncodingError {
+  static const int VP8_ENC_OK = 0;
+
+  /// memory error allocating objects
+  static const int VP8_ENC_ERROR_OUT_OF_MEMORY = 1;
+
+  /// memory error while flushing bits
+  static const int VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY = 2;
+
+  /// a pointer parameter is NULL
+  static const int VP8_ENC_ERROR_NULL_PARAMETER = 3;
+
+  /// configuration is invalid
+  static const int VP8_ENC_ERROR_INVALID_CONFIGURATION = 4;
+
+  /// picture has invalid width/height
+  static const int VP8_ENC_ERROR_BAD_DIMENSION = 5;
+
+  /// partition is bigger than 512k
+  static const int VP8_ENC_ERROR_PARTITION0_OVERFLOW = 6;
+
+  /// partition is bigger than 16M
+  static const int VP8_ENC_ERROR_PARTITION_OVERFLOW = 7;
+
+  /// error while flushing bytes
+  static const int VP8_ENC_ERROR_BAD_WRITE = 8;
+
+  /// file is bigger than 4G
+  static const int VP8_ENC_ERROR_FILE_TOO_BIG = 9;
+
+  /// abort request by user
+  static const int VP8_ENC_ERROR_USER_ABORT = 10;
+
+  /// list terminator. always last.
+  static const int VP8_ENC_ERROR_LAST = 11;
+}
+
+/// Progress hook, called from time to time to report progress. It can return
+/// false to request an abort of the encoding process, or true otherwise if
+/// everything is OK.
+typedef WebPProgressHook
+    = ffi.Pointer<ffi.NativeFunction<WebPProgressHookFunction>>;
+typedef WebPProgressHookFunction = ffi.Int Function(
+    ffi.Int percent, ffi.Pointer<WebPPicture> picture);
+typedef DartWebPProgressHookFunction = int Function(
+    int percent, ffi.Pointer<WebPPicture> picture);
+
+/// Compression parameters.
+final class WebPConfig extends ffi.Struct {
+  /// Lossless encoding (0=lossy(default), 1=lossless).
+  @ffi.Int()
+  external int lossless;
+
+  /// between 0 and 100. For lossy, 0 gives the smallest
+  /// size and 100 the largest. For lossless, this
+  /// parameter is the amount of effort put into the
+  /// compression: 0 is the fastest but gives larger
+  /// files compared to the slowest, but best, 100.
+  @ffi.Float()
+  external double quality;
+
+  /// quality/speed trade-off (0=fast, 6=slower-better)
+  @ffi.Int()
+  external int method;
+
+  /// Hint for image type (lossless only for now).
+  @ffi.Int32()
+  external int image_hint;
+
+  /// if non-zero, set the desired target size in bytes.
+  /// Takes precedence over the 'compression' parameter.
+  @ffi.Int()
+  external int target_size;
+
+  /// if non-zero, specifies the minimal distortion to
+  /// try to achieve. Takes precedence over target_size.
+  @ffi.Float()
+  external double target_PSNR;
+
+  /// maximum number of segments to use, in [1..4]
+  @ffi.Int()
+  external int segments;
+
+  /// Spatial Noise Shaping. 0=off, 100=maximum.
+  @ffi.Int()
+  external int sns_strength;
+
+  /// range: [0 = off .. 100 = strongest]
+  @ffi.Int()
+  external int filter_strength;
+
+  /// range: [0 = off .. 7 = least sharp]
+  @ffi.Int()
+  external int filter_sharpness;
+
+  /// filtering type: 0 = simple, 1 = strong (only used
+  /// if filter_strength > 0 or autofilter > 0)
+  @ffi.Int()
+  external int filter_type;
+
+  /// Auto adjust filter's strength [0 = off, 1 = on]
+  @ffi.Int()
+  external int autofilter;
+
+  /// Algorithm for encoding the alpha plane (0 = none,
+  /// 1 = compressed with WebP lossless). Default is 1.
+  @ffi.Int()
+  external int alpha_compression;
+
+  /// Predictive filtering method for alpha plane.
+  /// 0: none, 1: fast, 2: best. Default if 1.
+  @ffi.Int()
+  external int alpha_filtering;
+
+  /// Between 0 (smallest size) and 100 (lossless).
+  /// Default is 100.
+  @ffi.Int()
+  external int alpha_quality;
+
+  /// number of entropy-analysis passes (in [1..10]).
+  @ffi.Int()
+  external int pass;
+
+  /// if true, export the compressed picture back.
+  /// In-loop filtering is not applied.
+  @ffi.Int()
+  external int show_compressed;
+
+  /// preprocessing filter:
+  /// 0=none, 1=segment-smooth, 2=pseudo-random dithering
+  @ffi.Int()
+  external int preprocessing;
+
+  /// log2(number of token partitions) in [0..3]. Default
+  /// is set to 0 for easier progressive decoding.
+  @ffi.Int()
+  external int partitions;
+
+  /// quality degradation allowed to fit the 512k limit
+  /// on prediction modes coding (0: no degradation,
+  /// 100: maximum possible degradation).
+  @ffi.Int()
+  external int partition_limit;
+
+  /// If true, compression parameters will be remapped
+  /// to better match the expected output size from
+  /// JPEG compression. Generally, the output size will
+  /// be similar but the degradation will be lower.
+  @ffi.Int()
+  external int emulate_jpeg_size;
+
+  /// If non-zero, try and use multi-threaded encoding.
+  @ffi.Int()
+  external int thread_level;
+
+  /// If set, reduce memory usage (but increase CPU use).
+  @ffi.Int()
+  external int low_memory;
+
+  /// Near lossless encoding [0 = max loss .. 100 = off
+  /// (default)].
+  @ffi.Int()
+  external int near_lossless;
+
+  /// if non-zero, preserve the exact RGB values under
+  /// transparent area. Otherwise, discard this invisible
+  /// RGB information for better compression. The default
+  /// value is 0.
+  @ffi.Int()
+  external int exact;
+
+  /// reserved for future lossless feature
+  @ffi.Int()
+  external int use_delta_palette;
+
+  /// if needed, use sharp (and slow) RGB->YUV conversion
+  @ffi.Int()
+  external int use_sharp_yuv;
+
+  /// minimum permissible quality factor
+  @ffi.Int()
+  external int qmin;
+
+  /// maximum permissible quality factor
+  @ffi.Int()
+  external int qmax;
+}
+
+/// Image characteristics hint for the underlying encoder.
+abstract class WebPImageHint {
+  /// default preset.
+  static const int WEBP_HINT_DEFAULT = 0;
+
+  /// digital picture, like portrait, inner shot
+  static const int WEBP_HINT_PICTURE = 1;
+
+  /// outdoor photograph, with natural lighting
+  static const int WEBP_HINT_PHOTO = 2;
+
+  /// Discrete tone image (graph, map-tile etc).
+  static const int WEBP_HINT_GRAPH = 3;
+  static const int WEBP_HINT_LAST = 4;
+}
 
 /// ------------------------------------------------------------------------------
 /// WebPDecBuffer: Generic structure for describing the output sample buffer.
@@ -4561,661 +5089,6 @@ abstract class VP8StatusCode {
   static const int VP8_STATUS_NOT_ENOUGH_DATA = 7;
 }
 
-/// Compression parameters.
-final class WebPConfig extends ffi.Struct {
-  /// Lossless encoding (0=lossy(default), 1=lossless).
-  @ffi.Int()
-  external int lossless;
-
-  /// between 0 and 100. For lossy, 0 gives the smallest
-  /// size and 100 the largest. For lossless, this
-  /// parameter is the amount of effort put into the
-  /// compression: 0 is the fastest but gives larger
-  /// files compared to the slowest, but best, 100.
-  @ffi.Float()
-  external double quality;
-
-  /// quality/speed trade-off (0=fast, 6=slower-better)
-  @ffi.Int()
-  external int method;
-
-  /// Hint for image type (lossless only for now).
-  @ffi.Int32()
-  external int image_hint;
-
-  /// if non-zero, set the desired target size in bytes.
-  /// Takes precedence over the 'compression' parameter.
-  @ffi.Int()
-  external int target_size;
-
-  /// if non-zero, specifies the minimal distortion to
-  /// try to achieve. Takes precedence over target_size.
-  @ffi.Float()
-  external double target_PSNR;
-
-  /// maximum number of segments to use, in [1..4]
-  @ffi.Int()
-  external int segments;
-
-  /// Spatial Noise Shaping. 0=off, 100=maximum.
-  @ffi.Int()
-  external int sns_strength;
-
-  /// range: [0 = off .. 100 = strongest]
-  @ffi.Int()
-  external int filter_strength;
-
-  /// range: [0 = off .. 7 = least sharp]
-  @ffi.Int()
-  external int filter_sharpness;
-
-  /// filtering type: 0 = simple, 1 = strong (only used
-  /// if filter_strength > 0 or autofilter > 0)
-  @ffi.Int()
-  external int filter_type;
-
-  /// Auto adjust filter's strength [0 = off, 1 = on]
-  @ffi.Int()
-  external int autofilter;
-
-  /// Algorithm for encoding the alpha plane (0 = none,
-  /// 1 = compressed with WebP lossless). Default is 1.
-  @ffi.Int()
-  external int alpha_compression;
-
-  /// Predictive filtering method for alpha plane.
-  /// 0: none, 1: fast, 2: best. Default if 1.
-  @ffi.Int()
-  external int alpha_filtering;
-
-  /// Between 0 (smallest size) and 100 (lossless).
-  /// Default is 100.
-  @ffi.Int()
-  external int alpha_quality;
-
-  /// number of entropy-analysis passes (in [1..10]).
-  @ffi.Int()
-  external int pass;
-
-  /// if true, export the compressed picture back.
-  /// In-loop filtering is not applied.
-  @ffi.Int()
-  external int show_compressed;
-
-  /// preprocessing filter:
-  /// 0=none, 1=segment-smooth, 2=pseudo-random dithering
-  @ffi.Int()
-  external int preprocessing;
-
-  /// log2(number of token partitions) in [0..3]. Default
-  /// is set to 0 for easier progressive decoding.
-  @ffi.Int()
-  external int partitions;
-
-  /// quality degradation allowed to fit the 512k limit
-  /// on prediction modes coding (0: no degradation,
-  /// 100: maximum possible degradation).
-  @ffi.Int()
-  external int partition_limit;
-
-  /// If true, compression parameters will be remapped
-  /// to better match the expected output size from
-  /// JPEG compression. Generally, the output size will
-  /// be similar but the degradation will be lower.
-  @ffi.Int()
-  external int emulate_jpeg_size;
-
-  /// If non-zero, try and use multi-threaded encoding.
-  @ffi.Int()
-  external int thread_level;
-
-  /// If set, reduce memory usage (but increase CPU use).
-  @ffi.Int()
-  external int low_memory;
-
-  /// Near lossless encoding [0 = max loss .. 100 = off
-  /// (default)].
-  @ffi.Int()
-  external int near_lossless;
-
-  /// if non-zero, preserve the exact RGB values under
-  /// transparent area. Otherwise, discard this invisible
-  /// RGB information for better compression. The default
-  /// value is 0.
-  @ffi.Int()
-  external int exact;
-
-  /// reserved for future lossless feature
-  @ffi.Int()
-  external int use_delta_palette;
-
-  /// if needed, use sharp (and slow) RGB->YUV conversion
-  @ffi.Int()
-  external int use_sharp_yuv;
-
-  /// minimum permissible quality factor
-  @ffi.Int()
-  external int qmin;
-
-  /// maximum permissible quality factor
-  @ffi.Int()
-  external int qmax;
-}
-
-/// Image characteristics hint for the underlying encoder.
-abstract class WebPImageHint {
-  /// default preset.
-  static const int WEBP_HINT_DEFAULT = 0;
-
-  /// digital picture, like portrait, inner shot
-  static const int WEBP_HINT_PICTURE = 1;
-
-  /// outdoor photograph, with natural lighting
-  static const int WEBP_HINT_PHOTO = 2;
-
-  /// Discrete tone image (graph, map-tile etc).
-  static const int WEBP_HINT_GRAPH = 3;
-  static const int WEBP_HINT_LAST = 4;
-}
-
-/// Main exchange structure (input samples, output bytes, statistics)
-///
-/// Once WebPPictureInit() has been called, it's ok to make all the INPUT fields
-/// (use_argb, y/u/v, argb, ...) point to user-owned data, even if
-/// WebPPictureAlloc() has been called. Depending on the value use_argb,
-/// it's guaranteed that either *argb or *y/*u/*v content will be kept untouched.
-final class WebPPicture extends ffi.Struct {
-  /// INPUT
-  /// ///////////
-  /// Main flag for encoder selecting between ARGB or YUV input.
-  /// It is recommended to use ARGB input (*argb, argb_stride) for lossless
-  /// compression, and YUV input (*y, *u, *v, etc.) for lossy compression
-  /// since these are the respective native colorspace for these formats.
-  @ffi.Int()
-  external int use_argb;
-
-  /// colorspace: should be YUV420 for now (=Y'CbCr).
-  @ffi.Int32()
-  external int colorspace;
-
-  /// dimensions (less or equal to WEBP_MAX_DIMENSION)
-  @ffi.Int()
-  external int width;
-
-  @ffi.Int()
-  external int height;
-
-  /// pointers to luma/chroma planes.
-  external ffi.Pointer<ffi.Uint8> y;
-
-  external ffi.Pointer<ffi.Uint8> u;
-
-  external ffi.Pointer<ffi.Uint8> v;
-
-  /// luma/chroma strides.
-  @ffi.Int()
-  external int y_stride;
-
-  @ffi.Int()
-  external int uv_stride;
-
-  /// pointer to the alpha plane
-  external ffi.Pointer<ffi.Uint8> a;
-
-  /// stride of the alpha plane
-  @ffi.Int()
-  external int a_stride;
-
-  /// padding for later use
-  @ffi.Array.multi([2])
-  external ffi.Array<ffi.Uint32> pad1;
-
-  /// Pointer to argb (32 bit) plane.
-  external ffi.Pointer<ffi.Uint32> argb;
-
-  /// This is stride in pixels units, not bytes.
-  @ffi.Int()
-  external int argb_stride;
-
-  /// padding for later use
-  @ffi.Array.multi([3])
-  external ffi.Array<ffi.Uint32> pad2;
-
-  /// can be NULL
-  external WebPWriterFunction writer;
-
-  /// can be used by the writer.
-  external ffi.Pointer<ffi.Void> custom_ptr;
-
-  /// 1: intra type, 2: segment, 3: quant
-  /// 4: intra-16 prediction mode,
-  /// 5: chroma prediction mode,
-  /// 6: bit cost, 7: distortion
-  @ffi.Int()
-  external int extra_info_type;
-
-  /// if not NULL, points to an array of size
-  /// ((width + 15) / 16) * ((height + 15) / 16) that
-  /// will be filled with a macroblock map, depending
-  /// on extra_info_type.
-  external ffi.Pointer<ffi.Uint8> extra_info;
-
-  /// STATS AND REPORTS
-  /// ////////////////////////
-  /// Pointer to side statistics (updated only if not NULL)
-  external ffi.Pointer<WebPAuxStats> stats;
-
-  /// Error code for the latest error encountered during encoding
-  @ffi.Int32()
-  external int error_code;
-
-  /// If not NULL, report progress during encoding.
-  external WebPProgressHook progress_hook;
-
-  /// this field is free to be set to any value and
-  /// used during callbacks (like progress-report e.g.).
-  external ffi.Pointer<ffi.Void> user_data;
-
-  /// padding for later use
-  @ffi.Array.multi([3])
-  external ffi.Array<ffi.Uint32> pad3;
-
-  /// Unused for now
-  external ffi.Pointer<ffi.Uint8> pad4;
-
-  external ffi.Pointer<ffi.Uint8> pad5;
-
-  /// padding for later use
-  @ffi.Array.multi([8])
-  external ffi.Array<ffi.Uint32> pad6;
-
-  /// row chunk of memory for yuva planes
-  external ffi.Pointer<ffi.Void> memory_;
-
-  /// and for argb too.
-  external ffi.Pointer<ffi.Void> memory_argb_;
-
-  /// padding for later use
-  @ffi.Array.multi([2])
-  external ffi.Array<ffi.Pointer<ffi.Void>> pad7;
-}
-
-/// Color spaces.
-abstract class WebPEncCSP {
-  /// 4:2:0
-  static const int WEBP_YUV420 = 0;
-
-  /// alpha channel variant
-  static const int WEBP_YUV420A = 4;
-
-  /// bit-mask to get the UV sampling factors
-  static const int WEBP_CSP_UV_MASK = 3;
-
-  /// bit that is set if alpha is present
-  static const int WEBP_CSP_ALPHA_BIT = 4;
-}
-
-/// Signature for output function. Should return true if writing was successful.
-/// data/data_size is the segment of data to write, and 'picture' is for
-/// reference (and so one can make use of picture->custom_ptr).
-typedef WebPWriterFunction = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<ffi.Uint8> data, ffi.Size data_size,
-            ffi.Pointer<WebPPicture> picture)>>;
-
-/// ------------------------------------------------------------------------------
-/// Input / Output
-/// Structure for storing auxiliary statistics.
-final class WebPAuxStats extends ffi.Struct {
-  /// final size
-  @ffi.Int()
-  external int coded_size;
-
-  /// peak-signal-to-noise ratio for Y/U/V/All/Alpha
-  @ffi.Array.multi([5])
-  external ffi.Array<ffi.Float> PSNR;
-
-  /// number of intra4/intra16/skipped macroblocks
-  @ffi.Array.multi([3])
-  external ffi.Array<ffi.Int> block_count;
-
-  /// approximate number of bytes spent for header
-  /// and mode-partition #0
-  @ffi.Array.multi([2])
-  external ffi.Array<ffi.Int> header_bytes;
-
-  /// approximate number of bytes spent for
-  /// DC/AC/uv coefficients for each (0..3) segments.
-  @ffi.Array.multi([3, 4])
-  external ffi.Array<ffi.Array<ffi.Int>> residual_bytes;
-
-  /// number of macroblocks in each segments
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Int> segment_size;
-
-  /// quantizer values for each segments
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Int> segment_quant;
-
-  /// filtering strength for each segments [0..63]
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Int> segment_level;
-
-  /// size of the transparency data
-  @ffi.Int()
-  external int alpha_data_size;
-
-  /// size of the enhancement layer data
-  @ffi.Int()
-  external int layer_data_size;
-
-  /// bit0:predictor bit1:cross-color transform
-  /// bit2:subtract-green bit3:color indexing
-  @ffi.Uint32()
-  external int lossless_features;
-
-  /// number of precision bits of histogram
-  @ffi.Int()
-  external int histogram_bits;
-
-  /// precision bits for transform
-  @ffi.Int()
-  external int transform_bits;
-
-  /// number of bits for color cache lookup
-  @ffi.Int()
-  external int cache_bits;
-
-  /// number of color in palette, if used
-  @ffi.Int()
-  external int palette_size;
-
-  /// final lossless size
-  @ffi.Int()
-  external int lossless_size;
-
-  /// lossless header (transform, huffman etc) size
-  @ffi.Int()
-  external int lossless_hdr_size;
-
-  /// lossless image data size
-  @ffi.Int()
-  external int lossless_data_size;
-
-  /// padding for later use
-  @ffi.Array.multi([2])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// Encoding error conditions.
-abstract class WebPEncodingError {
-  static const int VP8_ENC_OK = 0;
-
-  /// memory error allocating objects
-  static const int VP8_ENC_ERROR_OUT_OF_MEMORY = 1;
-
-  /// memory error while flushing bits
-  static const int VP8_ENC_ERROR_BITSTREAM_OUT_OF_MEMORY = 2;
-
-  /// a pointer parameter is NULL
-  static const int VP8_ENC_ERROR_NULL_PARAMETER = 3;
-
-  /// configuration is invalid
-  static const int VP8_ENC_ERROR_INVALID_CONFIGURATION = 4;
-
-  /// picture has invalid width/height
-  static const int VP8_ENC_ERROR_BAD_DIMENSION = 5;
-
-  /// partition is bigger than 512k
-  static const int VP8_ENC_ERROR_PARTITION0_OVERFLOW = 6;
-
-  /// partition is bigger than 16M
-  static const int VP8_ENC_ERROR_PARTITION_OVERFLOW = 7;
-
-  /// error while flushing bytes
-  static const int VP8_ENC_ERROR_BAD_WRITE = 8;
-
-  /// file is bigger than 4G
-  static const int VP8_ENC_ERROR_FILE_TOO_BIG = 9;
-
-  /// abort request by user
-  static const int VP8_ENC_ERROR_USER_ABORT = 10;
-
-  /// list terminator. always last.
-  static const int VP8_ENC_ERROR_LAST = 11;
-}
-
-/// Progress hook, called from time to time to report progress. It can return
-/// false to request an abort of the encoding process, or true otherwise if
-/// everything is OK.
-typedef WebPProgressHook = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Int percent, ffi.Pointer<WebPPicture> picture)>>;
-
-/// WebPMemoryWrite: a special WebPWriterFunction that writes to memory using
-/// the following WebPMemoryWriter object (to be set as a custom_ptr).
-final class WebPMemoryWriter extends ffi.Struct {
-  /// final buffer (of size 'max_size', larger than 'size').
-  external ffi.Pointer<ffi.Uint8> mem;
-
-  /// final size
-  @ffi.Size()
-  external int size;
-
-  /// total capacity
-  @ffi.Size()
-  external int max_size;
-
-  /// padding for later use
-  @ffi.Array.multi([1])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// Enumerate some predefined settings for WebPConfig, depending on the type
-/// of source picture. These presets are used when calling WebPConfigPreset().
-abstract class WebPPreset {
-  /// default preset.
-  static const int WEBP_PRESET_DEFAULT = 0;
-
-  /// digital picture, like portrait, inner shot
-  static const int WEBP_PRESET_PICTURE = 1;
-
-  /// outdoor photograph, with natural lighting
-  static const int WEBP_PRESET_PHOTO = 2;
-
-  /// hand or line drawing, with high-contrast details
-  static const int WEBP_PRESET_DRAWING = 3;
-
-  /// small-sized colorful images
-  static const int WEBP_PRESET_ICON = 4;
-
-  /// text-like
-  static const int WEBP_PRESET_TEXT = 5;
-}
-
-typedef errno_t = ffi.Int;
-typedef rsize_t = __darwin_size_t;
-typedef __darwin_size_t = ffi.UnsignedLong;
-typedef ssize_t = __darwin_ssize_t;
-typedef __darwin_ssize_t = ffi.Long;
-
-/// Data type used to describe 'raw' data, e.g., chunk data
-/// (ICC profile, metadata) and WebP compressed image data.
-/// 'bytes' memory must be allocated using WebPMalloc() and such.
-final class WebPData extends ffi.Struct {
-  external ffi.Pointer<ffi.Uint8> bytes;
-
-  @ffi.Size()
-  external int size;
-}
-
-/// VP8X Feature Flags.
-abstract class WebPFeatureFlags {
-  static const int ANIMATION_FLAG = 2;
-  static const int XMP_FLAG = 4;
-  static const int EXIF_FLAG = 8;
-  static const int ALPHA_FLAG = 16;
-  static const int ICCP_FLAG = 32;
-  static const int ALL_VALID_FLAGS = 62;
-}
-
-/// Dispose method (animation only). Indicates how the area used by the current
-/// frame is to be treated before rendering the next frame on the canvas.
-abstract class WebPMuxAnimDispose {
-  /// Do not dispose.
-  static const int WEBP_MUX_DISPOSE_NONE = 0;
-
-  /// Dispose to background color.
-  static const int WEBP_MUX_DISPOSE_BACKGROUND = 1;
-}
-
-/// Blend operation (animation only). Indicates how transparent pixels of the
-/// current frame are blended with those of the previous canvas.
-abstract class WebPMuxAnimBlend {
-  /// Blend.
-  static const int WEBP_MUX_BLEND = 0;
-
-  /// Do not blend.
-  static const int WEBP_MUX_NO_BLEND = 1;
-}
-
-final class WebPMux extends ffi.Opaque {}
-
-/// Encapsulates data about a single frame.
-final class WebPMuxFrameInfo extends ffi.Struct {
-  /// image data: can be a raw VP8/VP8L bitstream
-  /// or a single-image WebP file.
-  external WebPData bitstream;
-
-  /// x-offset of the frame.
-  @ffi.Int()
-  external int x_offset;
-
-  /// y-offset of the frame.
-  @ffi.Int()
-  external int y_offset;
-
-  /// duration of the frame (in milliseconds).
-  @ffi.Int()
-  external int duration;
-
-  /// frame type: should be one of WEBP_CHUNK_ANMF
-  /// or WEBP_CHUNK_IMAGE
-  @ffi.Int32()
-  external int id;
-
-  /// Disposal method for the frame.
-  @ffi.Int32()
-  external int dispose_method;
-
-  /// Blend operation for the frame.
-  @ffi.Int32()
-  external int blend_method;
-
-  /// padding for later use
-  @ffi.Array.multi([1])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// IDs for different types of chunks.
-abstract class WebPChunkId {
-  /// VP8X
-  static const int WEBP_CHUNK_VP8X = 0;
-
-  /// ICCP
-  static const int WEBP_CHUNK_ICCP = 1;
-
-  /// ANIM
-  static const int WEBP_CHUNK_ANIM = 2;
-
-  /// ANMF
-  static const int WEBP_CHUNK_ANMF = 3;
-
-  /// (deprecated from FRGM)
-  static const int WEBP_CHUNK_DEPRECATED = 4;
-
-  /// ALPH
-  static const int WEBP_CHUNK_ALPHA = 5;
-
-  /// VP8/VP8L
-  static const int WEBP_CHUNK_IMAGE = 6;
-
-  /// EXIF
-  static const int WEBP_CHUNK_EXIF = 7;
-
-  /// XMP
-  static const int WEBP_CHUNK_XMP = 8;
-
-  /// Other chunks.
-  static const int WEBP_CHUNK_UNKNOWN = 9;
-  static const int WEBP_CHUNK_NIL = 10;
-}
-
-/// Animation parameters.
-final class WebPMuxAnimParams extends ffi.Struct {
-  /// Background color of the canvas stored (in MSB order) as:
-  /// Bits 00 to 07: Alpha.
-  /// Bits 08 to 15: Red.
-  /// Bits 16 to 23: Green.
-  /// Bits 24 to 31: Blue.
-  @ffi.Uint32()
-  external int bgcolor;
-
-  /// Number of times to repeat the animation [0 = infinite].
-  @ffi.Int()
-  external int loop_count;
-}
-
-/// Global options.
-final class WebPAnimEncoderOptions extends ffi.Struct {
-  /// Animation parameters.
-  external WebPMuxAnimParams anim_params;
-
-  /// If true, minimize the output size (slow). Implicitly
-  /// disables key-frame insertion.
-  @ffi.Int()
-  external int minimize_size;
-
-  @ffi.Int()
-  external int kmin;
-
-  /// Minimum and maximum distance between consecutive key
-  /// frames in the output. The library may insert some key
-  /// frames as needed to satisfy this criteria.
-  /// Note that these conditions should hold: kmax > kmin
-  /// and kmin >= kmax / 2 + 1. Also, if kmax <= 0, then
-  /// key-frame insertion is disabled; and if kmax == 1,
-  /// then all frames will be key-frames (kmin value does
-  /// not matter for these special cases).
-  @ffi.Int()
-  external int kmax;
-
-  /// If true, use mixed compression mode; may choose
-  /// either lossy and lossless for each frame.
-  @ffi.Int()
-  external int allow_mixed;
-
-  /// If true, print info and warning messages to stderr.
-  @ffi.Int()
-  external int verbose;
-
-  /// Padding for later use.
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Uint32> padding;
-}
-
-/// Error codes
-abstract class WebPMuxError {
-  static const int WEBP_MUX_OK = 1;
-  static const int WEBP_MUX_NOT_FOUND = 0;
-  static const int WEBP_MUX_INVALID_ARGUMENT = -1;
-  static const int WEBP_MUX_BAD_DATA = -2;
-  static const int WEBP_MUX_MEMORY_ERROR = -3;
-  static const int WEBP_MUX_NOT_ENOUGH_DATA = -4;
-}
-
-final class WebPAnimEncoder extends ffi.Opaque {}
-
 final class WebPDemuxer extends ffi.Opaque {}
 
 /// ------------------------------------------------------------------------------
@@ -5375,12 +5248,128 @@ abstract class WebPFormatFeature {
 
 final class WebPAnimDecoder extends ffi.Opaque {}
 
-abstract class VP8LImageTransformType {
-  static const int PREDICTOR_TRANSFORM = 0;
-  static const int CROSS_COLOR_TRANSFORM = 1;
-  static const int SUBTRACT_GREEN_TRANSFORM = 2;
-  static const int COLOR_INDEXING_TRANSFORM = 3;
+/// WebPMemoryWrite: a special WebPWriterFunction that writes to memory using
+/// the following WebPMemoryWriter object (to be set as a custom_ptr).
+final class WebPMemoryWriter extends ffi.Struct {
+  /// final buffer (of size 'max_size', larger than 'size').
+  external ffi.Pointer<ffi.Uint8> mem;
+
+  /// final size
+  @ffi.Size()
+  external int size;
+
+  /// total capacity
+  @ffi.Size()
+  external int max_size;
+
+  /// padding for later use
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Uint32> pad;
 }
+
+/// Enumerate some predefined settings for WebPConfig, depending on the type
+/// of source picture. These presets are used when calling WebPConfigPreset().
+abstract class WebPPreset {
+  /// default preset.
+  static const int WEBP_PRESET_DEFAULT = 0;
+
+  /// digital picture, like portrait, inner shot
+  static const int WEBP_PRESET_PICTURE = 1;
+
+  /// outdoor photograph, with natural lighting
+  static const int WEBP_PRESET_PHOTO = 2;
+
+  /// hand or line drawing, with high-contrast details
+  static const int WEBP_PRESET_DRAWING = 3;
+
+  /// small-sized colorful images
+  static const int WEBP_PRESET_ICON = 4;
+
+  /// text-like
+  static const int WEBP_PRESET_TEXT = 5;
+}
+
+const int VP8_SIGNATURE = 10289450;
+
+const int VP8_MAX_PARTITION0_SIZE = 524288;
+
+const int VP8_MAX_PARTITION_SIZE = 16777216;
+
+const int VP8_FRAME_HEADER_SIZE = 10;
+
+const int VP8L_SIGNATURE_SIZE = 1;
+
+const int VP8L_MAGIC_BYTE = 47;
+
+const int VP8L_IMAGE_SIZE_BITS = 14;
+
+const int VP8L_VERSION_BITS = 3;
+
+const int VP8L_VERSION = 0;
+
+const int VP8L_FRAME_HEADER_SIZE = 5;
+
+const int MAX_PALETTE_SIZE = 256;
+
+const int MAX_CACHE_BITS = 11;
+
+const int HUFFMAN_CODES_PER_META_CODE = 5;
+
+const int ARGB_BLACK = 4278190080;
+
+const int DEFAULT_CODE_LENGTH = 8;
+
+const int MAX_ALLOWED_CODE_LENGTH = 15;
+
+const int NUM_LITERAL_CODES = 256;
+
+const int NUM_LENGTH_CODES = 24;
+
+const int NUM_DISTANCE_CODES = 40;
+
+const int CODE_LENGTH_CODES = 19;
+
+const int MIN_HUFFMAN_BITS = 2;
+
+const int MAX_HUFFMAN_BITS = 9;
+
+const int TRANSFORM_PRESENT = 1;
+
+const int NUM_TRANSFORMS = 4;
+
+const int ALPHA_HEADER_LEN = 1;
+
+const int ALPHA_NO_COMPRESSION = 0;
+
+const int ALPHA_LOSSLESS_COMPRESSION = 1;
+
+const int ALPHA_PREPROCESSED_LEVELS = 1;
+
+const int TAG_SIZE = 4;
+
+const int CHUNK_SIZE_BYTES = 4;
+
+const int CHUNK_HEADER_SIZE = 8;
+
+const int RIFF_HEADER_SIZE = 12;
+
+const int ANMF_CHUNK_SIZE = 16;
+
+const int ANIM_CHUNK_SIZE = 6;
+
+const int VP8X_CHUNK_SIZE = 10;
+
+const int MAX_CANVAS_SIZE = 16777216;
+
+const int MAX_IMAGE_AREA = 4294967296;
+
+const int MAX_LOOP_COUNT = 65536;
+
+const int MAX_DURATION = 16777216;
+
+const int MAX_POSITION_OFFSET = 16777216;
+
+const int MAX_CHUNK_PAYLOAD = 4294967286;
 
 const int __has_safe_buffers = 1;
 
@@ -5449,328 +5438,6 @@ const int __DARWIN_WCHAR_MIN = -2147483648;
 const int __DARWIN_WEOF = -1;
 
 const int _FORTIFY_SOURCE = 2;
-
-const int NULL = 0;
-
-const int USER_ADDR_NULL = 0;
-
-const String __PRI_8_LENGTH_MODIFIER__ = 'hh';
-
-const String __PRI_64_LENGTH_MODIFIER__ = 'll';
-
-const String __SCN_64_LENGTH_MODIFIER__ = 'll';
-
-const String __PRI_MAX_LENGTH_MODIFIER__ = 'j';
-
-const String __SCN_MAX_LENGTH_MODIFIER__ = 'j';
-
-const String PRId8 = 'hhd';
-
-const String PRIi8 = 'hhi';
-
-const String PRIo8 = 'hho';
-
-const String PRIu8 = 'hhu';
-
-const String PRIx8 = 'hhx';
-
-const String PRIX8 = 'hhX';
-
-const String PRId16 = 'hd';
-
-const String PRIi16 = 'hi';
-
-const String PRIo16 = 'ho';
-
-const String PRIu16 = 'hu';
-
-const String PRIx16 = 'hx';
-
-const String PRIX16 = 'hX';
-
-const String PRId32 = 'd';
-
-const String PRIi32 = 'i';
-
-const String PRIo32 = 'o';
-
-const String PRIu32 = 'u';
-
-const String PRIx32 = 'x';
-
-const String PRIX32 = 'X';
-
-const String PRId64 = 'lld';
-
-const String PRIi64 = 'lli';
-
-const String PRIo64 = 'llo';
-
-const String PRIu64 = 'llu';
-
-const String PRIx64 = 'llx';
-
-const String PRIX64 = 'llX';
-
-const String PRIdLEAST8 = 'hhd';
-
-const String PRIiLEAST8 = 'hhi';
-
-const String PRIoLEAST8 = 'hho';
-
-const String PRIuLEAST8 = 'hhu';
-
-const String PRIxLEAST8 = 'hhx';
-
-const String PRIXLEAST8 = 'hhX';
-
-const String PRIdLEAST16 = 'hd';
-
-const String PRIiLEAST16 = 'hi';
-
-const String PRIoLEAST16 = 'ho';
-
-const String PRIuLEAST16 = 'hu';
-
-const String PRIxLEAST16 = 'hx';
-
-const String PRIXLEAST16 = 'hX';
-
-const String PRIdLEAST32 = 'd';
-
-const String PRIiLEAST32 = 'i';
-
-const String PRIoLEAST32 = 'o';
-
-const String PRIuLEAST32 = 'u';
-
-const String PRIxLEAST32 = 'x';
-
-const String PRIXLEAST32 = 'X';
-
-const String PRIdLEAST64 = 'lld';
-
-const String PRIiLEAST64 = 'lli';
-
-const String PRIoLEAST64 = 'llo';
-
-const String PRIuLEAST64 = 'llu';
-
-const String PRIxLEAST64 = 'llx';
-
-const String PRIXLEAST64 = 'llX';
-
-const String PRIdFAST8 = 'hhd';
-
-const String PRIiFAST8 = 'hhi';
-
-const String PRIoFAST8 = 'hho';
-
-const String PRIuFAST8 = 'hhu';
-
-const String PRIxFAST8 = 'hhx';
-
-const String PRIXFAST8 = 'hhX';
-
-const String PRIdFAST16 = 'hd';
-
-const String PRIiFAST16 = 'hi';
-
-const String PRIoFAST16 = 'ho';
-
-const String PRIuFAST16 = 'hu';
-
-const String PRIxFAST16 = 'hx';
-
-const String PRIXFAST16 = 'hX';
-
-const String PRIdFAST32 = 'd';
-
-const String PRIiFAST32 = 'i';
-
-const String PRIoFAST32 = 'o';
-
-const String PRIuFAST32 = 'u';
-
-const String PRIxFAST32 = 'x';
-
-const String PRIXFAST32 = 'X';
-
-const String PRIdFAST64 = 'lld';
-
-const String PRIiFAST64 = 'lli';
-
-const String PRIoFAST64 = 'llo';
-
-const String PRIuFAST64 = 'llu';
-
-const String PRIxFAST64 = 'llx';
-
-const String PRIXFAST64 = 'llX';
-
-const String PRIdPTR = 'ld';
-
-const String PRIiPTR = 'li';
-
-const String PRIoPTR = 'lo';
-
-const String PRIuPTR = 'lu';
-
-const String PRIxPTR = 'lx';
-
-const String PRIXPTR = 'lX';
-
-const String PRIdMAX = 'jd';
-
-const String PRIiMAX = 'ji';
-
-const String PRIoMAX = 'jo';
-
-const String PRIuMAX = 'ju';
-
-const String PRIxMAX = 'jx';
-
-const String PRIXMAX = 'jX';
-
-const String SCNd8 = 'hhd';
-
-const String SCNi8 = 'hhi';
-
-const String SCNo8 = 'hho';
-
-const String SCNu8 = 'hhu';
-
-const String SCNx8 = 'hhx';
-
-const String SCNd16 = 'hd';
-
-const String SCNi16 = 'hi';
-
-const String SCNo16 = 'ho';
-
-const String SCNu16 = 'hu';
-
-const String SCNx16 = 'hx';
-
-const String SCNd32 = 'd';
-
-const String SCNi32 = 'i';
-
-const String SCNo32 = 'o';
-
-const String SCNu32 = 'u';
-
-const String SCNx32 = 'x';
-
-const String SCNd64 = 'lld';
-
-const String SCNi64 = 'lli';
-
-const String SCNo64 = 'llo';
-
-const String SCNu64 = 'llu';
-
-const String SCNx64 = 'llx';
-
-const String SCNdLEAST8 = 'hhd';
-
-const String SCNiLEAST8 = 'hhi';
-
-const String SCNoLEAST8 = 'hho';
-
-const String SCNuLEAST8 = 'hhu';
-
-const String SCNxLEAST8 = 'hhx';
-
-const String SCNdLEAST16 = 'hd';
-
-const String SCNiLEAST16 = 'hi';
-
-const String SCNoLEAST16 = 'ho';
-
-const String SCNuLEAST16 = 'hu';
-
-const String SCNxLEAST16 = 'hx';
-
-const String SCNdLEAST32 = 'd';
-
-const String SCNiLEAST32 = 'i';
-
-const String SCNoLEAST32 = 'o';
-
-const String SCNuLEAST32 = 'u';
-
-const String SCNxLEAST32 = 'x';
-
-const String SCNdLEAST64 = 'lld';
-
-const String SCNiLEAST64 = 'lli';
-
-const String SCNoLEAST64 = 'llo';
-
-const String SCNuLEAST64 = 'llu';
-
-const String SCNxLEAST64 = 'llx';
-
-const String SCNdFAST8 = 'hhd';
-
-const String SCNiFAST8 = 'hhi';
-
-const String SCNoFAST8 = 'hho';
-
-const String SCNuFAST8 = 'hhu';
-
-const String SCNxFAST8 = 'hhx';
-
-const String SCNdFAST16 = 'hd';
-
-const String SCNiFAST16 = 'hi';
-
-const String SCNoFAST16 = 'ho';
-
-const String SCNuFAST16 = 'hu';
-
-const String SCNxFAST16 = 'hx';
-
-const String SCNdFAST32 = 'd';
-
-const String SCNiFAST32 = 'i';
-
-const String SCNoFAST32 = 'o';
-
-const String SCNuFAST32 = 'u';
-
-const String SCNxFAST32 = 'x';
-
-const String SCNdFAST64 = 'lld';
-
-const String SCNiFAST64 = 'lli';
-
-const String SCNoFAST64 = 'llo';
-
-const String SCNuFAST64 = 'llu';
-
-const String SCNxFAST64 = 'llx';
-
-const String SCNdPTR = 'ld';
-
-const String SCNiPTR = 'li';
-
-const String SCNoPTR = 'lo';
-
-const String SCNuPTR = 'lu';
-
-const String SCNxPTR = 'lx';
-
-const String SCNdMAX = 'jd';
-
-const String SCNiMAX = 'ji';
-
-const String SCNoMAX = 'jo';
-
-const String SCNuMAX = 'ju';
-
-const String SCNxMAX = 'jx';
 
 const int __API_TO_BE_DEPRECATED = 100000;
 
@@ -6454,6 +6121,328 @@ const int __MAC_OS_X_VERSION_MAX_ALLOWED = 140400;
 
 const int __ENABLE_LEGACY_MAC_AVAILABILITY = 1;
 
+const int NULL = 0;
+
+const int USER_ADDR_NULL = 0;
+
+const String __PRI_8_LENGTH_MODIFIER__ = 'hh';
+
+const String __PRI_64_LENGTH_MODIFIER__ = 'll';
+
+const String __SCN_64_LENGTH_MODIFIER__ = 'll';
+
+const String __PRI_MAX_LENGTH_MODIFIER__ = 'j';
+
+const String __SCN_MAX_LENGTH_MODIFIER__ = 'j';
+
+const String PRId8 = 'hhd';
+
+const String PRIi8 = 'hhi';
+
+const String PRIo8 = 'hho';
+
+const String PRIu8 = 'hhu';
+
+const String PRIx8 = 'hhx';
+
+const String PRIX8 = 'hhX';
+
+const String PRId16 = 'hd';
+
+const String PRIi16 = 'hi';
+
+const String PRIo16 = 'ho';
+
+const String PRIu16 = 'hu';
+
+const String PRIx16 = 'hx';
+
+const String PRIX16 = 'hX';
+
+const String PRId32 = 'd';
+
+const String PRIi32 = 'i';
+
+const String PRIo32 = 'o';
+
+const String PRIu32 = 'u';
+
+const String PRIx32 = 'x';
+
+const String PRIX32 = 'X';
+
+const String PRId64 = 'lld';
+
+const String PRIi64 = 'lli';
+
+const String PRIo64 = 'llo';
+
+const String PRIu64 = 'llu';
+
+const String PRIx64 = 'llx';
+
+const String PRIX64 = 'llX';
+
+const String PRIdLEAST8 = 'hhd';
+
+const String PRIiLEAST8 = 'hhi';
+
+const String PRIoLEAST8 = 'hho';
+
+const String PRIuLEAST8 = 'hhu';
+
+const String PRIxLEAST8 = 'hhx';
+
+const String PRIXLEAST8 = 'hhX';
+
+const String PRIdLEAST16 = 'hd';
+
+const String PRIiLEAST16 = 'hi';
+
+const String PRIoLEAST16 = 'ho';
+
+const String PRIuLEAST16 = 'hu';
+
+const String PRIxLEAST16 = 'hx';
+
+const String PRIXLEAST16 = 'hX';
+
+const String PRIdLEAST32 = 'd';
+
+const String PRIiLEAST32 = 'i';
+
+const String PRIoLEAST32 = 'o';
+
+const String PRIuLEAST32 = 'u';
+
+const String PRIxLEAST32 = 'x';
+
+const String PRIXLEAST32 = 'X';
+
+const String PRIdLEAST64 = 'lld';
+
+const String PRIiLEAST64 = 'lli';
+
+const String PRIoLEAST64 = 'llo';
+
+const String PRIuLEAST64 = 'llu';
+
+const String PRIxLEAST64 = 'llx';
+
+const String PRIXLEAST64 = 'llX';
+
+const String PRIdFAST8 = 'hhd';
+
+const String PRIiFAST8 = 'hhi';
+
+const String PRIoFAST8 = 'hho';
+
+const String PRIuFAST8 = 'hhu';
+
+const String PRIxFAST8 = 'hhx';
+
+const String PRIXFAST8 = 'hhX';
+
+const String PRIdFAST16 = 'hd';
+
+const String PRIiFAST16 = 'hi';
+
+const String PRIoFAST16 = 'ho';
+
+const String PRIuFAST16 = 'hu';
+
+const String PRIxFAST16 = 'hx';
+
+const String PRIXFAST16 = 'hX';
+
+const String PRIdFAST32 = 'd';
+
+const String PRIiFAST32 = 'i';
+
+const String PRIoFAST32 = 'o';
+
+const String PRIuFAST32 = 'u';
+
+const String PRIxFAST32 = 'x';
+
+const String PRIXFAST32 = 'X';
+
+const String PRIdFAST64 = 'lld';
+
+const String PRIiFAST64 = 'lli';
+
+const String PRIoFAST64 = 'llo';
+
+const String PRIuFAST64 = 'llu';
+
+const String PRIxFAST64 = 'llx';
+
+const String PRIXFAST64 = 'llX';
+
+const String PRIdPTR = 'ld';
+
+const String PRIiPTR = 'li';
+
+const String PRIoPTR = 'lo';
+
+const String PRIuPTR = 'lu';
+
+const String PRIxPTR = 'lx';
+
+const String PRIXPTR = 'lX';
+
+const String PRIdMAX = 'jd';
+
+const String PRIiMAX = 'ji';
+
+const String PRIoMAX = 'jo';
+
+const String PRIuMAX = 'ju';
+
+const String PRIxMAX = 'jx';
+
+const String PRIXMAX = 'jX';
+
+const String SCNd8 = 'hhd';
+
+const String SCNi8 = 'hhi';
+
+const String SCNo8 = 'hho';
+
+const String SCNu8 = 'hhu';
+
+const String SCNx8 = 'hhx';
+
+const String SCNd16 = 'hd';
+
+const String SCNi16 = 'hi';
+
+const String SCNo16 = 'ho';
+
+const String SCNu16 = 'hu';
+
+const String SCNx16 = 'hx';
+
+const String SCNd32 = 'd';
+
+const String SCNi32 = 'i';
+
+const String SCNo32 = 'o';
+
+const String SCNu32 = 'u';
+
+const String SCNx32 = 'x';
+
+const String SCNd64 = 'lld';
+
+const String SCNi64 = 'lli';
+
+const String SCNo64 = 'llo';
+
+const String SCNu64 = 'llu';
+
+const String SCNx64 = 'llx';
+
+const String SCNdLEAST8 = 'hhd';
+
+const String SCNiLEAST8 = 'hhi';
+
+const String SCNoLEAST8 = 'hho';
+
+const String SCNuLEAST8 = 'hhu';
+
+const String SCNxLEAST8 = 'hhx';
+
+const String SCNdLEAST16 = 'hd';
+
+const String SCNiLEAST16 = 'hi';
+
+const String SCNoLEAST16 = 'ho';
+
+const String SCNuLEAST16 = 'hu';
+
+const String SCNxLEAST16 = 'hx';
+
+const String SCNdLEAST32 = 'd';
+
+const String SCNiLEAST32 = 'i';
+
+const String SCNoLEAST32 = 'o';
+
+const String SCNuLEAST32 = 'u';
+
+const String SCNxLEAST32 = 'x';
+
+const String SCNdLEAST64 = 'lld';
+
+const String SCNiLEAST64 = 'lli';
+
+const String SCNoLEAST64 = 'llo';
+
+const String SCNuLEAST64 = 'llu';
+
+const String SCNxLEAST64 = 'llx';
+
+const String SCNdFAST8 = 'hhd';
+
+const String SCNiFAST8 = 'hhi';
+
+const String SCNoFAST8 = 'hho';
+
+const String SCNuFAST8 = 'hhu';
+
+const String SCNxFAST8 = 'hhx';
+
+const String SCNdFAST16 = 'hd';
+
+const String SCNiFAST16 = 'hi';
+
+const String SCNoFAST16 = 'ho';
+
+const String SCNuFAST16 = 'hu';
+
+const String SCNxFAST16 = 'hx';
+
+const String SCNdFAST32 = 'd';
+
+const String SCNiFAST32 = 'i';
+
+const String SCNoFAST32 = 'o';
+
+const String SCNuFAST32 = 'u';
+
+const String SCNxFAST32 = 'x';
+
+const String SCNdFAST64 = 'lld';
+
+const String SCNiFAST64 = 'lli';
+
+const String SCNoFAST64 = 'llo';
+
+const String SCNuFAST64 = 'llu';
+
+const String SCNxFAST64 = 'llx';
+
+const String SCNdPTR = 'ld';
+
+const String SCNiPTR = 'li';
+
+const String SCNoPTR = 'lo';
+
+const String SCNuPTR = 'lu';
+
+const String SCNxPTR = 'lx';
+
+const String SCNdMAX = 'jd';
+
+const String SCNiMAX = 'ji';
+
+const String SCNoMAX = 'jo';
+
+const String SCNuMAX = 'ju';
+
+const String SCNxMAX = 'jx';
+
 const int __WORDSIZE = 64;
 
 const int INT8_MAX = 127;
@@ -6560,94 +6549,12 @@ const int SIG_ATOMIC_MIN = -2147483648;
 
 const int SIG_ATOMIC_MAX = 2147483647;
 
+const int WEBP_MUX_ABI_VERSION = 264;
+
 const int WEBP_DECODER_ABI_VERSION = 521;
+
+const int WEBP_DEMUX_ABI_VERSION = 263;
 
 const int WEBP_ENCODER_ABI_VERSION = 527;
 
 const int WEBP_MAX_DIMENSION = 16383;
-
-const int WEBP_MUX_ABI_VERSION = 265;
-
-const int WEBP_DEMUX_ABI_VERSION = 263;
-
-const int VP8_SIGNATURE = 10289450;
-
-const int VP8_MAX_PARTITION0_SIZE = 524288;
-
-const int VP8_MAX_PARTITION_SIZE = 16777216;
-
-const int VP8_FRAME_HEADER_SIZE = 10;
-
-const int VP8L_SIGNATURE_SIZE = 1;
-
-const int VP8L_MAGIC_BYTE = 47;
-
-const int VP8L_IMAGE_SIZE_BITS = 14;
-
-const int VP8L_VERSION_BITS = 3;
-
-const int VP8L_VERSION = 0;
-
-const int VP8L_FRAME_HEADER_SIZE = 5;
-
-const int MAX_PALETTE_SIZE = 256;
-
-const int MAX_CACHE_BITS = 11;
-
-const int HUFFMAN_CODES_PER_META_CODE = 5;
-
-const int ARGB_BLACK = 4278190080;
-
-const int DEFAULT_CODE_LENGTH = 8;
-
-const int MAX_ALLOWED_CODE_LENGTH = 15;
-
-const int NUM_LITERAL_CODES = 256;
-
-const int NUM_LENGTH_CODES = 24;
-
-const int NUM_DISTANCE_CODES = 40;
-
-const int CODE_LENGTH_CODES = 19;
-
-const int MIN_HUFFMAN_BITS = 2;
-
-const int MAX_HUFFMAN_BITS = 9;
-
-const int TRANSFORM_PRESENT = 1;
-
-const int NUM_TRANSFORMS = 4;
-
-const int ALPHA_HEADER_LEN = 1;
-
-const int ALPHA_NO_COMPRESSION = 0;
-
-const int ALPHA_LOSSLESS_COMPRESSION = 1;
-
-const int ALPHA_PREPROCESSED_LEVELS = 1;
-
-const int TAG_SIZE = 4;
-
-const int CHUNK_SIZE_BYTES = 4;
-
-const int CHUNK_HEADER_SIZE = 8;
-
-const int RIFF_HEADER_SIZE = 12;
-
-const int ANMF_CHUNK_SIZE = 16;
-
-const int ANIM_CHUNK_SIZE = 6;
-
-const int VP8X_CHUNK_SIZE = 10;
-
-const int MAX_CANVAS_SIZE = 16777216;
-
-const int MAX_IMAGE_AREA = 4294967296;
-
-const int MAX_LOOP_COUNT = 65536;
-
-const int MAX_DURATION = 16777216;
-
-const int MAX_POSITION_OFFSET = 16777216;
-
-const int MAX_CHUNK_PAYLOAD = 4294967286;
