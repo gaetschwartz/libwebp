@@ -47,28 +47,55 @@ class WebpImage {
     return _infoPtr.ref;
   }
 
-  Iterable<WebpFrame> get frames =>
-      WebpImageFramesIterable._(_alloc, _animDecoder(_alloc, _data));
+  Iterable<WebpFrame> get frames => WebpImageFramesIterable._(
+        _alloc,
+        _animDecoder(_alloc, _data),
+        info,
+      );
 
   double get fps => 1000 * info.frame_count / frames.last.timestamp;
 }
 
 class WebpFrame {
   final int timestamp;
-  final Pointer<Pointer<Uint8>> data;
+  final Pointer<Pointer<Uint8>> _data;
+  final int width;
+  final int height;
 
-  WebpFrame._(this.timestamp, this.data);
+  WebpFrame({
+    required this.timestamp,
+    required Pointer<Pointer<Uint8>> data,
+    required this.width,
+    required this.height,
+  }) : _data = data;
+
+  Uint8List encode({double quality = 100}) => using((Arena alloc) {
+        final out = alloc<Pointer<Uint8>>();
+        final size = libwebp.WebPEncodeRGBA(
+          _data.value,
+          width,
+          height,
+          width * 4,
+          quality,
+          out,
+        );
+        if (size == 0) {
+          throw LibWebpException('Failed to encode frame.');
+        }
+        return Uint8List.fromList(out.value.asTypedList(size));
+      });
 }
 
 class WebpImageFramesIterable extends Iterable<WebpFrame> {
   final Pointer<bindings.WebPAnimDecoder> _decoder;
   final Allocator _alloc;
+  final bindings.WebPAnimInfo _info;
 
-  WebpImageFramesIterable._(this._alloc, this._decoder);
+  WebpImageFramesIterable._(this._alloc, this._decoder, this._info);
 
   @override
   Iterator<WebpFrame> get iterator =>
-      WebpImageFramesIterator._(_alloc, _decoder);
+      WebpImageFramesIterator._(_alloc, _decoder, _info);
 }
 
 class WebpImageFramesIterator implements Iterator<WebpFrame> {
@@ -76,8 +103,9 @@ class WebpImageFramesIterator implements Iterator<WebpFrame> {
 
   final Pointer<bindings.WebPAnimDecoder> _decoder;
   final Allocator _alloc;
+  final bindings.WebPAnimInfo _info;
 
-  WebpImageFramesIterator._(this._alloc, this._decoder);
+  WebpImageFramesIterator._(this._alloc, this._decoder, this._info);
 
   @override
   WebpFrame get current => _current!;
@@ -89,7 +117,12 @@ class WebpImageFramesIterator implements Iterator<WebpFrame> {
     if (libwebp.WebPAnimDecoderGetNext(_decoder, frame, ms) == 0) {
       return false;
     }
-    _current = WebpFrame._(ms.value, frame);
+    _current = WebpFrame(
+      timestamp: ms.value,
+      data: frame,
+      width: _info.canvas_width,
+      height: _info.canvas_height,
+    );
     return true;
   }
 }
@@ -237,7 +270,7 @@ class WebpEncoder {
       _check(
         libwebp.WebPPictureImportRGBA(
           pic,
-          frame.data.value,
+          frame._data.value,
           info.canvas_width * 4,
         ),
         'Failed to import RGBA data.',
