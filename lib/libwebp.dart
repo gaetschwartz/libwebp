@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp_generated_bindings.dart';
 import 'package:libwebp/src/utils.dart';
+import 'package:logging/logging.dart';
 
 export 'src/image.dart';
 
@@ -84,6 +85,7 @@ Uint8List _resizeWebp(
   Uint8Data data, {
   BoxFit fit = BoxFit.fill,
 }) {
+  final log = Logger('resizeWebp');
   final encoder = libwebp.WebPAnimEncoderNewInternal(
     targetDimensions.width,
     targetDimensions.height,
@@ -107,8 +109,7 @@ Uint8List _resizeWebp(
   final info = alloc<WebPAnimInfo>();
   _check(
       libwebp.WebPAnimDecoderGetInfo(animDecoder, info), 'Failed to get info.');
-  print('''
-  info:
+  log.fine('''Rescaling WebP:
     canvas_width: ${info.ref.canvas_width}
     canvas_height: ${info.ref.canvas_height}
     loop_count: ${info.ref.loop_count}

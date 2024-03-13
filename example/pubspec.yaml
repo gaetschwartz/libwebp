@@ -15,6 +15,7 @@ dependencies:
     path: ../libwebp_flutter_libs/
   image: ^4.1.7
   path: ^1.9.0
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:

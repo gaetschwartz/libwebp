@@ -5,6 +5,7 @@ import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
 import 'package:libwebp/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
+import 'package:logging/logging.dart';
 
 class WebpImage {
   final Uint8Data _data;
@@ -16,7 +17,6 @@ class WebpImage {
 
   static final Finalizer<Arena> _finalizer = Finalizer<Arena>((data) {
     data.releaseAll();
-    print('released WebpImage.');
   });
 
   factory WebpImage(Uint8List data) {
@@ -54,6 +54,8 @@ class WebpImage {
       );
 
   double get fps => 1000 * info.frame_count / frames.last.timestamp;
+
+  int get averageFrameDuration => frames.last.timestamp ~/ info.frame_count;
 }
 
 class WebpFrame {
@@ -151,7 +153,6 @@ class WebPConfig {
   final Pointer<bindings.WebPConfig> _config;
 
   static final Finalizer<Arena> _finalizer = Finalizer<Arena>((a) {
-    print('released WebPConfig.');
     a.releaseAll();
   });
 
@@ -195,19 +196,20 @@ class WebpEncoder {
   final WebPConfig? config;
   final int width;
   final int height;
-  final double fps;
+  final WebpAnimationTiming timing;
+  final bool verbose;
+  final Logger? _logger;
   int _timestamp;
   int _frames = 0;
 
   int get currentTimestamp => _timestamp;
 
-  int get frameDuration => 1000 ~/ fps;
-
   factory WebpEncoder({
     required int width,
     required int height,
-    required double fps,
+    required WebpAnimationTiming timing,
     WebPConfig? config,
+    bool verbose = false,
   }) {
     final alloc = Arena(calloc);
 
@@ -221,7 +223,7 @@ class WebpEncoder {
     );
     cfg.ref.anim_params.loop_count = 0;
     cfg.ref.anim_params.bgcolor = 0;
-    cfg.ref.verbose = 1;
+    cfg.ref.verbose = verbose ? 1 : 0;
 
     final encoder = libwebp.WebPAnimEncoderNewInternal(
       width,
@@ -239,7 +241,8 @@ class WebpEncoder {
       config: config,
       width: width,
       height: height,
-      fps: fps,
+      timing: timing,
+      verbose: verbose,
     );
     _finalizer.attach(webpEncoder, alloc, detach: webpEncoder);
     return webpEncoder;
@@ -251,20 +254,26 @@ class WebpEncoder {
     required this.config,
     required this.width,
     required this.height,
-    required this.fps,
+    required this.timing,
+    required this.verbose,
   })  : _alloc = alloc,
         _encoder = encoder,
-        _timestamp = 1000 ~/ fps;
+        _timestamp = timing.value,
+        _logger = verbose ? Logger('WebpEncoder') : null;
+
+  void _log(String message) {
+    _logger?.fine(message);
+  }
 
   void add(WebpImage image, {Duration delay = Duration.zero}) {
     _timestamp += delay.inMilliseconds;
 
     final info = image.info;
 
-    print("Adding image with ${info.frame_count} frames");
+    _log("Adding image with ${info.frame_count} frames");
 
     for (final frame in image.frames) {
-      print('  Adding frame $_frames at $_timestamp ms');
+      _log('  Adding frame $_frames at $_timestamp ms');
       final pic = _alloc<bindings.WebPPicture>();
       _check(
         libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
@@ -310,7 +319,7 @@ class WebpEncoder {
           'Failed to add frame $_frames to encoder. (${VP8StatusCode.fromValue(pic.ref.error_code)}, ${str.toDartString()})',
         );
       } else {
-        _timestamp += frameDuration;
+        _timestamp += timing.value;
         _frames++;
       }
 
@@ -324,7 +333,7 @@ class WebpEncoder {
 
   Uint8List assemble() {
     // add a blank frame to make sure the last frame is included
-    print('Adding blank frame at $_timestamp ms');
+    _log('Adding blank frame at $_timestamp ms');
     _check(
       libwebp.WebPAnimEncoderAdd(
         _encoder,
@@ -381,4 +390,11 @@ extension WebpDataX on Pointer<bindings.WebPData> {
 
 extension on WebPConfig? {
   Pointer<bindings.WebPConfig> get ptr => this?._config ?? nullptr;
+}
+
+class WebpAnimationTiming {
+  final int value;
+  const WebpAnimationTiming(this.value);
+
+  WebpAnimationTiming.fps(double fps) : value = 1000 ~/ fps;
 }

@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as image;
 import 'package:libwebp/libwebp.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
 Future<Uint8List> load(String name) async {
@@ -15,6 +18,10 @@ void main() {
   late Directory temp;
 
   setUpAll(() async {
+    Logger.root.level = Level.ALL;
+    Logger.root.onRecord.listen((record) {
+      print('[${record.loggerName}] ${record.level.name}: ${record.message}');
+    });
     temp = Directory(
         path.join(Directory.systemTemp.path, 'libwebp_flutter_libs', 'tests'));
     await temp.create(recursive: true);
@@ -65,12 +72,13 @@ void main() {
 
     final webpImage = WebpImage(xdding);
     print('frames: ${webpImage.frames.map((e) => e.timestamp).toList()}');
-    final fps = webpImage.fps;
-    print('fps: $fps');
+    final frameDuration = webpImage.averageFrameDuration;
+    print('frameDuration: $frameDuration');
     final encoder = WebpEncoder(
       width: 512,
       height: 512,
-      fps: fps,
+      timing: WebpAnimationTiming(frameDuration),
+      verbose: true,
     );
 
     encoder.add(webpImage);
@@ -95,8 +103,9 @@ void main() {
     final encoder = WebpEncoder(
       width: 512,
       height: 512,
-      fps: 30,
+      timing: const WebpAnimationTiming(100),
       config: config,
+      verbose: true,
     );
 
     encoder.add(WebpImage(xdd));
