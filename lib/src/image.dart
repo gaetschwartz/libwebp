@@ -172,10 +172,8 @@ class WebPConfig {
         0) {
       throw LibWebpException('Failed to init WebPConfig.');
     }
-
-    if (lossless) {
-      cfg.ref.lossless = 1;
-    }
+    cfg.ref.lossless = lossless ? 1 : 0;
+    cfg.ref.thread_level = 1;
 
     final webpConfig = WebPConfig._(config: cfg);
 
@@ -303,7 +301,7 @@ class WebpEncoder {
         _encoder,
         pic,
         _timestamp,
-        config != null ? config!._config : nullptr,
+        config.ptr,
       );
 
       if (added == 0) {
@@ -332,7 +330,7 @@ class WebpEncoder {
         _encoder,
         nullptr,
         _timestamp,
-        config != null ? config!._config : nullptr,
+        config.ptr,
       ),
       'Failed to add blank frame to encoder.',
     );
@@ -379,4 +377,8 @@ Pointer<bindings.WebPAnimDecoder> _animDecoder(Allocator a, Uint8Data data) {
 
 extension WebpDataX on Pointer<bindings.WebPData> {
   Uint8List toList() => Uint8List.fromList(ref.bytes.asTypedList(ref.size));
+}
+
+extension on WebPConfig? {
+  Pointer<bindings.WebPConfig> get ptr => this?._config ?? nullptr;
 }
