@@ -69,13 +69,20 @@ class WebpFrame {
     required this.height,
   }) : _data = data;
 
-  Uint8List encode({double quality = 100}) => using((Arena alloc) {
+  Uint8List encode({
+    double quality = 100,
+    int? width,
+    int? height,
+  }) =>
+      using((Arena alloc) {
+        final w = width ?? this.width;
+        final h = height ?? this.height;
         final out = alloc<Pointer<Uint8>>();
         final size = libwebp.WebPEncodeRGBA(
           _data.value,
-          width,
-          height,
-          width * 4,
+          w,
+          h,
+          w * 4,
           quality,
           out,
         );
