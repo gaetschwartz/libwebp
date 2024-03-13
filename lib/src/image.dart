@@ -150,12 +150,15 @@ enum WebpPreset {
 class WebPConfig {
   final Pointer<bindings.WebPConfig> _config;
 
-  static final Finalizer<Arena> _finalizer =
-      Finalizer<Arena>((a) => a.releaseAll());
+  static final Finalizer<Arena> _finalizer = Finalizer<Arena>((a) {
+    print('released WebPConfig.');
+    a.releaseAll();
+  });
 
   factory WebPConfig({
     WebpPreset preset = WebpPreset.default_,
     double quality = 75.0,
+    bool lossless = false,
   }) {
     final alloc = Arena(calloc);
 
@@ -168,6 +171,10 @@ class WebPConfig {
         ) ==
         0) {
       throw LibWebpException('Failed to init WebPConfig.');
+    }
+
+    if (lossless) {
+      cfg.ref.lossless = 1;
     }
 
     final webpConfig = WebPConfig._(config: cfg);
@@ -317,7 +324,7 @@ class WebpEncoder {
 
   int get frameCount => _frames;
 
-  Uint8List encode() {
+  Uint8List assemble() {
     // add a blank frame to make sure the last frame is included
     print('Adding blank frame at $_timestamp ms');
     _check(
@@ -336,10 +343,9 @@ class WebpEncoder {
     if (res == 0) {
       throw LibWebpException('Failed to assemble WebPData.');
     }
-
-    final uint8list = data.toList();
     libwebp.WebPAnimEncoderDelete(_encoder);
-    return uint8list;
+
+    return data.ref.bytes.asTypedList(data.ref.size);
   }
 }
 

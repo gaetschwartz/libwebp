@@ -75,7 +75,7 @@ void main() {
 
     encoder.add(webpImage);
 
-    final encoded = encoder.encode();
+    final encoded = encoder.assemble();
 
     final decoded = WebpImage(encoded);
     expect(decoded.info.canvas_width, 512);
@@ -104,7 +104,7 @@ void main() {
 
     expect(encoder.frameCount, 2);
 
-    final encoded = encoder.encode();
+    final encoded = encoder.assemble();
 
     final decoded = WebpImage(encoded);
     expect(decoded.info.canvas_width, 512);
