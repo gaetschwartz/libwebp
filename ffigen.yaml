@@ -1,0 +1,23 @@
+# Run with `flutter pub run ffigen --config ffigen.yaml`.
+output: "lib/libwebp_generated_bindings.dart"
+name: "LibwebpFlutterLibsBindings"
+description: "WebP image format library"
+comments:
+  style: any
+  length: full
+globals:
+  rename:
+    # Removes '_' from
+    # beginning of a name.
+    "_(.*)": "$1"
+preamble: |
+  // ignore_for_file: camel_case_types, non_constant_identifier_names, unused_element, unused_field
+headers:
+  entry-points:
+    - "libwebp/src/webp/decode.h"
+    - "libwebp/src/webp/encode.h"
+    - "libwebp/src/webp/mux.h"
+    - "libwebp/src/webp/demux.h"
+    - "libwebp/src/webp/mux_types.h"
+    - "libwebp/src/webp/format_constants.h"
+    - "libwebp/src/webp/types.h"
