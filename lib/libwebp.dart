@@ -10,8 +10,13 @@ const String _libName = 'libwebp_flutter_libs';
 
 /// The dynamic library in which the symbols for [LibwebpFlutterLibsBindings] can be found.
 final DynamicLibrary _dylib = () {
-  if (Platform.isMacOS || Platform.isIOS) {
+  if (Platform.isIOS) {
     return DynamicLibrary.open('$_libName.framework/$_libName');
+  }
+  if (Platform.isMacOS) {
+    const libName = 'libwebp';
+
+    return DynamicLibrary.open('$libName.framework/$libName');
   }
   if (Platform.isAndroid || Platform.isLinux) {
     return DynamicLibrary.open('lib$_libName.so');

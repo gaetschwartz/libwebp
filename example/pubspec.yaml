@@ -1,0 +1,25 @@
+name: example
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.3.1 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  libwebp:
+    path: ../
+  libwebp_flutter_libs:
+    path: ../libwebp_flutter_libs/
+  image: ^4.1.7
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
