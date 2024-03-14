@@ -35,13 +35,8 @@ final DynamicLibrary _dylib = () {
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }();
 
-final webPMemoryWritePtr = _dylib.lookup<
-    NativeFunction<
-        Int Function(
-          Pointer<Uint8>,
-          Size,
-          Pointer<bindings.WebPPicture>,
-        )>>('WebPMemoryWrite');
+final webPMemoryWritePtr = _dylib
+    .lookup<NativeFunction<bindings.NativeWebPMemoryWrite>>('WebPMemoryWrite');
 
 /// The bindings to the native functions in [_dylib].
 final libwebp = bindings.LibwebpFlutterLibsBindings(_dylib);

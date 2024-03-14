@@ -3521,12 +3521,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMemoryWritePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPPicture>)>>('WebPMemoryWrite');
-  late final _WebPMemoryWrite = _WebPMemoryWritePtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPPicture>)>();
+  late final _WebPMemoryWritePtr =
+      _lookup<ffi.NativeFunction<NativeWebPMemoryWrite>>('WebPMemoryWrite');
+  late final _WebPMemoryWrite =
+      _WebPMemoryWritePtr.asFunction<DartWebPMemoryWrite>();
 
   /// Internal, version-checked, entry point
   int WebPPictureInitInternal(
@@ -5288,6 +5286,11 @@ abstract class WebPPreset {
   /// text-like
   static const int WEBP_PRESET_TEXT = 5;
 }
+
+typedef NativeWebPMemoryWrite = ffi.Int Function(ffi.Pointer<ffi.Uint8> data,
+    ffi.Size data_size, ffi.Pointer<WebPPicture> picture);
+typedef DartWebPMemoryWrite = int Function(ffi.Pointer<ffi.Uint8> data,
+    int data_size, ffi.Pointer<WebPPicture> picture);
 
 const int VP8_SIGNATURE = 10289450;
 
