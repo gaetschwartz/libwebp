@@ -43,6 +43,18 @@ class WebPImage {
     return wrapper;
   }
 
+  factory WebPImage.native(FfiByteData data) {
+    final arena = Arena(calloc);
+    final dec = _animDecoder(arena, data);
+    final wrapper = WebPImage._(data: data, alloc: arena, decoder: dec);
+    _finalizer.attach(
+      wrapper,
+      (arena: arena, decoder: dec),
+      detach: wrapper,
+    );
+    return wrapper;
+  }
+
   WebPImage._({
     required FfiByteData data,
     required Allocator alloc,
