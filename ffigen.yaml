@@ -1,5 +1,5 @@
 # Run with `flutter pub run ffigen --config ffigen.yaml`.
-output: "lib/libwebp_generated_bindings.dart"
+output: "lib/src/libwebp_generated_bindings.dart"
 name: "LibwebpFlutterLibsBindings"
 description: "WebP image format library"
 comments:

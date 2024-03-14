@@ -1,7 +1,9 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
-import 'package:libwebp/libwebp_generated_bindings.dart';
+import 'package:ffi/ffi.dart';
+import 'package:libwebp/libwebp.dart' show libwebp;
+import 'package:libwebp/src/libwebp_generated_bindings.dart';
 
 // ignore: non_constant_identifier_names
 
@@ -67,4 +69,37 @@ extension IterableIntX on Iterable<int> {
   String get hexString {
     return map((e) => e.toRadixString(16).padLeft(2, '0')).join(' ');
   }
+}
+
+void check(int res, [String? message]) {
+  if (res == 0) {
+    throw LibWebpException(message ?? 'Failed with error code $res.');
+  }
+}
+
+class LibWebpException implements Exception {
+  final String message;
+
+  LibWebpException(this.message);
+
+  @override
+  String toString() => 'LibWebpException: $message';
+}
+
+class LibWebPAnimEncoderException implements LibWebpException {
+  final String error;
+  final String? context;
+
+  LibWebPAnimEncoderException.of(
+    Pointer<WebPAnimEncoder> encoder, [
+    this.context,
+  ]) : error = libwebp.WebPAnimEncoderGetError(encoder)
+            .cast<Utf8>()
+            .toDartString();
+
+  @override
+  String get message => '$error${context != null ? ' $context' : ''}';
+
+  @override
+  String toString() => 'LibWebpAnimEncoderException: $message';
 }

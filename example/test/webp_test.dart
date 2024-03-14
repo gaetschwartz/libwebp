@@ -79,7 +79,7 @@ void main() {
       width: 512,
       height: 512,
       timing: WebPAnimationTiming(frameDuration),
-      verbose: true,
+      options: const WebPAnimEncoderOptions(verbose: true),
     );
 
     encoder.add(webpImage);
@@ -106,7 +106,7 @@ void main() {
       height: 512,
       timing: const WebPAnimationTiming(100),
       config: config,
-      verbose: true,
+      options: const WebPAnimEncoderOptions(verbose: true),
     );
 
     encoder.add(WebPImage(xdd));
@@ -126,6 +126,53 @@ void main() {
     print('xdd-512x512-encoder.webp: ${file.path}');
   });
 
+  test('resize big file', () async {
+    final big = await load('hackerCD.webp');
+    final webPImage = WebPImage(big);
+    final fps = webPImage.fps;
+
+    final enc1 = WebPAnimEncoder(
+      width: 512,
+      height: 512,
+      timing: WebPAnimationTiming.fps(fps),
+      options: const WebPAnimEncoderOptions(verbose: true),
+    );
+
+    enc1.add(WebPImage(big));
+
+    final encoded1 = enc1.assemble();
+
+    final cfg = WebPConfig(quality: 0);
+    cfg.threadLevel = 1;
+    cfg.method = 6;
+    // cfg.targetSize = 500 * 1024 ~/ webPImage.info.frame_count;
+
+    final enc2 = WebPAnimEncoder(
+      width: 512,
+      height: 512,
+      timing: WebPAnimationTiming.fps(fps),
+      options: const WebPAnimEncoderOptions(verbose: true),
+      config: cfg,
+    );
+
+    enc2.add(WebPImage(big));
+
+    final encoded2 = enc2.assemble();
+
+    expect(encoded1.length, greaterThan(encoded2.length));
+
+    print('big: ${humanReadableSize(big.length)}');
+    print('encoded1: ${humanReadableSize(encoded1.length)}');
+    print('encoded2: ${humanReadableSize(encoded2.length)}');
+
+    final file1 = temp.file('hackerCD-512x512-encoder1.webp');
+    await file1.writeAsBytes(encoded1);
+    print('hackerCD-512x512-encoder1.webp: ${file1.path}');
+    final file2 = temp.file('hackerCD-512x512-encoder2.webp');
+    await file2.writeAsBytes(encoded2);
+    print('hackerCD-512x512-encoder2.webp: ${file2.path}');
+  }, timeout: const Timeout(Duration(minutes: 3)));
+
   test('WebpImage', () async {
     final xdd = await load('xdding.webp');
     final img = WebPImage(xdd);
@@ -139,4 +186,15 @@ void main() {
 
 extension DirectoryExtension on Directory {
   File file(String name) => File(path.join(this.path, name));
+}
+
+String humanReadableSize(int size) {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  var i = 0;
+  var s = size.toDouble();
+  while (s > 1024) {
+    s /= 1024;
+    i++;
+  }
+  return '${s.toStringAsFixed(2)} ${units[i]}';
 }

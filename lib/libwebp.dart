@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
-import 'package:libwebp/libwebp_generated_bindings.dart';
+import 'package:libwebp/src/libwebp_generated_bindings.dart';
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
 
+export 'src/anim_encoder.dart';
 export 'src/image.dart';
 
 bool get isTest => Platform.environment['FLUTTER_TEST'] == 'true';
@@ -94,7 +95,7 @@ Uint8List _resizeWebp(
   );
 
   final cfg = alloc<WebPConfig>();
-  _check(
+  check(
     libwebp.WebPConfigInitInternal(
       cfg,
       WebPPreset.WEBP_PRESET_DEFAULT,
@@ -107,7 +108,7 @@ Uint8List _resizeWebp(
 
   final animDecoder = _animDecoder(alloc, data);
   final info = alloc<WebPAnimInfo>();
-  _check(
+  check(
       libwebp.WebPAnimDecoderGetInfo(animDecoder, info), 'Failed to get info.');
   log.fine('''Rescaling WebP:
     canvas_width: ${info.ref.canvas_width}
@@ -121,29 +122,29 @@ Uint8List _resizeWebp(
   final buf = alloc<Pointer<Uint8>>();
   for (int i = 0; i < info.ref.frame_count; i++) {
     // print('frame $i');
-    _check(
+    check(
       libwebp.WebPAnimDecoderGetNext(animDecoder, buf, timestamp),
       'Failed to get next frame.',
     );
 
     final frame = alloc<WebPPicture>();
-    _check(
+    check(
       libwebp.WebPPictureInitInternal(frame, WEBP_ENCODER_ABI_VERSION),
       'Failed to init WebPPicture.',
     );
     frame.ref.use_argb = 1; // use ARGB
     frame.ref.width = curr.width;
     frame.ref.height = curr.height;
-    _check(
+    check(
       libwebp.WebPPictureAlloc(frame),
       'Failed to allocate WebPPicture.',
     );
-    _check(
+    check(
       libwebp.WebPPictureImportRGBA(frame, buf.value, curr.width * 4),
       'Failed to import frame $i to WebPPicture.',
     );
 
-    _check(
+    check(
       libwebp.WebPPictureRescale(
         frame,
         targetDimensions.width,
@@ -207,33 +208,6 @@ Pointer<WebPAnimDecoder> _animDecoder(Allocator a, FfiByteData data) {
   return decoder;
 }
 
-class LibWebpException implements Exception {
-  final String message;
-
-  LibWebpException(this.message);
-
-  @override
-  String toString() => 'LibWebpException: $message';
-}
-
-class LibWebPAnimEncoderException implements LibWebpException {
-  final String error;
-  final String? context;
-
-  LibWebPAnimEncoderException.of(
-    Pointer<WebPAnimEncoder> encoder, [
-    this.context,
-  ]) : error = libwebp.WebPAnimEncoderGetError(encoder)
-            .cast<Utf8>()
-            .toDartString();
-
-  @override
-  String get message => '$error${context != null ? ' $context' : ''}';
-
-  @override
-  String toString() => 'LibWebpAnimEncoderException: $message';
-}
-
 enum VP8StatusCode {
   ok(0),
   outOfMemory(1),
@@ -250,12 +224,6 @@ enum VP8StatusCode {
 
   factory VP8StatusCode.fromValue(int value) {
     return VP8StatusCode.values.firstWhere((e) => e.value == value);
-  }
-}
-
-void _check(int res, [String? message]) {
-  if (res == 0) {
-    throw LibWebpException(message ?? 'Failed with error code $res.');
   }
 }
 
