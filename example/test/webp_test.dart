@@ -73,16 +73,14 @@ void main() {
 
     final webpImage = WebPImage(xdding);
     print('frames: ${webpImage.frames.map((e) => e.timestamp).toList()}');
-    final frameDuration = webpImage.averageFrameDuration;
-    print('frameDuration: $frameDuration');
+    print('frameDuration: ${webpImage.averageFrameDuration}');
     final encoder = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: WebPAnimationTiming(frameDuration),
       options: const WebPAnimEncoderOptions(verbose: true),
     );
 
-    encoder.add(webpImage);
+    encoder.add(webpImage, webpImage.timings);
 
     final encoded = encoder.assemble();
 
@@ -104,13 +102,16 @@ void main() {
     final encoder = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: const WebPAnimationTiming(100),
       config: config,
       options: const WebPAnimEncoderOptions(verbose: true),
     );
 
-    encoder.add(WebPImage(xdd));
-    encoder.add(WebPImage(xdd));
+    const webPAnimationTimingAllFrames = WebPAnimationTimingAllFrames(
+      Duration(milliseconds: 100),
+    );
+
+    encoder.add(WebPImage(xdd), webPAnimationTimingAllFrames);
+    encoder.add(WebPImage(xdd), webPAnimationTimingAllFrames);
 
     expect(encoder.frameCount, 2);
 
@@ -129,16 +130,14 @@ void main() {
   test('resize big file', () async {
     final big = await load('hackerCD.webp');
     final webPImage = WebPImage(big);
-    final fps = webPImage.fps;
 
     final enc1 = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: WebPAnimationTiming.fps(fps),
       options: const WebPAnimEncoderOptions(verbose: true),
     );
 
-    enc1.add(WebPImage(big));
+    enc1.add(webPImage, webPImage.timings);
 
     final encoded1 = enc1.assemble();
 
@@ -150,12 +149,11 @@ void main() {
     final enc2 = WebPAnimEncoder(
       width: 512,
       height: 512,
-      timing: WebPAnimationTiming.fps(fps),
       options: const WebPAnimEncoderOptions(verbose: true),
       config: cfg,
     );
 
-    enc2.add(WebPImage(big));
+    enc2.add(webPImage, webPImage.timings);
 
     final encoded2 = enc2.assemble();
 

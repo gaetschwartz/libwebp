@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
+import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
@@ -13,56 +14,48 @@ typedef WebPEncoderFinalizable = ({
 });
 
 class WebPAnimEncoder {
+  static final _logger = Logger('WebPAnimEncoder');
   static final _finalizer = Finalizer<WebPEncoderFinalizable>((a) {
+    _logger.finest('Finalizing WebPAnimEncoder');
     a.arena.releaseAll();
     libwebp.WebPAnimEncoderDelete(a.encoder);
   });
+
   final Allocator _alloc;
   final Pointer<bindings.WebPAnimEncoder> _encoder;
   final WebPConfig? config;
   final int width;
   final int height;
-  final WebPAnimationTiming timing;
   final WebPAnimEncoderOptions options;
-  final Logger? _logger;
-  int _timestamp;
-  int _frames = 0;
-
-  int get currentTimestamp => _timestamp;
 
   factory WebPAnimEncoder({
     required int width,
     required int height,
-    required WebPAnimationTiming timing,
     WebPConfig? config,
     WebPAnimEncoderOptions options = const WebPAnimEncoderOptions(),
   }) {
-    final alloc = Arena(calloc);
+    final arena = Arena(calloc);
 
-    final opts = options.toNative(alloc);
+    final opts = options.toNative(arena);
 
-    final encoder = libwebp.WebPAnimEncoderNewInternal(
+    final encoder = checkAlloc(libwebp.WebPAnimEncoderNewInternal(
       width,
       height,
       opts,
       bindings.WEBP_MUX_ABI_VERSION,
-    );
-    if (encoder == nullptr) {
-      throw LibWebpException('Failed to create WebPAnimEncoder.');
-    }
+    ));
 
     final wrapper = WebPAnimEncoder._(
-      alloc: alloc,
+      alloc: arena,
       encoder: encoder,
       config: config,
       width: width,
       height: height,
-      timing: timing,
       options: options,
     );
     _finalizer.attach(
       wrapper,
-      (arena: alloc, encoder: encoder),
+      (arena: arena, encoder: encoder),
       detach: wrapper,
     );
     return wrapper;
@@ -74,23 +67,26 @@ class WebPAnimEncoder {
     required this.config,
     required this.width,
     required this.height,
-    required this.timing,
     required this.options,
   })  : _alloc = alloc,
         _encoder = encoder,
-        _timestamp = timing.value,
-        _logger = options.verbose ? Logger('WebpEncoder') : null;
+        _timestamp = 0;
+
+  int _timestamp;
+  int _frames = 0;
+
+  int get currentTimestamp => _timestamp;
 
   void _log(String message) {
-    _logger?.fine(message);
+    if (options.verbose) _logger.fine(message);
   }
 
-  void add(WebPImage image, {Duration delay = Duration.zero}) {
-    _timestamp += delay.inMilliseconds;
-
+  void add(WebPImage image, WebPAnimationTiming timings) {
     final info = image.info;
 
     _log("Adding image with ${info.frame_count} frames");
+
+    final frameStart = _frames;
 
     for (final frame in image.frames) {
       _log('  Adding frame $_frames at $_timestamp ms');
@@ -126,22 +122,15 @@ class WebPAnimEncoder {
         'Failed to rescale WebPPicture.',
       );
 
-      final added = libwebp.WebPAnimEncoderAdd(
-        _encoder,
-        pic,
-        _timestamp,
-        config.ptr,
+      check(
+        libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
+        'Failed to add frame $_frames to encoder.',
+        pic: pic,
+        encoder: _encoder,
       );
 
-      if (added == 0) {
-        throw LibWebPAnimEncoderException.of(
-          _encoder,
-          'Failed to add frame $_frames to encoder',
-        );
-      } else {
-        _timestamp += timing.value;
-        _frames++;
-      }
+      _timestamp += timings.resolve(_frames - frameStart).inMilliseconds;
+      _frames++;
 
       libwebp.WebPPictureFree(pic);
     }
@@ -162,20 +151,19 @@ class WebPAnimEncoder {
         config.ptr,
       ),
       'Failed to add blank frame to encoder.',
+      encoder: _encoder,
     );
 
     final data = _alloc<bindings.WebPData>();
 
-    final res = libwebp.WebPAnimEncoderAssemble(_encoder, data);
-    if (res == 0) {
-      throw LibWebPAnimEncoderException.of(
-        _encoder,
-        'Failed to assemble WebP.',
-      );
-    }
+    check(
+      libwebp.WebPAnimEncoderAssemble(_encoder, data),
+      'Failed to assemble WebP.',
+      encoder: _encoder,
+    );
     libwebp.WebPAnimEncoderDelete(_encoder);
 
-    return data.ref.bytes.asTypedList(data.ref.size);
+    return data.ref.asTypedList;
   }
 }
 
@@ -394,11 +382,15 @@ abstract class _WebpConfigBase {
 }
 
 class WebPConfig implements _WebpConfigBase {
+  static final _logger = Logger('WebPConfig');
+  static final _finalizer = Finalizer<Arena>((a) {
+    _logger.finest('Finalizing WebPConfig');
+    a.releaseAll();
+  });
+
   const WebPConfig.native(this._ffi);
 
   final Pointer<bindings.WebPConfig> _ffi;
-
-  static final _finalizer = Finalizer<Arena>((a) => a.releaseAll());
 
   factory WebPConfig({
     WebPPreset preset = WebPPreset.default_,
@@ -572,4 +564,28 @@ class WebPConfig implements _WebpConfigBase {
 
 extension on WebPConfig? {
   Pointer<bindings.WebPConfig> get ptr => this?._ffi ?? nullptr;
+}
+
+sealed class WebPAnimationTiming {
+  const WebPAnimationTiming();
+
+  Duration resolve(int frame);
+}
+
+class WebPAnimationTimingList implements WebPAnimationTiming {
+  final List<Duration> value;
+
+  const WebPAnimationTimingList(this.value);
+
+  @override
+  Duration resolve(int frame) => value[frame];
+}
+
+class WebPAnimationTimingAllFrames implements WebPAnimationTiming {
+  final Duration duration;
+
+  const WebPAnimationTimingAllFrames(this.duration);
+
+  @override
+  Duration resolve(int frame) => duration;
 }

@@ -3,9 +3,12 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
+import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
-import 'package:meta/meta.dart';
+import 'package:logging/logging.dart';
+
+export 'libwebp_generated_bindings.dart' show WebPAnimInfo;
 
 typedef WebPDecoderFinalizable = ({
   Arena arena,
@@ -19,7 +22,9 @@ class WebPImage {
 
   late final _infoPtr = _alloc<bindings.WebPAnimInfo>();
 
+  static final _logger = Logger('WebPImage');
   static final _finalizer = Finalizer<WebPDecoderFinalizable>((data) {
+    _logger.finest('Finalizing WebPImage.');
     data.arena.releaseAll();
     libwebp.WebPAnimDecoderDelete(data.decoder);
   });
@@ -47,28 +52,36 @@ class WebPImage {
         _decoder = decoder;
 
   bindings.WebPAnimInfo get info {
-    if (libwebp.WebPAnimDecoderGetInfo(_decoder, _infoPtr) == 0) {
-      throw LibWebpException('Failed to get info.');
-    }
+    check(
+      libwebp.WebPAnimDecoderGetInfo(_decoder, _infoPtr),
+      'Failed to get WebPAnimInfo.',
+    );
     return _infoPtr.ref;
   }
 
+  /// An iterable of frames in the WebP image. Frames data is only valid before
+  /// the next frame is decoded.
   Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
 
-  double get fps => 1000 * info.frame_count / frames.last.timestamp;
+  late final timings =
+      WebPAnimationTimingList(frames.map((e) => e.duration).toList());
 
-  int get averageFrameDuration => frames.last.timestamp ~/ info.frame_count;
+  double get fps => 1000 * info.frame_count / timings.value.last.inMilliseconds;
+
+  Duration get averageFrameDuration =>
+      timings.value.last ~/ timings.value.length;
 }
 
 class WebPFrame {
   final int timestamp;
-  @internal
+  final Duration duration;
   final Pointer<Uint8> data;
   final int width;
   final int height;
 
   WebPFrame({
     required this.timestamp,
+    required this.duration,
     required this.data,
     required this.width,
     required this.height,
@@ -76,26 +89,81 @@ class WebPFrame {
 
   Uint8List encode({
     double quality = 100,
-    int? width,
-    int? height,
-  }) =>
-      using((Arena alloc) {
-        final w = width ?? this.width;
-        final h = height ?? this.height;
-        final out = alloc<Pointer<Uint8>>();
-        final size = libwebp.WebPEncodeRGBA(
-          data,
-          w,
-          h,
-          w * 4,
-          quality,
-          out,
+    ({int width, int height})? targetDimensions,
+  }) {
+    if (targetDimensions case final dim?) {
+      return using((alloc) {
+        final pic = alloc<bindings.WebPPicture>();
+        check(
+          libwebp.WebPPictureInitInternal(
+              pic, bindings.WEBP_ENCODER_ABI_VERSION),
+          'Failed to init WebPPicture.',
         );
-        if (size == 0) {
-          throw LibWebpException('Failed to encode frame.');
-        }
+        pic.ref.use_argb = 1; // use ARGB
+        pic.ref.width = width;
+        pic.ref.height = height;
+        check(
+          libwebp.WebPPictureAlloc(pic),
+          'Failed to allocate WebPPicture.',
+        );
+
+        check(
+          libwebp.WebPPictureImportRGBA(pic, data, width * 4),
+          'Failed to import frame to WebPPicture.',
+        );
+
+        check(
+          libwebp.WebPPictureRescale(pic, dim.width, dim.height),
+          'Failed to rescale frame.',
+        );
+
+        final cfg = alloc<bindings.WebPConfig>();
+        check(
+          libwebp.WebPConfigInitInternal(
+            cfg,
+            bindings.WebPPreset.WEBP_PRESET_DEFAULT,
+            quality,
+            bindings.WEBP_ENCODER_ABI_VERSION,
+          ),
+          'Failed to init WebPConfig.',
+        );
+        final writer = alloc<bindings.WebPMemoryWriter>();
+        writer.ref.mem = nullptr;
+        writer.ref.size = 0;
+        writer.ref.max_size = 0;
+        pic.ref.custom_ptr = writer.cast();
+        pic.ref.writer = webPMemoryWritePtr;
+
+        check(
+          libwebp.WebPEncode(cfg, pic),
+          'Failed to encode WebP.',
+        );
+        libwebp.WebPPictureFree(pic);
+
+        final out =
+            Uint8List.fromList(writer.ref.mem.asTypedList(writer.ref.size));
+        libwebp.WebPMemoryWriterClear(writer);
+        return out;
+      });
+    } else {
+      return using((alloc) {
+        final out = alloc<Pointer<Uint8>>();
+        final size = check(
+          libwebp.WebPEncodeRGBA(
+            data,
+            width,
+            height,
+            width * 4,
+            quality,
+            out,
+          ),
+          'Failed to encode WebP.',
+        );
+
         return Uint8List.fromList(out.value.asTypedList(size));
       });
+    }
+  }
 }
 
 class WebPImageFramesIterable extends Iterable<WebPFrame> {
@@ -108,43 +176,69 @@ class WebPImageFramesIterable extends Iterable<WebPFrame> {
 }
 
 class WebPImageFramesIterator implements Iterator<WebPFrame> {
-  WebPFrame? _current;
-
-  static final _finalizer = Finalizer<Arena>(
-    (data) => data.releaseAll(),
+  static final _logger = Logger('WebPImageFramesIterator');
+  static final _finalizer = Finalizer<WebPDecoderFinalizable>(
+    (data) {
+      _logger.finest('Finalizing WebPImageFramesIterator.');
+      data.arena.releaseAll();
+      libwebp.WebPAnimDecoderDelete(data.decoder);
+    },
   );
 
-  final WebPImage _image;
   final Pointer<bindings.WebPAnimDecoder> _decoder;
   final Allocator _alloc;
 
-  WebPImageFramesIterator._(this._image, this._alloc)
-      : _decoder = _animDecoder(calloc, _image._data);
+  WebPImageFramesIterator._(this._alloc, this._decoder);
+
+  WebPFrame? _current;
 
   factory WebPImageFramesIterator(WebPImage image) {
-    final alloc = Arena(calloc);
-    final iterator = WebPImageFramesIterator._(image, alloc);
-    _finalizer.attach(iterator, alloc, detach: iterator);
-    return iterator;
+    final arena = Arena(calloc);
+    final dec = _animDecoder(
+      arena,
+      image._data,
+      colorMode: bindings.WEBP_CSP_MODE.MODE_RGBA,
+    );
+    final wrapper = WebPImageFramesIterator._(arena, dec);
+    _finalizer.attach(wrapper, (arena: arena, decoder: dec), detach: wrapper);
+    return wrapper;
   }
 
   @override
-  WebPFrame get current => _current!;
+  WebPFrame get current {
+    if (_current == null) {
+      throw StateError('No current frame.');
+    }
+    return _current!;
+  }
 
-  late final _info = _image.info;
+  late final _infoPtr = _alloc<bindings.WebPAnimInfo>();
+
+  late final _info = () {
+    check(
+      libwebp.WebPAnimDecoderGetInfo(_decoder, _infoPtr),
+      'Failed to get WebPAnimInfo.',
+    );
+    return _infoPtr;
+  }();
 
   @override
   bool moveNext() {
     final frame = _alloc<Pointer<Uint8>>();
-    final ms = _alloc<Int>();
-    if (libwebp.WebPAnimDecoderGetNext(_decoder, frame, ms) == 0) {
+    final ts = _alloc<Int>();
+    if (!libwebp.WebPAnimDecoderGetNext(_decoder, frame, ts).asCBoolean) {
       return false;
     }
+    final dur = switch (_current) {
+      final c? => Duration(milliseconds: ts.value - c.timestamp),
+      null => Duration(milliseconds: ts.value),
+    };
     _current = WebPFrame(
-      timestamp: ms.value,
+      timestamp: ts.value,
+      duration: dur,
       data: frame.value,
-      width: _info.canvas_width,
-      height: _info.canvas_height,
+      width: _info.ref.canvas_width,
+      height: _info.ref.canvas_height,
     );
     return true;
   }
@@ -165,33 +259,29 @@ enum WebPPreset {
 
 Pointer<bindings.WebPAnimDecoder> _animDecoder(
   Allocator alloc,
-  FfiByteData data,
-) {
-  final webpData = data.toWebPData(alloc);
+  FfiByteData data, {
+  int colorMode = bindings.WEBP_CSP_MODE.MODE_RGBA,
+}) {
+  final webpData = alloc<bindings.WebPData>()
+    ..ref.bytes = data.ptr
+    ..ref.size = data.size;
 
   final opt = alloc<bindings.WebPAnimDecoderOptions>();
-  libwebp.WebPAnimDecoderOptionsInitInternal(
-    opt,
-    bindings.WEBP_DEMUX_ABI_VERSION,
+  check(
+    libwebp.WebPAnimDecoderOptionsInitInternal(
+      opt,
+      bindings.WEBP_DEMUX_ABI_VERSION,
+    ),
+    'Failed to initialize WebPAnimDecoderOptions.',
   );
-  opt.ref.color_mode = bindings.WEBP_CSP_MODE.MODE_RGBA;
+  opt.ref.color_mode = colorMode;
   opt.ref.use_threads = 1;
 
-  final decoder = libwebp.WebPAnimDecoderNewInternal(
+  final decoder = checkAlloc(libwebp.WebPAnimDecoderNewInternal(
     webpData,
     opt,
     bindings.WEBP_DEMUX_ABI_VERSION,
-  );
-  if (decoder == nullptr) {
-    throw LibWebpException('Failed to create WebPAnimDecoder.');
-  }
+  ));
 
   return decoder;
-}
-
-class WebPAnimationTiming {
-  final int value;
-  const WebPAnimationTiming(this.value);
-
-  WebPAnimationTiming.fps(double fps) : value = 1000 ~/ fps;
 }
