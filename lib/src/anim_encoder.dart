@@ -566,13 +566,20 @@ extension on WebPConfig? {
   Pointer<bindings.WebPConfig> get ptr => this?._ffi ?? nullptr;
 }
 
+typedef WebPAnimationTimingMapper = Duration Function(
+    int frame, Duration duration);
+
 sealed class WebPAnimationTiming {
   const WebPAnimationTiming();
 
   Duration resolve(int frame);
+
+  WebPAnimationTiming map(WebPAnimationTimingMapper mapper) {
+    return WebPAnimationTimingMapped(this, mapper);
+  }
 }
 
-class WebPAnimationTimingList implements WebPAnimationTiming {
+class WebPAnimationTimingList extends WebPAnimationTiming {
   final List<Duration> value;
 
   const WebPAnimationTimingList(this.value);
@@ -581,11 +588,21 @@ class WebPAnimationTimingList implements WebPAnimationTiming {
   Duration resolve(int frame) => value[frame];
 }
 
-class WebPAnimationTimingAllFrames implements WebPAnimationTiming {
+class WebPAnimationTimingAllFrames extends WebPAnimationTiming {
   final Duration duration;
 
   const WebPAnimationTimingAllFrames(this.duration);
 
   @override
   Duration resolve(int frame) => duration;
+}
+
+class WebPAnimationTimingMapped extends WebPAnimationTiming {
+  final WebPAnimationTiming source;
+  final Duration Function(int frame, Duration duration) mapper;
+
+  const WebPAnimationTimingMapped(this.source, this.mapper);
+
+  @override
+  Duration resolve(int frame) => mapper(frame, source.resolve(frame));
 }
