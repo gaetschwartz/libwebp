@@ -603,6 +603,16 @@ class WebPAnimationTimingMapped extends WebPAnimationTiming {
 
   const WebPAnimationTimingMapped(this.source, this.mapper);
 
+  factory WebPAnimationTimingMapped.max(
+    WebPAnimationTiming source,
+    Duration max,
+  ) {
+    return WebPAnimationTimingMapped(
+      source,
+      (frame, duration) => duration < max ? duration : max,
+    );
+  }
+
   @override
   Duration resolve(int frame) => mapper(frame, source.resolve(frame));
 }
