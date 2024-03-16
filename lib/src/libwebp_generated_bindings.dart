@@ -22,1137 +22,162 @@ class LibwebpFlutterLibsBindings {
           lookup)
       : _lookup = lookup;
 
-  /// ANSI-C
-  ffi.Pointer<ffi.Void> memchr(
-    ffi.Pointer<ffi.Void> __s,
-    int __c,
-    int __n,
+  void __va_start(
+    ffi.Pointer<va_list> arg0,
   ) {
-    return _memchr(
-      __s,
-      __c,
-      __n,
-    );
-  }
-
-  late final _memchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memchr');
-  late final _memchr = _memchrPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
-
-  int memcmp(
-    ffi.Pointer<ffi.Void> __s1,
-    ffi.Pointer<ffi.Void> __s2,
-    int __n,
-  ) {
-    return _memcmp(
-      __s1,
-      __s2,
-      __n,
-    );
-  }
-
-  late final _memcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memcmp');
-  late final _memcmp = _memcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  ffi.Pointer<ffi.Void> memcpy(
-    ffi.Pointer<ffi.Void> __dst,
-    ffi.Pointer<ffi.Void> __src,
-    int __n,
-  ) {
-    return _memcpy(
-      __dst,
-      __src,
-      __n,
-    );
-  }
-
-  late final _memcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memcpy');
-  late final _memcpy = _memcpyPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  ffi.Pointer<ffi.Void> memmove(
-    ffi.Pointer<ffi.Void> __dst,
-    ffi.Pointer<ffi.Void> __src,
-    int __len,
-  ) {
-    return _memmove(
-      __dst,
-      __src,
-      __len,
-    );
-  }
-
-  late final _memmovePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memmove');
-  late final _memmove = _memmovePtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  ffi.Pointer<ffi.Void> memset(
-    ffi.Pointer<ffi.Void> __b,
-    int __c,
-    int __len,
-  ) {
-    return _memset(
-      __b,
-      __c,
-      __len,
-    );
-  }
-
-  late final _memsetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memset');
-  late final _memset = _memsetPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
-
-  ffi.Pointer<ffi.Char> strcat(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-  ) {
-    return _strcat(
-      __s1,
-      __s2,
-    );
-  }
-
-  late final _strcatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcat');
-  late final _strcat = _strcatPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strchr(
-    ffi.Pointer<ffi.Char> __s,
-    int __c,
-  ) {
-    return _strchr(
-      __s,
-      __c,
-    );
-  }
-
-  late final _strchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('strchr');
-  late final _strchr = _strchrPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int strcmp(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-  ) {
-    return _strcmp(
-      __s1,
-      __s2,
-    );
-  }
-
-  late final _strcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcmp');
-  late final _strcmp = _strcmpPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  int strcoll(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-  ) {
-    return _strcoll(
-      __s1,
-      __s2,
-    );
-  }
-
-  late final _strcollPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcoll');
-  late final _strcoll = _strcollPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strcpy(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __src,
-  ) {
-    return _strcpy(
-      __dst,
-      __src,
-    );
-  }
-
-  late final _strcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcpy');
-  late final _strcpy = _strcpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  int strcspn(
-    ffi.Pointer<ffi.Char> __s,
-    ffi.Pointer<ffi.Char> __charset,
-  ) {
-    return _strcspn(
-      __s,
-      __charset,
-    );
-  }
-
-  late final _strcspnPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcspn');
-  late final _strcspn = _strcspnPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strerror(
-    int __errnum,
-  ) {
-    return _strerror(
-      __errnum,
-    );
-  }
-
-  late final _strerrorPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
-          'strerror');
-  late final _strerror =
-      _strerrorPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
-
-  int strlen(
-    ffi.Pointer<ffi.Char> __s,
-  ) {
-    return _strlen(
-      __s,
-    );
-  }
-
-  late final _strlenPtr = _lookup<
-          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>)>>(
-      'strlen');
-  late final _strlen =
-      _strlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strncat(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-    int __n,
-  ) {
-    return _strncat(
-      __s1,
-      __s2,
-      __n,
-    );
-  }
-
-  late final _strncatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncat');
-  late final _strncat = _strncatPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  int strncmp(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-    int __n,
-  ) {
-    return _strncmp(
-      __s1,
-      __s2,
-      __n,
-    );
-  }
-
-  late final _strncmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('strncmp');
-  late final _strncmp = _strncmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strncpy(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __src,
-    int __n,
-  ) {
-    return _strncpy(
-      __dst,
-      __src,
-      __n,
-    );
-  }
-
-  late final _strncpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncpy');
-  late final _strncpy = _strncpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strpbrk(
-    ffi.Pointer<ffi.Char> __s,
-    ffi.Pointer<ffi.Char> __charset,
-  ) {
-    return _strpbrk(
-      __s,
-      __charset,
-    );
-  }
-
-  late final _strpbrkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strpbrk');
-  late final _strpbrk = _strpbrkPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strrchr(
-    ffi.Pointer<ffi.Char> __s,
-    int __c,
-  ) {
-    return _strrchr(
-      __s,
-      __c,
-    );
-  }
-
-  late final _strrchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('strrchr');
-  late final _strrchr = _strrchrPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int strspn(
-    ffi.Pointer<ffi.Char> __s,
-    ffi.Pointer<ffi.Char> __charset,
-  ) {
-    return _strspn(
-      __s,
-      __charset,
-    );
-  }
-
-  late final _strspnPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strspn');
-  late final _strspn = _strspnPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strstr(
-    ffi.Pointer<ffi.Char> __big,
-    ffi.Pointer<ffi.Char> __little,
-  ) {
-    return _strstr(
-      __big,
-      __little,
-    );
-  }
-
-  late final _strstrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strstr');
-  late final _strstr = _strstrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strtok(
-    ffi.Pointer<ffi.Char> __str,
-    ffi.Pointer<ffi.Char> __sep,
-  ) {
-    return _strtok(
-      __str,
-      __sep,
-    );
-  }
-
-  late final _strtokPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strtok');
-  late final _strtok = _strtokPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  int strxfrm(
-    ffi.Pointer<ffi.Char> __s1,
-    ffi.Pointer<ffi.Char> __s2,
-    int __n,
-  ) {
-    return _strxfrm(
-      __s1,
-      __s2,
-      __n,
-    );
-  }
-
-  late final _strxfrmPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strxfrm');
-  late final _strxfrm = _strxfrmPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strtok_r(
-    ffi.Pointer<ffi.Char> __str,
-    ffi.Pointer<ffi.Char> __sep,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __lasts,
-  ) {
-    return _strtok_r(
-      __str,
-      __sep,
-      __lasts,
-    );
-  }
-
-  late final _strtok_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtok_r');
-  late final _strtok_r = _strtok_rPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
-
-  int strerror_r(
-    int __errnum,
-    ffi.Pointer<ffi.Char> __strerrbuf,
-    int __buflen,
-  ) {
-    return _strerror_r(
-      __errnum,
-      __strerrbuf,
-      __buflen,
-    );
-  }
-
-  late final _strerror_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strerror_r');
-  late final _strerror_r = _strerror_rPtr
-      .asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strdup(
-    ffi.Pointer<ffi.Char> __s1,
-  ) {
-    return _strdup(
-      __s1,
-    );
-  }
-
-  late final _strdupPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strdup');
-  late final _strdup = _strdupPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Void> memccpy(
-    ffi.Pointer<ffi.Void> __dst,
-    ffi.Pointer<ffi.Void> __src,
-    int __c,
-    int __n,
-  ) {
-    return _memccpy(
-      __dst,
-      __src,
-      __c,
-      __n,
-    );
-  }
-
-  late final _memccpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memccpy');
-  late final _memccpy = _memccpyPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
-
-  ffi.Pointer<ffi.Char> stpcpy(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __src,
-  ) {
-    return _stpcpy(
-      __dst,
-      __src,
-    );
-  }
-
-  late final _stpcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('stpcpy');
-  late final _stpcpy = _stpcpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> stpncpy(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __src,
-    int __n,
-  ) {
-    return _stpncpy(
-      __dst,
-      __src,
-      __n,
-    );
-  }
-
-  late final _stpncpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('stpncpy');
-  late final _stpncpy = _stpncpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strndup(
-    ffi.Pointer<ffi.Char> __s1,
-    int __n,
-  ) {
-    return _strndup(
-      __s1,
-      __n,
-    );
-  }
-
-  late final _strndupPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strndup');
-  late final _strndup = _strndupPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int strnlen(
-    ffi.Pointer<ffi.Char> __s1,
-    int __n,
-  ) {
-    return _strnlen(
-      __s1,
-      __n,
-    );
-  }
-
-  late final _strnlenPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('strnlen');
-  late final _strnlen =
-      _strnlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> strsignal(
-    int __sig,
-  ) {
-    return _strsignal(
-      __sig,
-    );
-  }
-
-  late final _strsignalPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
-          'strsignal');
-  late final _strsignal =
-      _strsignalPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
-
-  int memset_s(
-    ffi.Pointer<ffi.Void> __s,
-    int __smax,
-    int __c,
-    int __n,
-  ) {
-    return _memset_s(
-      __s,
-      __smax,
-      __c,
-      __n,
-    );
-  }
-
-  late final _memset_sPtr = _lookup<
-      ffi.NativeFunction<
-          errno_t Function(
-              ffi.Pointer<ffi.Void>, rsize_t, ffi.Int, rsize_t)>>('memset_s');
-  late final _memset_s = _memset_sPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Void>, int, int, int)>();
-
-  ffi.Pointer<ffi.Void> memmem(
-    ffi.Pointer<ffi.Void> __big,
-    int __big_len,
-    ffi.Pointer<ffi.Void> __little,
-    int __little_len,
-  ) {
-    return _memmem(
-      __big,
-      __big_len,
-      __little,
-      __little_len,
-    );
-  }
-
-  late final _memmemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memmem');
-  late final _memmem = _memmemPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Void>, int)>();
-
-  void memset_pattern4(
-    ffi.Pointer<ffi.Void> __b,
-    ffi.Pointer<ffi.Void> __pattern4,
-    int __len,
-  ) {
-    return _memset_pattern4(
-      __b,
-      __pattern4,
-      __len,
-    );
-  }
-
-  late final _memset_pattern4Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern4');
-  late final _memset_pattern4 = _memset_pattern4Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  void memset_pattern8(
-    ffi.Pointer<ffi.Void> __b,
-    ffi.Pointer<ffi.Void> __pattern8,
-    int __len,
-  ) {
-    return _memset_pattern8(
-      __b,
-      __pattern8,
-      __len,
-    );
-  }
-
-  late final _memset_pattern8Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern8');
-  late final _memset_pattern8 = _memset_pattern8Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  void memset_pattern16(
-    ffi.Pointer<ffi.Void> __b,
-    ffi.Pointer<ffi.Void> __pattern16,
-    int __len,
-  ) {
-    return _memset_pattern16(
-      __b,
-      __pattern16,
-      __len,
-    );
-  }
-
-  late final _memset_pattern16Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern16');
-  late final _memset_pattern16 = _memset_pattern16Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  ffi.Pointer<ffi.Char> strcasestr(
-    ffi.Pointer<ffi.Char> __big,
-    ffi.Pointer<ffi.Char> __little,
-  ) {
-    return _strcasestr(
-      __big,
-      __little,
-    );
-  }
-
-  late final _strcasestrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcasestr');
-  late final _strcasestr = _strcasestrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strnstr(
-    ffi.Pointer<ffi.Char> __big,
-    ffi.Pointer<ffi.Char> __little,
-    int __len,
-  ) {
-    return _strnstr(
-      __big,
-      __little,
-      __len,
-    );
-  }
-
-  late final _strnstrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strnstr');
-  late final _strnstr = _strnstrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  int strlcat(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __source,
-    int __size,
-  ) {
-    return _strlcat(
-      __dst,
-      __source,
-      __size,
-    );
-  }
-
-  late final _strlcatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strlcat');
-  late final _strlcat = _strlcatPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  int strlcpy(
-    ffi.Pointer<ffi.Char> __dst,
-    ffi.Pointer<ffi.Char> __source,
-    int __size,
-  ) {
-    return _strlcpy(
-      __dst,
-      __source,
-      __size,
-    );
-  }
-
-  late final _strlcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strlcpy');
-  late final _strlcpy = _strlcpyPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  void strmode(
-    int __mode,
-    ffi.Pointer<ffi.Char> __bp,
-  ) {
-    return _strmode(
-      __mode,
-      __bp,
-    );
-  }
-
-  late final _strmodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>('strmode');
-  late final _strmode =
-      _strmodePtr.asFunction<void Function(int, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<ffi.Char> strsep(
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __stringp,
-    ffi.Pointer<ffi.Char> __delim,
-  ) {
-    return _strsep(
-      __stringp,
-      __delim,
-    );
-  }
-
-  late final _strsepPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Char>)>>('strsep');
-  late final _strsep = _strsepPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)>();
-
-  /// SUS places swab() in unistd.h.  It is listed here for source compatibility
-  void swab(
-    ffi.Pointer<ffi.Void> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-    int arg2,
-  ) {
-    return _swab(
+    return ___va_start(
       arg0,
-      arg1,
-      arg2,
     );
   }
 
-  late final _swabPtr = _lookup<
+  late final ___va_startPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<va_list>)>>(
+          '__va_start');
+  late final ___va_start =
+      ___va_startPtr.asFunction<void Function(ffi.Pointer<va_list>)>();
+
+  void __security_init_cookie() {
+    return ___security_init_cookie();
+  }
+
+  late final ___security_init_cookiePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          '__security_init_cookie');
+  late final ___security_init_cookie =
+      ___security_init_cookiePtr.asFunction<void Function()>();
+
+  void __security_check_cookie(
+    int _StackCookie,
+  ) {
+    return ___security_check_cookie(
+      _StackCookie,
+    );
+  }
+
+  late final ___security_check_cookiePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.UintPtr)>>(
+          '__security_check_cookie');
+  late final ___security_check_cookie =
+      ___security_check_cookiePtr.asFunction<void Function(int)>();
+
+  void __report_gsfailure(
+    int _StackCookie,
+  ) {
+    return ___report_gsfailure(
+      _StackCookie,
+    );
+  }
+
+  late final ___report_gsfailurePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.UintPtr)>>(
+          '__report_gsfailure');
+  late final ___report_gsfailure =
+      ___report_gsfailurePtr.asFunction<void Function(int)>();
+
+  late final ffi.Pointer<ffi.UintPtr> __security_cookie =
+      _lookup<ffi.UintPtr>('__security_cookie');
+
+  int get _security_cookie => __security_cookie.value;
+
+  set _security_cookie(int value) => __security_cookie.value = value;
+
+  void _invalid_parameter_noinfo() {
+    return __invalid_parameter_noinfo();
+  }
+
+  late final __invalid_parameter_noinfoPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          '_invalid_parameter_noinfo');
+  late final __invalid_parameter_noinfo =
+      __invalid_parameter_noinfoPtr.asFunction<void Function()>();
+
+  void _invalid_parameter_noinfo_noreturn() {
+    return __invalid_parameter_noinfo_noreturn();
+  }
+
+  late final __invalid_parameter_noinfo_noreturnPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          '_invalid_parameter_noinfo_noreturn');
+  late final __invalid_parameter_noinfo_noreturn =
+      __invalid_parameter_noinfo_noreturnPtr.asFunction<void Function()>();
+
+  void _invoke_watson(
+    ffi.Pointer<ffi.WChar> _Expression,
+    ffi.Pointer<ffi.WChar> _FunctionName,
+    ffi.Pointer<ffi.WChar> _FileName,
+    int _LineNo,
+    int _Reserved,
+  ) {
+    return __invoke_watson(
+      _Expression,
+      _FunctionName,
+      _FileName,
+      _LineNo,
+      _Reserved,
+    );
+  }
+
+  late final __invoke_watsonPtr = _lookup<
       ffi.NativeFunction<
           ffi.Void Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ssize_t)>>('swab');
-  late final _swab = _swabPtr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>,
+              ffi.UnsignedInt,
+              ffi.UintPtr)>>('_invoke_watson');
+  late final __invoke_watson = __invoke_watsonPtr.asFunction<
+      void Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+          ffi.Pointer<ffi.WChar>, int, int)>();
 
-  int timingsafe_bcmp(
-    ffi.Pointer<ffi.Void> __b1,
-    ffi.Pointer<ffi.Void> __b2,
-    int __len,
+  ffi.Pointer<ffi.Int> _errno() {
+    return __errno();
+  }
+
+  late final __errnoPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int> Function()>>('_errno');
+  late final __errno = __errnoPtr.asFunction<ffi.Pointer<ffi.Int> Function()>();
+
+  int _set_errno(
+    int _Value,
   ) {
-    return _timingsafe_bcmp(
-      __b1,
-      __b2,
-      __len,
+    return __set_errno(
+      _Value,
     );
   }
 
-  late final _timingsafe_bcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('timingsafe_bcmp');
-  late final _timingsafe_bcmp = _timingsafe_bcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final __set_errnoPtr =
+      _lookup<ffi.NativeFunction<errno_t Function(ffi.Int)>>('_set_errno');
+  late final __set_errno = __set_errnoPtr.asFunction<int Function(int)>();
 
-  int strsignal_r(
-    int __sig,
-    ffi.Pointer<ffi.Char> __strsignalbuf,
-    int __buflen,
+  int _get_errno(
+    ffi.Pointer<ffi.Int> _Value,
   ) {
-    return _strsignal_r(
-      __sig,
-      __strsignalbuf,
-      __buflen,
+    return __get_errno(
+      _Value,
     );
   }
 
-  late final _strsignal_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strsignal_r');
-  late final _strsignal_r = _strsignal_rPtr
-      .asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
+  late final __get_errnoPtr =
+      _lookup<ffi.NativeFunction<errno_t Function(ffi.Pointer<ffi.Int>)>>(
+          '_get_errno');
+  late final __get_errno =
+      __get_errnoPtr.asFunction<int Function(ffi.Pointer<ffi.Int>)>();
 
-  int bcmp(
-    ffi.Pointer<ffi.Void> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-    int arg2,
-  ) {
-    return _bcmp(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int __threadid() {
+    return ___threadid();
   }
 
-  late final _bcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>('bcmp');
-  late final _bcmp = _bcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final ___threadidPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function()>>('__threadid');
+  late final ___threadid = ___threadidPtr.asFunction<int Function()>();
 
-  void bcopy(
-    ffi.Pointer<ffi.Void> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-    int arg2,
-  ) {
-    return _bcopy(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int __threadhandle() {
+    return ___threadhandle();
   }
 
-  late final _bcopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('bcopy');
-  late final _bcopy = _bcopyPtr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
-
-  void bzero(
-    ffi.Pointer<ffi.Void> arg0,
-    int arg1,
-  ) {
-    return _bzero(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _bzeroPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Size)>>('bzero');
-  late final _bzero =
-      _bzeroPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
-
-  ffi.Pointer<ffi.Char> index(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-  ) {
-    return _index(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _indexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('index');
-  late final _index = _indexPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<ffi.Char> rindex(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-  ) {
-    return _rindex(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _rindexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('rindex');
-  late final _rindex = _rindexPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int ffs(
-    int arg0,
-  ) {
-    return _ffs(
-      arg0,
-    );
-  }
-
-  late final _ffsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('ffs');
-  late final _ffs = _ffsPtr.asFunction<int Function(int)>();
-
-  int strcasecmp(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-  ) {
-    return _strcasecmp(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _strcasecmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcasecmp');
-  late final _strcasecmp = _strcasecmpPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  int strncasecmp(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    int arg2,
-  ) {
-    return _strncasecmp(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _strncasecmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('strncasecmp');
-  late final _strncasecmp = _strncasecmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  int ffsl(
-    int arg0,
-  ) {
-    return _ffsl(
-      arg0,
-    );
-  }
-
-  late final _ffslPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('ffsl');
-  late final _ffsl = _ffslPtr.asFunction<int Function(int)>();
-
-  int ffsll(
-    int arg0,
-  ) {
-    return _ffsll(
-      arg0,
-    );
-  }
-
-  late final _ffsllPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('ffsll');
-  late final _ffsll = _ffsllPtr.asFunction<int Function(int)>();
-
-  int fls(
-    int arg0,
-  ) {
-    return _fls(
-      arg0,
-    );
-  }
-
-  late final _flsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('fls');
-  late final _fls = _flsPtr.asFunction<int Function(int)>();
-
-  int flsl(
-    int arg0,
-  ) {
-    return _flsl(
-      arg0,
-    );
-  }
-
-  late final _flslPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('flsl');
-  late final _flsl = _flslPtr.asFunction<int Function(int)>();
-
-  int flsll(
-    int arg0,
-  ) {
-    return _flsll(
-      arg0,
-    );
-  }
-
-  late final _flsllPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('flsll');
-  late final _flsll = _flsllPtr.asFunction<int Function(int)>();
-
-  /// 7.8.2.1
-  int imaxabs(
-    int j,
-  ) {
-    return _imaxabs(
-      j,
-    );
-  }
-
-  late final _imaxabsPtr =
-      _lookup<ffi.NativeFunction<intmax_t Function(intmax_t)>>('imaxabs');
-  late final _imaxabs = _imaxabsPtr.asFunction<int Function(int)>();
-
-  imaxdiv_t imaxdiv(
-    int __numer,
-    int __denom,
-  ) {
-    return _imaxdiv(
-      __numer,
-      __denom,
-    );
-  }
-
-  late final _imaxdivPtr =
-      _lookup<ffi.NativeFunction<imaxdiv_t Function(intmax_t, intmax_t)>>(
-          'imaxdiv');
-  late final _imaxdiv = _imaxdivPtr.asFunction<imaxdiv_t Function(int, int)>();
-
-  /// 7.8.2.3
-  int strtoimax(
-    ffi.Pointer<ffi.Char> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
-    int __base,
-  ) {
-    return _strtoimax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _strtoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoimax');
-  late final _strtoimax = _strtoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  int strtoumax(
-    ffi.Pointer<ffi.Char> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
-    int __base,
-  ) {
-    return _strtoumax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _strtoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoumax');
-  late final _strtoumax = _strtoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  /// 7.8.2.4
-  int wcstoimax(
-    ffi.Pointer<ffi.WChar> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
-    int __base,
-  ) {
-    return _wcstoimax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _wcstoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoimax');
-  late final _wcstoimax = _wcstoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
-
-  int wcstoumax(
-    ffi.Pointer<ffi.WChar> __nptr,
-    ffi.Pointer<ffi.Pointer<ffi.WChar>> __endptr,
-    int __base,
-  ) {
-    return _wcstoumax(
-      __nptr,
-      __endptr,
-      __base,
-    );
-  }
-
-  late final _wcstoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoumax');
-  late final _wcstoumax = _wcstoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
+  late final ___threadhandlePtr =
+      _lookup<ffi.NativeFunction<ffi.UintPtr Function()>>('__threadhandle');
+  late final ___threadhandle = ___threadhandlePtr.asFunction<int Function()>();
 
   /// Allocates 'size' bytes of memory. Returns NULL upon error. Memory
   /// must be deallocated by calling WebPFree(). This function is made available
@@ -1185,654 +210,6 @@ class LibwebpFlutterLibsBindings {
           'WebPFree');
   late final _WebPFree =
       _WebPFreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  /// Returns the version number of the mux library, packed in hexadecimal using
-  /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-  int WebPGetMuxVersion() {
-    return _WebPGetMuxVersion();
-  }
-
-  late final _WebPGetMuxVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetMuxVersion');
-  late final _WebPGetMuxVersion =
-      _WebPGetMuxVersionPtr.asFunction<int Function()>();
-
-  /// Internal, version-checked, entry point
-  ffi.Pointer<WebPMux> WebPNewInternal(
-    int arg0,
-  ) {
-    return _WebPNewInternal(
-      arg0,
-    );
-  }
-
-  late final _WebPNewInternalPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<WebPMux> Function(ffi.Int)>>(
-          'WebPNewInternal');
-  late final _WebPNewInternal =
-      _WebPNewInternalPtr.asFunction<ffi.Pointer<WebPMux> Function(int)>();
-
-  /// Deletes the mux object.
-  /// Parameters:
-  /// mux - (in/out) object to be deleted
-  void WebPMuxDelete(
-    ffi.Pointer<WebPMux> mux,
-  ) {
-    return _WebPMuxDelete(
-      mux,
-    );
-  }
-
-  late final _WebPMuxDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMux>)>>(
-          'WebPMuxDelete');
-  late final _WebPMuxDelete =
-      _WebPMuxDeletePtr.asFunction<void Function(ffi.Pointer<WebPMux>)>();
-
-  /// Internal, version-checked, entry point
-  ffi.Pointer<WebPMux> WebPMuxCreateInternal(
-    ffi.Pointer<WebPData> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _WebPMuxCreateInternal(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _WebPMuxCreateInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, ffi.Int,
-              ffi.Int)>>('WebPMuxCreateInternal');
-  late final _WebPMuxCreateInternal = _WebPMuxCreateInternalPtr.asFunction<
-      ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, int, int)>();
-
-  /// Adds a chunk with id 'fourcc' and data 'chunk_data' in the mux object.
-  /// Any existing chunk(s) with the same id will be removed.
-  /// Parameters:
-  /// mux - (in/out) object to which the chunk is to be added
-  /// fourcc - (in) a character array containing the fourcc of the given chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF" etc.
-  /// chunk_data - (in) the chunk data to be added
-  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux, fourcc or chunk_data is NULL
-  /// or if fourcc corresponds to an image chunk.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxSetChunk(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<ffi.Char> fourcc,
-    ffi.Pointer<WebPData> chunk_data,
-    int copy_data,
-  ) {
-    return _WebPMuxSetChunk(
-      mux,
-      fourcc,
-      chunk_data,
-      copy_data,
-    );
-  }
-
-  late final _WebPMuxSetChunkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>, ffi.Int)>>('WebPMuxSetChunk');
-  late final _WebPMuxSetChunk = _WebPMuxSetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>, int)>();
-
-  /// Gets a reference to the data of the chunk with id 'fourcc' in the mux object.
-  /// The caller should NOT free the returned data.
-  /// Parameters:
-  /// mux - (in) object from which the chunk data is to be fetched
-  /// fourcc - (in) a character array containing the fourcc of the chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF" etc.
-  /// chunk_data - (out) returned chunk data
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux, fourcc or chunk_data is NULL
-  /// or if fourcc corresponds to an image chunk.
-  /// WEBP_MUX_NOT_FOUND - If mux does not contain a chunk with the given id.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxGetChunk(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<ffi.Char> fourcc,
-    ffi.Pointer<WebPData> chunk_data,
-  ) {
-    return _WebPMuxGetChunk(
-      mux,
-      fourcc,
-      chunk_data,
-    );
-  }
-
-  late final _WebPMuxGetChunkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>)>>('WebPMuxGetChunk');
-  late final _WebPMuxGetChunk = _WebPMuxGetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>)>();
-
-  /// Deletes the chunk with the given 'fourcc' from the mux object.
-  /// Parameters:
-  /// mux - (in/out) object from which the chunk is to be deleted
-  /// fourcc - (in) a character array containing the fourcc of the chunk;
-  /// e.g., "ICCP", "XMP ", "EXIF" etc.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or fourcc is NULL
-  /// or if fourcc corresponds to an image chunk.
-  /// WEBP_MUX_NOT_FOUND - If mux does not contain a chunk with the given fourcc.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxDeleteChunk(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<ffi.Char> fourcc,
-  ) {
-    return _WebPMuxDeleteChunk(
-      mux,
-      fourcc,
-    );
-  }
-
-  late final _WebPMuxDeleteChunkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<ffi.Char>)>>('WebPMuxDeleteChunk');
-  late final _WebPMuxDeleteChunk = _WebPMuxDeleteChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>)>();
-
-  /// Sets the (non-animated) image in the mux object.
-  /// Note: Any existing images (including frames) will be removed.
-  /// Parameters:
-  /// mux - (in/out) object in which the image is to be set
-  /// bitstream - (in) can be a raw VP8/VP8L bitstream or a single-image
-  /// WebP file (non-animated)
-  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL or bitstream is NULL.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxSetImage(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<WebPData> bitstream,
-    int copy_data,
-  ) {
-    return _WebPMuxSetImage(
-      mux,
-      bitstream,
-      copy_data,
-    );
-  }
-
-  late final _WebPMuxSetImagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>,
-              ffi.Int)>>('WebPMuxSetImage');
-  late final _WebPMuxSetImage = _WebPMuxSetImagePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>, int)>();
-
-  /// Adds a frame at the end of the mux object.
-  /// Notes: (1) frame.id should be WEBP_CHUNK_ANMF
-  /// (2) For setting a non-animated image, use WebPMuxSetImage() instead.
-  /// (3) Type of frame being pushed must be same as the frames in mux.
-  /// (4) As WebP only supports even offsets, any odd offset will be snapped
-  /// to an even location using: offset &= ~1
-  /// Parameters:
-  /// mux - (in/out) object to which the frame is to be added
-  /// frame - (in) frame data.
-  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
-  /// object and value 0 indicates data will NOT be copied.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or frame is NULL
-  /// or if content of 'frame' is invalid.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxPushFrame(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<WebPMuxFrameInfo> frame,
-    int copy_data,
-  ) {
-    return _WebPMuxPushFrame(
-      mux,
-      frame,
-      copy_data,
-    );
-  }
-
-  late final _WebPMuxPushFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxFrameInfo>, ffi.Int)>>('WebPMuxPushFrame');
-  late final _WebPMuxPushFrame = _WebPMuxPushFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxFrameInfo>, int)>();
-
-  /// Gets the nth frame from the mux object.
-  /// The content of 'frame->bitstream' is allocated using WebPMalloc(), and NOT
-  /// owned by the 'mux' object. It MUST be deallocated by the caller by calling
-  /// WebPDataClear().
-  /// nth=0 has a special meaning - last position.
-  /// Parameters:
-  /// mux - (in) object from which the info is to be fetched
-  /// nth - (in) index of the frame in the mux object
-  /// frame - (out) data of the returned frame
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or frame is NULL.
-  /// WEBP_MUX_NOT_FOUND - if there are less than nth frames in the mux object.
-  /// WEBP_MUX_BAD_DATA - if nth frame chunk in mux is invalid.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxGetFrame(
-    ffi.Pointer<WebPMux> mux,
-    int nth,
-    ffi.Pointer<WebPMuxFrameInfo> frame,
-  ) {
-    return _WebPMuxGetFrame(
-      mux,
-      nth,
-      frame,
-    );
-  }
-
-  late final _WebPMuxGetFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Uint32,
-              ffi.Pointer<WebPMuxFrameInfo>)>>('WebPMuxGetFrame');
-  late final _WebPMuxGetFrame = _WebPMuxGetFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<WebPMuxFrameInfo>)>();
-
-  /// Deletes a frame from the mux object.
-  /// nth=0 has a special meaning - last position.
-  /// Parameters:
-  /// mux - (in/out) object from which a frame is to be deleted
-  /// nth - (in) The position from which the frame is to be deleted
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL.
-  /// WEBP_MUX_NOT_FOUND - If there are less than nth frames in the mux object
-  /// before deletion.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxDeleteFrame(
-    ffi.Pointer<WebPMux> mux,
-    int nth,
-  ) {
-    return _WebPMuxDeleteFrame(
-      mux,
-      nth,
-    );
-  }
-
-  late final _WebPMuxDeleteFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Uint32)>>('WebPMuxDeleteFrame');
-  late final _WebPMuxDeleteFrame = _WebPMuxDeleteFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int)>();
-
-  /// Sets the animation parameters in the mux object. Any existing ANIM chunks
-  /// will be removed.
-  /// Parameters:
-  /// mux - (in/out) object in which ANIM chunk is to be set/added
-  /// params - (in) animation parameters.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or params is NULL.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxSetAnimationParams(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<WebPMuxAnimParams> params,
-  ) {
-    return _WebPMuxSetAnimationParams(
-      mux,
-      params,
-    );
-  }
-
-  late final _WebPMuxSetAnimationParamsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxSetAnimationParams');
-  late final _WebPMuxSetAnimationParams =
-      _WebPMuxSetAnimationParamsPtr.asFunction<
-          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
-
-  /// Gets the animation parameters from the mux object.
-  /// Parameters:
-  /// mux - (in) object from which the animation parameters to be fetched
-  /// params - (out) animation parameters extracted from the ANIM chunk
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or params is NULL.
-  /// WEBP_MUX_NOT_FOUND - if ANIM chunk is not present in mux object.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxGetAnimationParams(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<WebPMuxAnimParams> params,
-  ) {
-    return _WebPMuxGetAnimationParams(
-      mux,
-      params,
-    );
-  }
-
-  late final _WebPMuxGetAnimationParamsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxGetAnimationParams');
-  late final _WebPMuxGetAnimationParams =
-      _WebPMuxGetAnimationParamsPtr.asFunction<
-          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
-
-  /// Sets the canvas size for the mux object. The width and height can be
-  /// specified explicitly or left as zero (0, 0).
-  /// * When width and height are specified explicitly, then this frame bound is
-  /// enforced during subsequent calls to WebPMuxAssemble() and an error is
-  /// reported if any animated frame does not completely fit within the canvas.
-  /// * When unspecified (0, 0), the constructed canvas will get the frame bounds
-  /// from the bounding-box over all frames after calling WebPMuxAssemble().
-  /// Parameters:
-  /// mux - (in) object to which the canvas size is to be set
-  /// width - (in) canvas width
-  /// height - (in) canvas height
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL; or
-  /// width or height are invalid or out of bounds
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxSetCanvasSize(
-    ffi.Pointer<WebPMux> mux,
-    int width,
-    int height,
-  ) {
-    return _WebPMuxSetCanvasSize(
-      mux,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPMuxSetCanvasSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Int, ffi.Int)>>('WebPMuxSetCanvasSize');
-  late final _WebPMuxSetCanvasSize = _WebPMuxSetCanvasSizePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, int)>();
-
-  /// Gets the canvas size from the mux object.
-  /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
-  /// That is, the mux object hasn't been modified since the last call to
-  /// WebPMuxAssemble() or WebPMuxCreate().
-  /// Parameters:
-  /// mux - (in) object from which the canvas size is to be fetched
-  /// width - (out) canvas width
-  /// height - (out) canvas height
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux, width or height is NULL.
-  /// WEBP_MUX_BAD_DATA - if VP8X/VP8/VP8L chunk or canvas size is invalid.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxGetCanvasSize(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<ffi.Int> width,
-    ffi.Pointer<ffi.Int> height,
-  ) {
-    return _WebPMuxGetCanvasSize(
-      mux,
-      width,
-      height,
-    );
-  }
-
-  late final _WebPMuxGetCanvasSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPMuxGetCanvasSize');
-  late final _WebPMuxGetCanvasSize = _WebPMuxGetCanvasSizePtr.asFunction<
-      int Function(
-          ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
-
-  /// Gets the feature flags from the mux object.
-  /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
-  /// That is, the mux object hasn't been modified since the last call to
-  /// WebPMuxAssemble() or WebPMuxCreate().
-  /// Parameters:
-  /// mux - (in) object from which the features are to be fetched
-  /// flags - (out) the flags specifying which features are present in the
-  /// mux object. This will be an OR of various flag values.
-  /// Enum 'WebPFeatureFlags' can be used to test individual flag values.
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or flags is NULL.
-  /// WEBP_MUX_BAD_DATA - if VP8X/VP8/VP8L chunk or canvas size is invalid.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxGetFeatures(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<ffi.Uint32> flags,
-  ) {
-    return _WebPMuxGetFeatures(
-      mux,
-      flags,
-    );
-  }
-
-  late final _WebPMuxGetFeaturesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<ffi.Uint32>)>>('WebPMuxGetFeatures');
-  late final _WebPMuxGetFeatures = _WebPMuxGetFeaturesPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Uint32>)>();
-
-  /// Gets number of chunks with the given 'id' in the mux object.
-  /// Parameters:
-  /// mux - (in) object from which the info is to be fetched
-  /// id - (in) chunk id specifying the type of chunk
-  /// num_elements - (out) number of chunks with the given chunk id
-  /// Returns:
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux, or num_elements is NULL.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxNumChunks(
-    ffi.Pointer<WebPMux> mux,
-    int id,
-    ffi.Pointer<ffi.Int> num_elements,
-  ) {
-    return _WebPMuxNumChunks(
-      mux,
-      id,
-      num_elements,
-    );
-  }
-
-  late final _WebPMuxNumChunksPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Int32,
-              ffi.Pointer<ffi.Int>)>>('WebPMuxNumChunks');
-  late final _WebPMuxNumChunks = _WebPMuxNumChunksPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<ffi.Int>)>();
-
-  /// Assembles all chunks in WebP RIFF format and returns in 'assembled_data'.
-  /// This function also validates the mux object.
-  /// Note: The content of 'assembled_data' will be ignored and overwritten.
-  /// Also, the content of 'assembled_data' is allocated using WebPMalloc(), and
-  /// NOT owned by the 'mux' object. It MUST be deallocated by the caller by
-  /// calling WebPDataClear(). It's always safe to call WebPDataClear() upon
-  /// return, even in case of error.
-  /// Parameters:
-  /// mux - (in/out) object whose chunks are to be assembled
-  /// assembled_data - (out) assembled WebP data
-  /// Returns:
-  /// WEBP_MUX_BAD_DATA - if mux object is invalid.
-  /// WEBP_MUX_INVALID_ARGUMENT - if mux or assembled_data is NULL.
-  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
-  /// WEBP_MUX_OK - on success.
-  int WebPMuxAssemble(
-    ffi.Pointer<WebPMux> mux,
-    ffi.Pointer<WebPData> assembled_data,
-  ) {
-    return _WebPMuxAssemble(
-      mux,
-      assembled_data,
-    );
-  }
-
-  late final _WebPMuxAssemblePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>>('WebPMuxAssemble');
-  late final _WebPMuxAssemble = _WebPMuxAssemblePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>();
-
-  /// Internal, version-checked, entry point.
-  int WebPAnimEncoderOptionsInitInternal(
-    ffi.Pointer<WebPAnimEncoderOptions> arg0,
-    int arg1,
-  ) {
-    return _WebPAnimEncoderOptionsInitInternal(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _WebPAnimEncoderOptionsInitInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimEncoderOptions>,
-              ffi.Int)>>('WebPAnimEncoderOptionsInitInternal');
-  late final _WebPAnimEncoderOptionsInitInternal =
-      _WebPAnimEncoderOptionsInitInternalPtr.asFunction<
-          int Function(ffi.Pointer<WebPAnimEncoderOptions>, int)>();
-
-  /// Internal, version-checked, entry point.
-  ffi.Pointer<WebPAnimEncoder> WebPAnimEncoderNewInternal(
-    int arg0,
-    int arg1,
-    ffi.Pointer<WebPAnimEncoderOptions> arg2,
-    int arg3,
-  ) {
-    return _WebPAnimEncoderNewInternal(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _WebPAnimEncoderNewInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPAnimEncoder> Function(
-              ffi.Int,
-              ffi.Int,
-              ffi.Pointer<WebPAnimEncoderOptions>,
-              ffi.Int)>>('WebPAnimEncoderNewInternal');
-  late final _WebPAnimEncoderNewInternal =
-      _WebPAnimEncoderNewInternalPtr.asFunction<
-          ffi.Pointer<WebPAnimEncoder> Function(
-              int, int, ffi.Pointer<WebPAnimEncoderOptions>, int)>();
-
-  /// Optimize the given frame for WebP, encode it and add it to the
-  /// WebPAnimEncoder object.
-  /// The last call to 'WebPAnimEncoderAdd' should be with frame = NULL, which
-  /// indicates that no more frames are to be added. This call is also used to
-  /// determine the duration of the last frame.
-  /// Parameters:
-  /// enc - (in/out) object to which the frame is to be added.
-  /// frame - (in/out) frame data in ARGB or YUV(A) format. If it is in YUV(A)
-  /// format, it will be converted to ARGB, which incurs a small loss.
-  /// timestamp_ms - (in) timestamp of this frame in milliseconds.
-  /// Duration of a frame would be calculated as
-  /// "timestamp of next frame - timestamp of this frame".
-  /// Hence, timestamps should be in non-decreasing order.
-  /// config - (in) encoding options; can be passed NULL to pick
-  /// reasonable defaults.
-  /// Returns:
-  /// On error, returns false and frame->error_code is set appropriately.
-  /// Otherwise, returns true.
-  int WebPAnimEncoderAdd(
-    ffi.Pointer<WebPAnimEncoder> enc,
-    ffi.Pointer<WebPPicture> frame,
-    int timestamp_ms,
-    ffi.Pointer<WebPConfig> config,
-  ) {
-    return _WebPAnimEncoderAdd(
-      enc,
-      frame,
-      timestamp_ms,
-      config,
-    );
-  }
-
-  late final _WebPAnimEncoderAddPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<WebPPicture>,
-              ffi.Int,
-              ffi.Pointer<WebPConfig>)>>('WebPAnimEncoderAdd');
-  late final _WebPAnimEncoderAdd = _WebPAnimEncoderAddPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPPicture>, int,
-          ffi.Pointer<WebPConfig>)>();
-
-  /// Assemble all frames added so far into a WebP bitstream.
-  /// This call should be preceded by  a call to 'WebPAnimEncoderAdd' with
-  /// frame = NULL; if not, the duration of the last frame will be internally
-  /// estimated.
-  /// Parameters:
-  /// enc - (in/out) object from which the frames are to be assembled.
-  /// webp_data - (out) generated WebP bitstream.
-  /// Returns:
-  /// True on success.
-  int WebPAnimEncoderAssemble(
-    ffi.Pointer<WebPAnimEncoder> enc,
-    ffi.Pointer<WebPData> webp_data,
-  ) {
-    return _WebPAnimEncoderAssemble(
-      enc,
-      webp_data,
-    );
-  }
-
-  late final _WebPAnimEncoderAssemblePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<WebPData>)>>('WebPAnimEncoderAssemble');
-  late final _WebPAnimEncoderAssemble = _WebPAnimEncoderAssemblePtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPData>)>();
-
-  /// Get error string corresponding to the most recent call using 'enc'. The
-  /// returned string is owned by 'enc' and is valid only until the next call to
-  /// WebPAnimEncoderAdd() or WebPAnimEncoderAssemble() or WebPAnimEncoderDelete().
-  /// Parameters:
-  /// enc - (in/out) object from which the error string is to be fetched.
-  /// Returns:
-  /// NULL if 'enc' is NULL. Otherwise, returns the error string if the last call
-  /// to 'enc' had an error, or an empty string if the last call was a success.
-  ffi.Pointer<ffi.Char> WebPAnimEncoderGetError(
-    ffi.Pointer<WebPAnimEncoder> enc,
-  ) {
-    return _WebPAnimEncoderGetError(
-      enc,
-    );
-  }
-
-  late final _WebPAnimEncoderGetErrorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<WebPAnimEncoder>)>>('WebPAnimEncoderGetError');
-  late final _WebPAnimEncoderGetError = _WebPAnimEncoderGetErrorPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<WebPAnimEncoder>)>();
-
-  /// Deletes the WebPAnimEncoder object.
-  /// Parameters:
-  /// enc - (in/out) object to be deleted
-  void WebPAnimEncoderDelete(
-    ffi.Pointer<WebPAnimEncoder> enc,
-  ) {
-    return _WebPAnimEncoderDelete(
-      enc,
-    );
-  }
-
-  late final _WebPAnimEncoderDeletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPAnimEncoder>)>>(
-      'WebPAnimEncoderDelete');
-  late final _WebPAnimEncoderDelete = _WebPAnimEncoderDeletePtr.asFunction<
-      void Function(ffi.Pointer<WebPAnimEncoder>)>();
 
   /// Return the decoder's version number, packed in hexadecimal using 8bits for
   /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -2761,6 +1138,2455 @@ class LibwebpFlutterLibsBindings {
   late final _WebPDecode = _WebPDecodePtr.asFunction<
       int Function(
           ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
+
+  ffi.Pointer<ffi.UnsignedLong> __doserrno() {
+    return ___doserrno();
+  }
+
+  late final ___doserrnoPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.UnsignedLong> Function()>>(
+          '__doserrno');
+  late final ___doserrno =
+      ___doserrnoPtr.asFunction<ffi.Pointer<ffi.UnsignedLong> Function()>();
+
+  int _set_doserrno(
+    int _Value,
+  ) {
+    return __set_doserrno(
+      _Value,
+    );
+  }
+
+  late final __set_doserrnoPtr =
+      _lookup<ffi.NativeFunction<errno_t Function(ffi.UnsignedLong)>>(
+          '_set_doserrno');
+  late final __set_doserrno = __set_doserrnoPtr.asFunction<int Function(int)>();
+
+  int _get_doserrno(
+    ffi.Pointer<ffi.UnsignedLong> _Value,
+  ) {
+    return __get_doserrno(
+      _Value,
+    );
+  }
+
+  late final __get_doserrnoPtr = _lookup<
+          ffi.NativeFunction<errno_t Function(ffi.Pointer<ffi.UnsignedLong>)>>(
+      '_get_doserrno');
+  late final __get_doserrno = __get_doserrnoPtr
+      .asFunction<int Function(ffi.Pointer<ffi.UnsignedLong>)>();
+
+  ffi.Pointer<ffi.Void> memchr(
+    ffi.Pointer<ffi.Void> _Buf,
+    int _Val,
+    int _MaxCount,
+  ) {
+    return _memchr(
+      _Buf,
+      _Val,
+      _MaxCount,
+    );
+  }
+
+  late final _memchrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memchr');
+  late final _memchr = _memchrPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
+
+  int memcmp(
+    ffi.Pointer<ffi.Void> _Buf1,
+    ffi.Pointer<ffi.Void> _Buf2,
+    int _Size,
+  ) {
+    return _memcmp(
+      _Buf1,
+      _Buf2,
+      _Size,
+    );
+  }
+
+  late final _memcmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Size)>>('memcmp');
+  late final _memcmp = _memcmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<ffi.Void> memcpy(
+    ffi.Pointer<ffi.Void> _Dst,
+    ffi.Pointer<ffi.Void> _Src,
+    int _Size,
+  ) {
+    return _memcpy(
+      _Dst,
+      _Src,
+      _Size,
+    );
+  }
+
+  late final _memcpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('memcpy');
+  late final _memcpy = _memcpyPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<ffi.Void> memmove(
+    ffi.Pointer<ffi.Void> _Dst,
+    ffi.Pointer<ffi.Void> _Src,
+    int _Size,
+  ) {
+    return _memmove(
+      _Dst,
+      _Src,
+      _Size,
+    );
+  }
+
+  late final _memmovePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('memmove');
+  late final _memmove = _memmovePtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<ffi.Void> memset(
+    ffi.Pointer<ffi.Void> _Dst,
+    int _Val,
+    int _Size,
+  ) {
+    return _memset(
+      _Dst,
+      _Val,
+      _Size,
+    );
+  }
+
+  late final _memsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memset');
+  late final _memset = _memsetPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
+
+  ffi.Pointer<ffi.Char> strchr(
+    ffi.Pointer<ffi.Char> _Str,
+    int _Val,
+  ) {
+    return _strchr(
+      _Str,
+      _Val,
+    );
+  }
+
+  late final _strchrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('strchr');
+  late final _strchr = _strchrPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strrchr(
+    ffi.Pointer<ffi.Char> _Str,
+    int _Ch,
+  ) {
+    return _strrchr(
+      _Str,
+      _Ch,
+    );
+  }
+
+  late final _strrchrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('strrchr');
+  late final _strrchr = _strrchrPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strstr(
+    ffi.Pointer<ffi.Char> _Str,
+    ffi.Pointer<ffi.Char> _SubStr,
+  ) {
+    return _strstr(
+      _Str,
+      _SubStr,
+    );
+  }
+
+  late final _strstrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strstr');
+  late final _strstr = _strstrPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.UnsignedShort> wcschr(
+    ffi.Pointer<ffi.WChar> _Str,
+    int _Ch,
+  ) {
+    return _wcschr(
+      _Str,
+      _Ch,
+    );
+  }
+
+  late final _wcschrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.UnsignedShort> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar)>>('wcschr');
+  late final _wcschr = _wcschrPtr.asFunction<
+      ffi.Pointer<ffi.UnsignedShort> Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsrchr(
+    ffi.Pointer<ffi.WChar> _Str,
+    int _Ch,
+  ) {
+    return _wcsrchr(
+      _Str,
+      _Ch,
+    );
+  }
+
+  late final _wcsrchrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar)>>('wcsrchr');
+  late final _wcsrchr = _wcsrchrPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsstr(
+    ffi.Pointer<ffi.WChar> _Str,
+    ffi.Pointer<ffi.WChar> _SubStr,
+  ) {
+    return _wcsstr(
+      _Str,
+      _SubStr,
+    );
+  }
+
+  late final _wcsstrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcsstr');
+  late final _wcsstr = _wcsstrPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int _memicmp(
+    ffi.Pointer<ffi.Void> _Buf1,
+    ffi.Pointer<ffi.Void> _Buf2,
+    int _Size,
+  ) {
+    return __memicmp(
+      _Buf1,
+      _Buf2,
+      _Size,
+    );
+  }
+
+  late final __memicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Size)>>('_memicmp');
+  late final __memicmp = __memicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+
+  int _memicmp_l(
+    ffi.Pointer<ffi.Void> _Buf1,
+    ffi.Pointer<ffi.Void> _Buf2,
+    int _Size,
+    _locale_t _Locale,
+  ) {
+    return __memicmp_l(
+      _Buf1,
+      _Buf2,
+      _Size,
+      _Locale,
+    );
+  }
+
+  late final __memicmp_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Size, _locale_t)>>('_memicmp_l');
+  late final __memicmp_l = __memicmp_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.Void> memccpy(
+    ffi.Pointer<ffi.Void> _Dst,
+    ffi.Pointer<ffi.Void> _Src,
+    int _Val,
+    int _Size,
+  ) {
+    return _memccpy1(
+      _Dst,
+      _Src,
+      _Val,
+      _Size,
+    );
+  }
+
+  late final _memccpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memccpy');
+  late final _memccpy1 = _memccpyPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
+
+  int memicmp(
+    ffi.Pointer<ffi.Void> _Buf1,
+    ffi.Pointer<ffi.Void> _Buf2,
+    int _Size,
+  ) {
+    return _memicmp1(
+      _Buf1,
+      _Buf2,
+      _Size,
+    );
+  }
+
+  late final _memicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ffi.Size)>>('memicmp');
+  late final _memicmp1 = _memicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+
+  int wcscat_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    ffi.Pointer<ffi.WChar> _Source,
+  ) {
+    return _wcscat_s(
+      _Destination,
+      _SizeInWords,
+      _Source,
+    );
+  }
+
+  late final _wcscat_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, rsize_t,
+              ffi.Pointer<ffi.WChar>)>>('wcscat_s');
+  late final _wcscat_s = _wcscat_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, int, ffi.Pointer<ffi.WChar>)>();
+
+  int wcscpy_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    ffi.Pointer<ffi.WChar> _Source,
+  ) {
+    return _wcscpy_s(
+      _Destination,
+      _SizeInWords,
+      _Source,
+    );
+  }
+
+  late final _wcscpy_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, rsize_t,
+              ffi.Pointer<ffi.WChar>)>>('wcscpy_s');
+  late final _wcscpy_s = _wcscpy_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, int, ffi.Pointer<ffi.WChar>)>();
+
+  int wcsncat_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _MaxCount,
+  ) {
+    return _wcsncat_s(
+      _Destination,
+      _SizeInWords,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsncat_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, rsize_t,
+              ffi.Pointer<ffi.WChar>, rsize_t)>>('wcsncat_s');
+  late final _wcsncat_s = _wcsncat_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, int, ffi.Pointer<ffi.WChar>, int)>();
+
+  int wcsncpy_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _MaxCount,
+  ) {
+    return _wcsncpy_s(
+      _Destination,
+      _SizeInWords,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsncpy_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, rsize_t,
+              ffi.Pointer<ffi.WChar>, rsize_t)>>('wcsncpy_s');
+  late final _wcsncpy_s = _wcsncpy_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, int, ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcstok_s(
+    ffi.Pointer<ffi.WChar> _String,
+    ffi.Pointer<ffi.WChar> _Delimiter,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> _Context,
+  ) {
+    return _wcstok_s(
+      _String,
+      _Delimiter,
+      _Context,
+    );
+  }
+
+  late final _wcstok_sPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>)>>('wcstok_s');
+  late final _wcstok_s = _wcstok_sPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>,
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>)>();
+
+  ffi.Pointer<ffi.WChar> _wcsdup(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return __wcsdup(
+      _String,
+    );
+  }
+
+  late final __wcsdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('_wcsdup');
+  late final __wcsdup = __wcsdupPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.WChar> wcscat(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+  ) {
+    return _wcscat(
+      _Destination,
+      _Source,
+    );
+  }
+
+  late final _wcscatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcscat');
+  late final _wcscat = _wcscatPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int wcscmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return _wcscmp(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _wcscmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcscmp');
+  late final _wcscmp = _wcscmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.WChar> wcscpy(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+  ) {
+    return _wcscpy(
+      _Destination,
+      _Source,
+    );
+  }
+
+  late final _wcscpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcscpy');
+  late final _wcscpy = _wcscpyPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int wcscspn(
+    ffi.Pointer<ffi.WChar> _String,
+    ffi.Pointer<ffi.WChar> _Control,
+  ) {
+    return _wcscspn(
+      _String,
+      _Control,
+    );
+  }
+
+  late final _wcscspnPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcscspn');
+  late final _wcscspn = _wcscspnPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int wcslen(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return _wcslen(
+      _String,
+    );
+  }
+
+  late final _wcslenPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(ffi.Pointer<ffi.WChar>)>>('wcslen');
+  late final _wcslen =
+      _wcslenPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>)>();
+
+  int wcsnlen(
+    ffi.Pointer<ffi.WChar> _Source,
+    int _MaxCount,
+  ) {
+    return _wcsnlen(
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsnlenPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.WChar>, ffi.Size)>>('wcsnlen');
+  late final _wcsnlen =
+      _wcsnlenPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsncat(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _Count,
+  ) {
+    return _wcsncat(
+      _Destination,
+      _Source,
+      _Count,
+    );
+  }
+
+  late final _wcsncatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>, ffi.Size)>>('wcsncat');
+  late final _wcsncat = _wcsncatPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  int wcsncmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+  ) {
+    return _wcsncmp(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsncmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('wcsncmp');
+  late final _wcsncmp = _wcsncmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsncpy(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _Count,
+  ) {
+    return _wcsncpy(
+      _Destination,
+      _Source,
+      _Count,
+    );
+  }
+
+  late final _wcsncpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>, ffi.Size)>>('wcsncpy');
+  late final _wcsncpy = _wcsncpyPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcspbrk(
+    ffi.Pointer<ffi.WChar> _String,
+    ffi.Pointer<ffi.WChar> _Control,
+  ) {
+    return _wcspbrk(
+      _String,
+      _Control,
+    );
+  }
+
+  late final _wcspbrkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcspbrk');
+  late final _wcspbrk = _wcspbrkPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int wcsspn(
+    ffi.Pointer<ffi.WChar> _String,
+    ffi.Pointer<ffi.WChar> _Control,
+  ) {
+    return _wcsspn(
+      _String,
+      _Control,
+    );
+  }
+
+  late final _wcsspnPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcsspn');
+  late final _wcsspn = _wcsspnPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.WChar> wcstok(
+    ffi.Pointer<ffi.WChar> _String,
+    ffi.Pointer<ffi.WChar> _Delimiter,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> _Context,
+  ) {
+    return _wcstok(
+      _String,
+      _Delimiter,
+      _Context,
+    );
+  }
+
+  late final _wcstokPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.WChar>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>)>>('wcstok');
+  late final _wcstok = _wcstokPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>,
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>)>();
+
+  ffi.Pointer<ffi.WChar> _wcserror(
+    int _ErrorNumber,
+  ) {
+    return __wcserror1(
+      _ErrorNumber,
+    );
+  }
+
+  late final __wcserrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.WChar> Function(ffi.Int)>>(
+          '_wcserror');
+  late final __wcserror1 =
+      __wcserrorPtr.asFunction<ffi.Pointer<ffi.WChar> Function(int)>();
+
+  int _wcserror_s(
+    ffi.Pointer<ffi.WChar> _Buffer,
+    int _SizeInWords,
+    int _ErrorNumber,
+  ) {
+    return __wcserror_s1(
+      _Buffer,
+      _SizeInWords,
+      _ErrorNumber,
+    );
+  }
+
+  late final __wcserror_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.WChar>, ffi.Size, ffi.Int)>>('_wcserror_s');
+  late final __wcserror_s1 = __wcserror_sPtr
+      .asFunction<int Function(ffi.Pointer<ffi.WChar>, int, int)>();
+
+  ffi.Pointer<ffi.WChar> __wcserror(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return ___wcserror(
+      _String,
+    );
+  }
+
+  late final ___wcserrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>)>>('__wcserror');
+  late final ___wcserror = ___wcserrorPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int __wcserror_s(
+    ffi.Pointer<ffi.WChar> _Buffer,
+    int _SizeInWords,
+    ffi.Pointer<ffi.WChar> _ErrorMessage,
+  ) {
+    return ___wcserror_s(
+      _Buffer,
+      _SizeInWords,
+      _ErrorMessage,
+    );
+  }
+
+  late final ___wcserror_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, ffi.Size,
+              ffi.Pointer<ffi.WChar>)>>('__wcserror_s');
+  late final ___wcserror_s = ___wcserror_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, int, ffi.Pointer<ffi.WChar>)>();
+
+  int _wcsicmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return __wcsicmp(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final __wcsicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('_wcsicmp');
+  late final __wcsicmp = __wcsicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int _wcsicmp_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    _locale_t _Locale,
+  ) {
+    return __wcsicmp_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __wcsicmp_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              _locale_t)>>('_wcsicmp_l');
+  late final __wcsicmp_l = __wcsicmp_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, _locale_t)>();
+
+  int _wcsnicmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+  ) {
+    return __wcsnicmp(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __wcsnicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('_wcsnicmp');
+  late final __wcsnicmp = __wcsnicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  int _wcsnicmp_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __wcsnicmp_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __wcsnicmp_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size, _locale_t)>>('_wcsnicmp_l');
+  late final __wcsnicmp_l = __wcsnicmp_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  int _wcsnset_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    int _Value,
+    int _MaxCount,
+  ) {
+    return __wcsnset_s(
+      _Destination,
+      _SizeInWords,
+      _Value,
+      _MaxCount,
+    );
+  }
+
+  late final __wcsnset_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, ffi.Size, ffi.WChar,
+              ffi.Size)>>('_wcsnset_s');
+  late final __wcsnset_s = __wcsnset_sPtr
+      .asFunction<int Function(ffi.Pointer<ffi.WChar>, int, int, int)>();
+
+  ffi.Pointer<ffi.WChar> _wcsnset(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Value,
+    int _MaxCount,
+  ) {
+    return __wcsnset(
+      _String,
+      _Value,
+      _MaxCount,
+    );
+  }
+
+  late final __wcsnsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar, ffi.Size)>>('_wcsnset');
+  late final __wcsnset = __wcsnsetPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int, int)>();
+
+  ffi.Pointer<ffi.WChar> _wcsrev(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return __wcsrev(
+      _String,
+    );
+  }
+
+  late final __wcsrevPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('_wcsrev');
+  late final __wcsrev = __wcsrevPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int _wcsset_s(
+    ffi.Pointer<ffi.WChar> _Destination,
+    int _SizeInWords,
+    int _Value,
+  ) {
+    return __wcsset_s(
+      _Destination,
+      _SizeInWords,
+      _Value,
+    );
+  }
+
+  late final __wcsset_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.WChar>, ffi.Size, ffi.WChar)>>('_wcsset_s');
+  late final __wcsset_s = __wcsset_sPtr
+      .asFunction<int Function(ffi.Pointer<ffi.WChar>, int, int)>();
+
+  ffi.Pointer<ffi.WChar> _wcsset(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Value,
+  ) {
+    return __wcsset(
+      _String,
+      _Value,
+    );
+  }
+
+  late final __wcssetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar)>>('_wcsset');
+  late final __wcsset = __wcssetPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  int _wcslwr_s(
+    ffi.Pointer<ffi.WChar> _String,
+    int _SizeInWords,
+  ) {
+    return __wcslwr_s(
+      _String,
+      _SizeInWords,
+    );
+  }
+
+  late final __wcslwr_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, ffi.Size)>>('_wcslwr_s');
+  late final __wcslwr_s =
+      __wcslwr_sPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> _wcslwr(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return __wcslwr(
+      _String,
+    );
+  }
+
+  late final __wcslwrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('_wcslwr');
+  late final __wcslwr = __wcslwrPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int _wcslwr_s_l(
+    ffi.Pointer<ffi.WChar> _String,
+    int _SizeInWords,
+    _locale_t _Locale,
+  ) {
+    return __wcslwr_s_l(
+      _String,
+      _SizeInWords,
+      _Locale,
+    );
+  }
+
+  late final __wcslwr_s_lPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.WChar>, ffi.Size, _locale_t)>>('_wcslwr_s_l');
+  late final __wcslwr_s_l = __wcslwr_s_lPtr
+      .asFunction<int Function(ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.WChar> _wcslwr_l(
+    ffi.Pointer<ffi.WChar> _String,
+    _locale_t _Locale,
+  ) {
+    return __wcslwr_l(
+      _String,
+      _Locale,
+    );
+  }
+
+  late final __wcslwr_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, _locale_t)>>('_wcslwr_l');
+  late final __wcslwr_l = __wcslwr_lPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, _locale_t)>();
+
+  int _wcsupr_s(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Size,
+  ) {
+    return __wcsupr_s(
+      _String,
+      _Size,
+    );
+  }
+
+  late final __wcsupr_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.WChar>, ffi.Size)>>('_wcsupr_s');
+  late final __wcsupr_s =
+      __wcsupr_sPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> _wcsupr(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return __wcsupr(
+      _String,
+    );
+  }
+
+  late final __wcsuprPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('_wcsupr');
+  late final __wcsupr = __wcsuprPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int _wcsupr_s_l(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Size,
+    _locale_t _Locale,
+  ) {
+    return __wcsupr_s_l(
+      _String,
+      _Size,
+      _Locale,
+    );
+  }
+
+  late final __wcsupr_s_lPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.WChar>, ffi.Size, _locale_t)>>('_wcsupr_s_l');
+  late final __wcsupr_s_l = __wcsupr_s_lPtr
+      .asFunction<int Function(ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.WChar> _wcsupr_l(
+    ffi.Pointer<ffi.WChar> _String,
+    _locale_t _Locale,
+  ) {
+    return __wcsupr_l(
+      _String,
+      _Locale,
+    );
+  }
+
+  late final __wcsupr_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, _locale_t)>>('_wcsupr_l');
+  late final __wcsupr_l = __wcsupr_lPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, _locale_t)>();
+
+  int wcsxfrm(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _MaxCount,
+  ) {
+    return _wcsxfrm(
+      _Destination,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsxfrmPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('wcsxfrm');
+  late final _wcsxfrm = _wcsxfrmPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  int _wcsxfrm_l(
+    ffi.Pointer<ffi.WChar> _Destination,
+    ffi.Pointer<ffi.WChar> _Source,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __wcsxfrm_l(
+      _Destination,
+      _Source,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __wcsxfrm_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size, _locale_t)>>('_wcsxfrm_l');
+  late final __wcsxfrm_l = __wcsxfrm_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  int wcscoll(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return _wcscoll(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _wcscollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcscoll');
+  late final _wcscoll = _wcscollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int _wcscoll_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    _locale_t _Locale,
+  ) {
+    return __wcscoll_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __wcscoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              _locale_t)>>('_wcscoll_l');
+  late final __wcscoll_l = __wcscoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, _locale_t)>();
+
+  int _wcsicoll(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return __wcsicoll(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final __wcsicollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('_wcsicoll');
+  late final __wcsicoll = __wcsicollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int _wcsicoll_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    _locale_t _Locale,
+  ) {
+    return __wcsicoll_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __wcsicoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              _locale_t)>>('_wcsicoll_l');
+  late final __wcsicoll_l = __wcsicoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, _locale_t)>();
+
+  int _wcsncoll(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+  ) {
+    return __wcsncoll(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __wcsncollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('_wcsncoll');
+  late final __wcsncoll = __wcsncollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  int _wcsncoll_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __wcsncoll_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __wcsncoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size, _locale_t)>>('_wcsncoll_l');
+  late final __wcsncoll_l = __wcsncoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  int _wcsnicoll(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+  ) {
+    return __wcsnicoll(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __wcsnicollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('_wcsnicoll');
+  late final __wcsnicoll = __wcsnicollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  int _wcsnicoll_l(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __wcsnicoll_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __wcsnicoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size, _locale_t)>>('_wcsnicoll_l');
+  late final __wcsnicoll_l = __wcsnicoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.WChar> wcsdup(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return _wcsdup1(
+      _String,
+    );
+  }
+
+  late final _wcsdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('wcsdup');
+  late final _wcsdup1 = _wcsdupPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int wcsicmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return _wcsicmp1(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _wcsicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcsicmp');
+  late final _wcsicmp1 = _wcsicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int wcsnicmp(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+    int _MaxCount,
+  ) {
+    return _wcsnicmp1(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsnicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
+              ffi.Size)>>('wcsnicmp');
+  late final _wcsnicmp1 = _wcsnicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsnset(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Value,
+    int _MaxCount,
+  ) {
+    return _wcsnset1(
+      _String,
+      _Value,
+      _MaxCount,
+    );
+  }
+
+  late final _wcsnsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar, ffi.Size)>>('wcsnset');
+  late final _wcsnset1 = _wcsnsetPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int, int)>();
+
+  ffi.Pointer<ffi.WChar> wcsrev(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return _wcsrev1(
+      _String,
+    );
+  }
+
+  late final _wcsrevPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('wcsrev');
+  late final _wcsrev1 = _wcsrevPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.WChar> wcsset(
+    ffi.Pointer<ffi.WChar> _String,
+    int _Value,
+  ) {
+    return _wcsset1(
+      _String,
+      _Value,
+    );
+  }
+
+  late final _wcssetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>, ffi.WChar)>>('wcsset');
+  late final _wcsset1 = _wcssetPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int)>();
+
+  ffi.Pointer<ffi.WChar> wcslwr(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return _wcslwr1(
+      _String,
+    );
+  }
+
+  late final _wcslwrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('wcslwr');
+  late final _wcslwr1 = _wcslwrPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.WChar> wcsupr(
+    ffi.Pointer<ffi.WChar> _String,
+  ) {
+    return _wcsupr1(
+      _String,
+    );
+  }
+
+  late final _wcsuprPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>>('wcsupr');
+  late final _wcsupr1 = _wcsuprPtr
+      .asFunction<ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  int wcsicoll(
+    ffi.Pointer<ffi.WChar> _String1,
+    ffi.Pointer<ffi.WChar> _String2,
+  ) {
+    return _wcsicoll1(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _wcsicollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('wcsicoll');
+  late final _wcsicoll1 = _wcsicollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
+
+  int strcpy_s(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _SizeInBytes,
+    ffi.Pointer<ffi.Char> _Source,
+  ) {
+    return _strcpy_s(
+      _Destination,
+      _SizeInBytes,
+      _Source,
+    );
+  }
+
+  late final _strcpy_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, rsize_t,
+              ffi.Pointer<ffi.Char>)>>('strcpy_s');
+  late final _strcpy_s = _strcpy_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>)>();
+
+  int strcat_s(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _SizeInBytes,
+    ffi.Pointer<ffi.Char> _Source,
+  ) {
+    return _strcat_s(
+      _Destination,
+      _SizeInBytes,
+      _Source,
+    );
+  }
+
+  late final _strcat_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, rsize_t,
+              ffi.Pointer<ffi.Char>)>>('strcat_s');
+  late final _strcat_s = _strcat_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>)>();
+
+  int strerror_s(
+    ffi.Pointer<ffi.Char> _Buffer,
+    int _SizeInBytes,
+    int _ErrorNumber,
+  ) {
+    return _strerror_s1(
+      _Buffer,
+      _SizeInBytes,
+      _ErrorNumber,
+    );
+  }
+
+  late final _strerror_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.Char>, ffi.Size, ffi.Int)>>('strerror_s');
+  late final _strerror_s1 = _strerror_sPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  int strncat_s(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _SizeInBytes,
+    ffi.Pointer<ffi.Char> _Source,
+    int _MaxCount,
+  ) {
+    return _strncat_s(
+      _Destination,
+      _SizeInBytes,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _strncat_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, rsize_t,
+              ffi.Pointer<ffi.Char>, rsize_t)>>('strncat_s');
+  late final _strncat_s = _strncat_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int)>();
+
+  int strncpy_s(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _SizeInBytes,
+    ffi.Pointer<ffi.Char> _Source,
+    int _MaxCount,
+  ) {
+    return _strncpy_s(
+      _Destination,
+      _SizeInBytes,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _strncpy_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, rsize_t,
+              ffi.Pointer<ffi.Char>, rsize_t)>>('strncpy_s');
+  late final _strncpy_s = _strncpy_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strtok_s(
+    ffi.Pointer<ffi.Char> _String,
+    ffi.Pointer<ffi.Char> _Delimiter,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> _Context,
+  ) {
+    return _strtok_s(
+      _String,
+      _Delimiter,
+      _Context,
+    );
+  }
+
+  late final _strtok_sPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtok_s');
+  late final _strtok_s = _strtok_sPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+
+  ffi.Pointer<ffi.Void> _memccpy(
+    ffi.Pointer<ffi.Void> _Dst,
+    ffi.Pointer<ffi.Void> _Src,
+    int _Val,
+    int _MaxCount,
+  ) {
+    return __memccpy(
+      _Dst,
+      _Src,
+      _Val,
+      _MaxCount,
+    );
+  }
+
+  late final __memccpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('_memccpy');
+  late final __memccpy = __memccpyPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
+
+  ffi.Pointer<ffi.Char> strcat(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+  ) {
+    return _strcat(
+      _Destination,
+      _Source,
+    );
+  }
+
+  late final _strcatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcat');
+  late final _strcat = _strcatPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int strcmp(
+    ffi.Pointer<ffi.Char> _Str1,
+    ffi.Pointer<ffi.Char> _Str2,
+  ) {
+    return _strcmp(
+      _Str1,
+      _Str2,
+    );
+  }
+
+  late final _strcmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcmp');
+  late final _strcmp = _strcmpPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int _strcmpi(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return __strcmpi(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final __strcmpiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('_strcmpi');
+  late final __strcmpi = __strcmpiPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int strcoll(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return _strcoll(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _strcollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcoll');
+  late final _strcoll = _strcollPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int _strcoll_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    _locale_t _Locale,
+  ) {
+    return __strcoll_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __strcoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              _locale_t)>>('_strcoll_l');
+  late final __strcoll_l = __strcoll_lPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, _locale_t)>();
+
+  ffi.Pointer<ffi.Char> strcpy(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+  ) {
+    return _strcpy(
+      _Destination,
+      _Source,
+    );
+  }
+
+  late final _strcpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcpy');
+  late final _strcpy = _strcpyPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int strcspn(
+    ffi.Pointer<ffi.Char> _Str,
+    ffi.Pointer<ffi.Char> _Control,
+  ) {
+    return _strcspn(
+      _Str,
+      _Control,
+    );
+  }
+
+  late final _strcspnPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcspn');
+  late final _strcspn = _strcspnPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> _strdup(
+    ffi.Pointer<ffi.Char> _Source,
+  ) {
+    return __strdup(
+      _Source,
+    );
+  }
+
+  late final __strdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('_strdup');
+  late final __strdup = __strdupPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> _strerror(
+    ffi.Pointer<ffi.Char> _ErrorMessage,
+  ) {
+    return __strerror(
+      _ErrorMessage,
+    );
+  }
+
+  late final __strerrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('_strerror');
+  late final __strerror = __strerrorPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int _strerror_s(
+    ffi.Pointer<ffi.Char> _Buffer,
+    int _SizeInBytes,
+    ffi.Pointer<ffi.Char> _ErrorMessage,
+  ) {
+    return __strerror_s(
+      _Buffer,
+      _SizeInBytes,
+      _ErrorMessage,
+    );
+  }
+
+  late final __strerror_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, ffi.Size,
+              ffi.Pointer<ffi.Char>)>>('_strerror_s');
+  late final __strerror_s = __strerror_sPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> strerror(
+    int _ErrorMessage,
+  ) {
+    return _strerror1(
+      _ErrorMessage,
+    );
+  }
+
+  late final _strerrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
+          'strerror');
+  late final _strerror1 =
+      _strerrorPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+
+  int _stricmp(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return __stricmp(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final __stricmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('_stricmp');
+  late final __stricmp = __stricmpPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int _stricoll(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return __stricoll(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final __stricollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('_stricoll');
+  late final __stricoll = __stricollPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int _stricoll_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    _locale_t _Locale,
+  ) {
+    return __stricoll_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __stricoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              _locale_t)>>('_stricoll_l');
+  late final __stricoll_l = __stricoll_lPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, _locale_t)>();
+
+  int _stricmp_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    _locale_t _Locale,
+  ) {
+    return __stricmp_l(
+      _String1,
+      _String2,
+      _Locale,
+    );
+  }
+
+  late final __stricmp_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              _locale_t)>>('_stricmp_l');
+  late final __stricmp_l = __stricmp_lPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, _locale_t)>();
+
+  int strlen(
+    ffi.Pointer<ffi.Char> _Str,
+  ) {
+    return _strlen(
+      _Str,
+    );
+  }
+
+  late final _strlenPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(ffi.Pointer<ffi.Char>)>>('strlen');
+  late final _strlen =
+      _strlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+
+  int _strlwr_s(
+    ffi.Pointer<ffi.Char> _String,
+    int _Size,
+  ) {
+    return __strlwr_s(
+      _String,
+      _Size,
+    );
+  }
+
+  late final __strlwr_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('_strlwr_s');
+  late final __strlwr_s =
+      __strlwr_sPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> _strlwr(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return __strlwr(
+      _String,
+    );
+  }
+
+  late final __strlwrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('_strlwr');
+  late final __strlwr = __strlwrPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int _strlwr_s_l(
+    ffi.Pointer<ffi.Char> _String,
+    int _Size,
+    _locale_t _Locale,
+  ) {
+    return __strlwr_s_l(
+      _String,
+      _Size,
+      _Locale,
+    );
+  }
+
+  late final __strlwr_s_lPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.Char>, ffi.Size, _locale_t)>>('_strlwr_s_l');
+  late final __strlwr_s_l = __strlwr_s_lPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.Char> _strlwr_l(
+    ffi.Pointer<ffi.Char> _String,
+    _locale_t _Locale,
+  ) {
+    return __strlwr_l(
+      _String,
+      _Locale,
+    );
+  }
+
+  late final __strlwr_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, _locale_t)>>('_strlwr_l');
+  late final __strlwr_l = __strlwr_lPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, _locale_t)>();
+
+  ffi.Pointer<ffi.Char> strncat(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+    int _Count,
+  ) {
+    return _strncat(
+      _Destination,
+      _Source,
+      _Count,
+    );
+  }
+
+  late final _strncatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncat');
+  late final _strncat = _strncatPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int strncmp(
+    ffi.Pointer<ffi.Char> _Str1,
+    ffi.Pointer<ffi.Char> _Str2,
+    int _MaxCount,
+  ) {
+    return _strncmp(
+      _Str1,
+      _Str2,
+      _MaxCount,
+    );
+  }
+
+  late final _strncmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('strncmp');
+  late final _strncmp = _strncmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int _strnicmp(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+  ) {
+    return __strnicmp(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __strnicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('_strnicmp');
+  late final __strnicmp = __strnicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int _strnicmp_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __strnicmp_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __strnicmp_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size, _locale_t)>>('_strnicmp_l');
+  late final __strnicmp_l = __strnicmp_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  int _strnicoll(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+  ) {
+    return __strnicoll(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __strnicollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('_strnicoll');
+  late final __strnicoll = __strnicollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int _strnicoll_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __strnicoll_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __strnicoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size, _locale_t)>>('_strnicoll_l');
+  late final __strnicoll_l = __strnicoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  int _strncoll(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+  ) {
+    return __strncoll(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final __strncollPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('_strncoll');
+  late final __strncoll = __strncollPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int _strncoll_l(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __strncoll_l(
+      _String1,
+      _String2,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __strncoll_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size, _locale_t)>>('_strncoll_l');
+  late final __strncoll_l = __strncoll_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  int __strncnt(
+    ffi.Pointer<ffi.Char> _String,
+    int _Count,
+  ) {
+    return ___strncnt(
+      _String,
+      _Count,
+    );
+  }
+
+  late final ___strncntPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('__strncnt');
+  late final ___strncnt =
+      ___strncntPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strncpy(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+    int _Count,
+  ) {
+    return _strncpy(
+      _Destination,
+      _Source,
+      _Count,
+    );
+  }
+
+  late final _strncpyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncpy');
+  late final _strncpy = _strncpyPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int strnlen(
+    ffi.Pointer<ffi.Char> _String,
+    int _MaxCount,
+  ) {
+    return _strnlen(
+      _String,
+      _MaxCount,
+    );
+  }
+
+  late final _strnlenPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('strnlen');
+  late final _strnlen =
+      _strnlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
+
+  int _strnset_s(
+    ffi.Pointer<ffi.Char> _String,
+    int _SizeInBytes,
+    int _Value,
+    int _MaxCount,
+  ) {
+    return __strnset_s(
+      _String,
+      _SizeInBytes,
+      _Value,
+      _MaxCount,
+    );
+  }
+
+  late final __strnset_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, ffi.Size, ffi.Int,
+              ffi.Size)>>('_strnset_s');
+  late final __strnset_s = __strnset_sPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, int, int, int)>();
+
+  ffi.Pointer<ffi.Char> _strnset(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _Value,
+    int _Count,
+  ) {
+    return __strnset(
+      _Destination,
+      _Value,
+      _Count,
+    );
+  }
+
+  late final __strnsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int, ffi.Size)>>('_strnset');
+  late final __strnset = __strnsetPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  ffi.Pointer<ffi.Char> strpbrk(
+    ffi.Pointer<ffi.Char> _Str,
+    ffi.Pointer<ffi.Char> _Control,
+  ) {
+    return _strpbrk(
+      _Str,
+      _Control,
+    );
+  }
+
+  late final _strpbrkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strpbrk');
+  late final _strpbrk = _strpbrkPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> _strrev(
+    ffi.Pointer<ffi.Char> _Str,
+  ) {
+    return __strrev(
+      _Str,
+    );
+  }
+
+  late final __strrevPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('_strrev');
+  late final __strrev = __strrevPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int _strset_s(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _DestinationSize,
+    int _Value,
+  ) {
+    return __strset_s(
+      _Destination,
+      _DestinationSize,
+      _Value,
+    );
+  }
+
+  late final __strset_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.Char>, ffi.Size, ffi.Int)>>('_strset_s');
+  late final __strset_s =
+      __strset_sPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  ffi.Pointer<ffi.Char> _strset(
+    ffi.Pointer<ffi.Char> _Destination,
+    int _Value,
+  ) {
+    return __strset(
+      _Destination,
+      _Value,
+    );
+  }
+
+  late final __strsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('_strset');
+  late final __strset = __strsetPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  int strspn(
+    ffi.Pointer<ffi.Char> _Str,
+    ffi.Pointer<ffi.Char> _Control,
+  ) {
+    return _strspn(
+      _Str,
+      _Control,
+    );
+  }
+
+  late final _strspnPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strspn');
+  late final _strspn = _strspnPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> strtok(
+    ffi.Pointer<ffi.Char> _String,
+    ffi.Pointer<ffi.Char> _Delimiter,
+  ) {
+    return _strtok(
+      _String,
+      _Delimiter,
+    );
+  }
+
+  late final _strtokPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strtok');
+  late final _strtok = _strtokPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int _strupr_s(
+    ffi.Pointer<ffi.Char> _String,
+    int _Size,
+  ) {
+    return __strupr_s(
+      _String,
+      _Size,
+    );
+  }
+
+  late final __strupr_sPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('_strupr_s');
+  late final __strupr_s =
+      __strupr_sPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> _strupr(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return __strupr(
+      _String,
+    );
+  }
+
+  late final __struprPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('_strupr');
+  late final __strupr = __struprPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int _strupr_s_l(
+    ffi.Pointer<ffi.Char> _String,
+    int _Size,
+    _locale_t _Locale,
+  ) {
+    return __strupr_s_l(
+      _String,
+      _Size,
+      _Locale,
+    );
+  }
+
+  late final __strupr_s_lPtr = _lookup<
+      ffi.NativeFunction<
+          errno_t Function(
+              ffi.Pointer<ffi.Char>, ffi.Size, _locale_t)>>('_strupr_s_l');
+  late final __strupr_s_l = __strupr_s_lPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.Char> _strupr_l(
+    ffi.Pointer<ffi.Char> _String,
+    _locale_t _Locale,
+  ) {
+    return __strupr_l(
+      _String,
+      _Locale,
+    );
+  }
+
+  late final __strupr_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, _locale_t)>>('_strupr_l');
+  late final __strupr_l = __strupr_lPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, _locale_t)>();
+
+  int strxfrm(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+    int _MaxCount,
+  ) {
+    return _strxfrm(
+      _Destination,
+      _Source,
+      _MaxCount,
+    );
+  }
+
+  late final _strxfrmPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>, ffi.Size)>>('strxfrm');
+  late final _strxfrm = _strxfrmPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int _strxfrm_l(
+    ffi.Pointer<ffi.Char> _Destination,
+    ffi.Pointer<ffi.Char> _Source,
+    int _MaxCount,
+    _locale_t _Locale,
+  ) {
+    return __strxfrm_l(
+      _Destination,
+      _Source,
+      _MaxCount,
+      _Locale,
+    );
+  }
+
+  late final __strxfrm_lPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size, _locale_t)>>('_strxfrm_l');
+  late final __strxfrm_l = __strxfrm_lPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, _locale_t)>();
+
+  ffi.Pointer<ffi.Char> strdup(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return _strdup1(
+      _String,
+    );
+  }
+
+  late final _strdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strdup');
+  late final _strdup1 = _strdupPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int strcmpi(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return _strcmpi1(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _strcmpiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcmpi');
+  late final _strcmpi1 = _strcmpiPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int stricmp(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+  ) {
+    return _stricmp1(
+      _String1,
+      _String2,
+    );
+  }
+
+  late final _stricmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('stricmp');
+  late final _stricmp1 = _stricmpPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> strlwr(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return _strlwr1(
+      _String,
+    );
+  }
+
+  late final _strlwrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strlwr');
+  late final _strlwr1 = _strlwrPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  int strnicmp(
+    ffi.Pointer<ffi.Char> _String1,
+    ffi.Pointer<ffi.Char> _String2,
+    int _MaxCount,
+  ) {
+    return _strnicmp1(
+      _String1,
+      _String2,
+      _MaxCount,
+    );
+  }
+
+  late final _strnicmpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('strnicmp');
+  late final _strnicmp1 = _strnicmpPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strnset(
+    ffi.Pointer<ffi.Char> _String,
+    int _Value,
+    int _MaxCount,
+  ) {
+    return _strnset1(
+      _String,
+      _Value,
+      _MaxCount,
+    );
+  }
+
+  late final _strnsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int, ffi.Size)>>('strnset');
+  late final _strnset1 = _strnsetPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  ffi.Pointer<ffi.Char> strrev(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return _strrev1(
+      _String,
+    );
+  }
+
+  late final _strrevPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strrev');
+  late final _strrev1 = _strrevPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> strset(
+    ffi.Pointer<ffi.Char> _String,
+    int _Value,
+  ) {
+    return _strset1(
+      _String,
+      _Value,
+    );
+  }
+
+  late final _strsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('strset');
+  late final _strset1 = _strsetPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  ffi.Pointer<ffi.Char> strupr(
+    ffi.Pointer<ffi.Char> _String,
+  ) {
+    return _strupr1(
+      _String,
+    );
+  }
+
+  late final _struprPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strupr');
+  late final _strupr1 = _struprPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
   /// Returns the version number of the demux library, packed in hexadecimal using
   /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -4099,134 +4925,937 @@ class LibwebpFlutterLibsBindings {
               ffi.Pointer<WebPPicture>)>>('WebPEncode');
   late final _WebPEncode = _WebPEncodePtr.asFunction<
       int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>();
+
+  /// Returns the version number of the mux library, packed in hexadecimal using
+  /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+  int WebPGetMuxVersion() {
+    return _WebPGetMuxVersion();
+  }
+
+  late final _WebPGetMuxVersionPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetMuxVersion');
+  late final _WebPGetMuxVersion =
+      _WebPGetMuxVersionPtr.asFunction<int Function()>();
+
+  /// Internal, version-checked, entry point
+  ffi.Pointer<WebPMux> WebPNewInternal(
+    int arg0,
+  ) {
+    return _WebPNewInternal(
+      arg0,
+    );
+  }
+
+  late final _WebPNewInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<WebPMux> Function(ffi.Int)>>(
+          'WebPNewInternal');
+  late final _WebPNewInternal =
+      _WebPNewInternalPtr.asFunction<ffi.Pointer<WebPMux> Function(int)>();
+
+  /// Deletes the mux object.
+  /// Parameters:
+  /// mux - (in/out) object to be deleted
+  void WebPMuxDelete(
+    ffi.Pointer<WebPMux> mux,
+  ) {
+    return _WebPMuxDelete(
+      mux,
+    );
+  }
+
+  late final _WebPMuxDeletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMux>)>>(
+          'WebPMuxDelete');
+  late final _WebPMuxDelete =
+      _WebPMuxDeletePtr.asFunction<void Function(ffi.Pointer<WebPMux>)>();
+
+  /// Internal, version-checked, entry point
+  ffi.Pointer<WebPMux> WebPMuxCreateInternal(
+    ffi.Pointer<WebPData> arg0,
+    int arg1,
+    int arg2,
+  ) {
+    return _WebPMuxCreateInternal(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _WebPMuxCreateInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, ffi.Int,
+              ffi.Int)>>('WebPMuxCreateInternal');
+  late final _WebPMuxCreateInternal = _WebPMuxCreateInternalPtr.asFunction<
+      ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, int, int)>();
+
+  /// Adds a chunk with id 'fourcc' and data 'chunk_data' in the mux object.
+  /// Any existing chunk(s) with the same id will be removed.
+  /// Parameters:
+  /// mux - (in/out) object to which the chunk is to be added
+  /// fourcc - (in) a character array containing the fourcc of the given chunk;
+  /// e.g., "ICCP", "XMP ", "EXIF" etc.
+  /// chunk_data - (in) the chunk data to be added
+  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
+  /// object and value 0 indicates data will NOT be copied.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux, fourcc or chunk_data is NULL
+  /// or if fourcc corresponds to an image chunk.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxSetChunk(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<ffi.Char> fourcc,
+    ffi.Pointer<WebPData> chunk_data,
+    int copy_data,
+  ) {
+    return _WebPMuxSetChunk(
+      mux,
+      fourcc,
+      chunk_data,
+      copy_data,
+    );
+  }
+
+  late final _WebPMuxSetChunkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<WebPData>, ffi.Int)>>('WebPMuxSetChunk');
+  late final _WebPMuxSetChunk = _WebPMuxSetChunkPtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<WebPData>, int)>();
+
+  /// Gets a reference to the data of the chunk with id 'fourcc' in the mux object.
+  /// The caller should NOT free the returned data.
+  /// Parameters:
+  /// mux - (in) object from which the chunk data is to be fetched
+  /// fourcc - (in) a character array containing the fourcc of the chunk;
+  /// e.g., "ICCP", "XMP ", "EXIF" etc.
+  /// chunk_data - (out) returned chunk data
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux, fourcc or chunk_data is NULL
+  /// or if fourcc corresponds to an image chunk.
+  /// WEBP_MUX_NOT_FOUND - If mux does not contain a chunk with the given id.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxGetChunk(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<ffi.Char> fourcc,
+    ffi.Pointer<WebPData> chunk_data,
+  ) {
+    return _WebPMuxGetChunk(
+      mux,
+      fourcc,
+      chunk_data,
+    );
+  }
+
+  late final _WebPMuxGetChunkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<WebPData>)>>('WebPMuxGetChunk');
+  late final _WebPMuxGetChunk = _WebPMuxGetChunkPtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<WebPData>)>();
+
+  /// Deletes the chunk with the given 'fourcc' from the mux object.
+  /// Parameters:
+  /// mux - (in/out) object from which the chunk is to be deleted
+  /// fourcc - (in) a character array containing the fourcc of the chunk;
+  /// e.g., "ICCP", "XMP ", "EXIF" etc.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or fourcc is NULL
+  /// or if fourcc corresponds to an image chunk.
+  /// WEBP_MUX_NOT_FOUND - If mux does not contain a chunk with the given fourcc.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxDeleteChunk(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<ffi.Char> fourcc,
+  ) {
+    return _WebPMuxDeleteChunk(
+      mux,
+      fourcc,
+    );
+  }
+
+  late final _WebPMuxDeleteChunkPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>,
+              ffi.Pointer<ffi.Char>)>>('WebPMuxDeleteChunk');
+  late final _WebPMuxDeleteChunk = _WebPMuxDeleteChunkPtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>)>();
+
+  /// Sets the (non-animated) image in the mux object.
+  /// Note: Any existing images (including frames) will be removed.
+  /// Parameters:
+  /// mux - (in/out) object in which the image is to be set
+  /// bitstream - (in) can be a raw VP8/VP8L bitstream or a single-image
+  /// WebP file (non-animated)
+  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
+  /// object and value 0 indicates data will NOT be copied.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL or bitstream is NULL.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxSetImage(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<WebPData> bitstream,
+    int copy_data,
+  ) {
+    return _WebPMuxSetImage(
+      mux,
+      bitstream,
+      copy_data,
+    );
+  }
+
+  late final _WebPMuxSetImagePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>,
+              ffi.Int)>>('WebPMuxSetImage');
+  late final _WebPMuxSetImage = _WebPMuxSetImagePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>, int)>();
+
+  /// Adds a frame at the end of the mux object.
+  /// Notes: (1) frame.id should be WEBP_CHUNK_ANMF
+  /// (2) For setting a non-animated image, use WebPMuxSetImage() instead.
+  /// (3) Type of frame being pushed must be same as the frames in mux.
+  /// (4) As WebP only supports even offsets, any odd offset will be snapped
+  /// to an even location using: offset &= ~1
+  /// Parameters:
+  /// mux - (in/out) object to which the frame is to be added
+  /// frame - (in) frame data.
+  /// copy_data - (in) value 1 indicates given data WILL be copied to the mux
+  /// object and value 0 indicates data will NOT be copied.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or frame is NULL
+  /// or if content of 'frame' is invalid.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxPushFrame(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<WebPMuxFrameInfo> frame,
+    int copy_data,
+  ) {
+    return _WebPMuxPushFrame(
+      mux,
+      frame,
+      copy_data,
+    );
+  }
+
+  late final _WebPMuxPushFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>,
+              ffi.Pointer<WebPMuxFrameInfo>, ffi.Int)>>('WebPMuxPushFrame');
+  late final _WebPMuxPushFrame = _WebPMuxPushFramePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxFrameInfo>, int)>();
+
+  /// Gets the nth frame from the mux object.
+  /// The content of 'frame->bitstream' is allocated using WebPMalloc(), and NOT
+  /// owned by the 'mux' object. It MUST be deallocated by the caller by calling
+  /// WebPDataClear().
+  /// nth=0 has a special meaning - last position.
+  /// Parameters:
+  /// mux - (in) object from which the info is to be fetched
+  /// nth - (in) index of the frame in the mux object
+  /// frame - (out) data of the returned frame
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or frame is NULL.
+  /// WEBP_MUX_NOT_FOUND - if there are less than nth frames in the mux object.
+  /// WEBP_MUX_BAD_DATA - if nth frame chunk in mux is invalid.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxGetFrame(
+    ffi.Pointer<WebPMux> mux,
+    int nth,
+    ffi.Pointer<WebPMuxFrameInfo> frame,
+  ) {
+    return _WebPMuxGetFrame(
+      mux,
+      nth,
+      frame,
+    );
+  }
+
+  late final _WebPMuxGetFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Uint32,
+              ffi.Pointer<WebPMuxFrameInfo>)>>('WebPMuxGetFrame');
+  late final _WebPMuxGetFrame = _WebPMuxGetFramePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<WebPMuxFrameInfo>)>();
+
+  /// Deletes a frame from the mux object.
+  /// nth=0 has a special meaning - last position.
+  /// Parameters:
+  /// mux - (in/out) object from which a frame is to be deleted
+  /// nth - (in) The position from which the frame is to be deleted
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL.
+  /// WEBP_MUX_NOT_FOUND - If there are less than nth frames in the mux object
+  /// before deletion.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxDeleteFrame(
+    ffi.Pointer<WebPMux> mux,
+    int nth,
+  ) {
+    return _WebPMuxDeleteFrame(
+      mux,
+      nth,
+    );
+  }
+
+  late final _WebPMuxDeleteFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<WebPMux>, ffi.Uint32)>>('WebPMuxDeleteFrame');
+  late final _WebPMuxDeleteFrame = _WebPMuxDeleteFramePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, int)>();
+
+  /// Sets the animation parameters in the mux object. Any existing ANIM chunks
+  /// will be removed.
+  /// Parameters:
+  /// mux - (in/out) object in which ANIM chunk is to be set/added
+  /// params - (in) animation parameters.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or params is NULL.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxSetAnimationParams(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<WebPMuxAnimParams> params,
+  ) {
+    return _WebPMuxSetAnimationParams(
+      mux,
+      params,
+    );
+  }
+
+  late final _WebPMuxSetAnimationParamsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>,
+              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxSetAnimationParams');
+  late final _WebPMuxSetAnimationParams =
+      _WebPMuxSetAnimationParamsPtr.asFunction<
+          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
+
+  /// Gets the animation parameters from the mux object.
+  /// Parameters:
+  /// mux - (in) object from which the animation parameters to be fetched
+  /// params - (out) animation parameters extracted from the ANIM chunk
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or params is NULL.
+  /// WEBP_MUX_NOT_FOUND - if ANIM chunk is not present in mux object.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxGetAnimationParams(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<WebPMuxAnimParams> params,
+  ) {
+    return _WebPMuxGetAnimationParams(
+      mux,
+      params,
+    );
+  }
+
+  late final _WebPMuxGetAnimationParamsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>,
+              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxGetAnimationParams');
+  late final _WebPMuxGetAnimationParams =
+      _WebPMuxGetAnimationParamsPtr.asFunction<
+          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
+
+  /// Sets the canvas size for the mux object. The width and height can be
+  /// specified explicitly or left as zero (0, 0).
+  /// * When width and height are specified explicitly, then this frame bound is
+  /// enforced during subsequent calls to WebPMuxAssemble() and an error is
+  /// reported if any animated frame does not completely fit within the canvas.
+  /// * When unspecified (0, 0), the constructed canvas will get the frame bounds
+  /// from the bounding-box over all frames after calling WebPMuxAssemble().
+  /// Parameters:
+  /// mux - (in) object to which the canvas size is to be set
+  /// width - (in) canvas width
+  /// height - (in) canvas height
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux is NULL; or
+  /// width or height are invalid or out of bounds
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxSetCanvasSize(
+    ffi.Pointer<WebPMux> mux,
+    int width,
+    int height,
+  ) {
+    return _WebPMuxSetCanvasSize(
+      mux,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPMuxSetCanvasSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<WebPMux>, ffi.Int, ffi.Int)>>('WebPMuxSetCanvasSize');
+  late final _WebPMuxSetCanvasSize = _WebPMuxSetCanvasSizePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, int, int)>();
+
+  /// Gets the canvas size from the mux object.
+  /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
+  /// That is, the mux object hasn't been modified since the last call to
+  /// WebPMuxAssemble() or WebPMuxCreate().
+  /// Parameters:
+  /// mux - (in) object from which the canvas size is to be fetched
+  /// width - (out) canvas width
+  /// height - (out) canvas height
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux, width or height is NULL.
+  /// WEBP_MUX_BAD_DATA - if VP8X/VP8/VP8L chunk or canvas size is invalid.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxGetCanvasSize(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<ffi.Int> width,
+    ffi.Pointer<ffi.Int> height,
+  ) {
+    return _WebPMuxGetCanvasSize(
+      mux,
+      width,
+      height,
+    );
+  }
+
+  late final _WebPMuxGetCanvasSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('WebPMuxGetCanvasSize');
+  late final _WebPMuxGetCanvasSize = _WebPMuxGetCanvasSizePtr.asFunction<
+      int Function(
+          ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  /// Gets the feature flags from the mux object.
+  /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
+  /// That is, the mux object hasn't been modified since the last call to
+  /// WebPMuxAssemble() or WebPMuxCreate().
+  /// Parameters:
+  /// mux - (in) object from which the features are to be fetched
+  /// flags - (out) the flags specifying which features are present in the
+  /// mux object. This will be an OR of various flag values.
+  /// Enum 'WebPFeatureFlags' can be used to test individual flag values.
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or flags is NULL.
+  /// WEBP_MUX_BAD_DATA - if VP8X/VP8/VP8L chunk or canvas size is invalid.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxGetFeatures(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<ffi.Uint32> flags,
+  ) {
+    return _WebPMuxGetFeatures(
+      mux,
+      flags,
+    );
+  }
+
+  late final _WebPMuxGetFeaturesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>,
+              ffi.Pointer<ffi.Uint32>)>>('WebPMuxGetFeatures');
+  late final _WebPMuxGetFeatures = _WebPMuxGetFeaturesPtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Uint32>)>();
+
+  /// Gets number of chunks with the given 'id' in the mux object.
+  /// Parameters:
+  /// mux - (in) object from which the info is to be fetched
+  /// id - (in) chunk id specifying the type of chunk
+  /// num_elements - (out) number of chunks with the given chunk id
+  /// Returns:
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux, or num_elements is NULL.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxNumChunks(
+    ffi.Pointer<WebPMux> mux,
+    int id,
+    ffi.Pointer<ffi.Int> num_elements,
+  ) {
+    return _WebPMuxNumChunks(
+      mux,
+      id,
+      num_elements,
+    );
+  }
+
+  late final _WebPMuxNumChunksPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Int32,
+              ffi.Pointer<ffi.Int>)>>('WebPMuxNumChunks');
+  late final _WebPMuxNumChunks = _WebPMuxNumChunksPtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<ffi.Int>)>();
+
+  /// Assembles all chunks in WebP RIFF format and returns in 'assembled_data'.
+  /// This function also validates the mux object.
+  /// Note: The content of 'assembled_data' will be ignored and overwritten.
+  /// Also, the content of 'assembled_data' is allocated using WebPMalloc(), and
+  /// NOT owned by the 'mux' object. It MUST be deallocated by the caller by
+  /// calling WebPDataClear(). It's always safe to call WebPDataClear() upon
+  /// return, even in case of error.
+  /// Parameters:
+  /// mux - (in/out) object whose chunks are to be assembled
+  /// assembled_data - (out) assembled WebP data
+  /// Returns:
+  /// WEBP_MUX_BAD_DATA - if mux object is invalid.
+  /// WEBP_MUX_INVALID_ARGUMENT - if mux or assembled_data is NULL.
+  /// WEBP_MUX_MEMORY_ERROR - on memory allocation error.
+  /// WEBP_MUX_OK - on success.
+  int WebPMuxAssemble(
+    ffi.Pointer<WebPMux> mux,
+    ffi.Pointer<WebPData> assembled_data,
+  ) {
+    return _WebPMuxAssemble(
+      mux,
+      assembled_data,
+    );
+  }
+
+  late final _WebPMuxAssemblePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>>('WebPMuxAssemble');
+  late final _WebPMuxAssemble = _WebPMuxAssemblePtr.asFunction<
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>();
+
+  /// Internal, version-checked, entry point.
+  int WebPAnimEncoderOptionsInitInternal(
+    ffi.Pointer<WebPAnimEncoderOptions> arg0,
+    int arg1,
+  ) {
+    return _WebPAnimEncoderOptionsInitInternal(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _WebPAnimEncoderOptionsInitInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPAnimEncoderOptions>,
+              ffi.Int)>>('WebPAnimEncoderOptionsInitInternal');
+  late final _WebPAnimEncoderOptionsInitInternal =
+      _WebPAnimEncoderOptionsInitInternalPtr.asFunction<
+          int Function(ffi.Pointer<WebPAnimEncoderOptions>, int)>();
+
+  /// Internal, version-checked, entry point.
+  ffi.Pointer<WebPAnimEncoder> WebPAnimEncoderNewInternal(
+    int arg0,
+    int arg1,
+    ffi.Pointer<WebPAnimEncoderOptions> arg2,
+    int arg3,
+  ) {
+    return _WebPAnimEncoderNewInternal(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _WebPAnimEncoderNewInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<WebPAnimEncoder> Function(
+              ffi.Int,
+              ffi.Int,
+              ffi.Pointer<WebPAnimEncoderOptions>,
+              ffi.Int)>>('WebPAnimEncoderNewInternal');
+  late final _WebPAnimEncoderNewInternal =
+      _WebPAnimEncoderNewInternalPtr.asFunction<
+          ffi.Pointer<WebPAnimEncoder> Function(
+              int, int, ffi.Pointer<WebPAnimEncoderOptions>, int)>();
+
+  /// Optimize the given frame for WebP, encode it and add it to the
+  /// WebPAnimEncoder object.
+  /// The last call to 'WebPAnimEncoderAdd' should be with frame = NULL, which
+  /// indicates that no more frames are to be added. This call is also used to
+  /// determine the duration of the last frame.
+  /// Parameters:
+  /// enc - (in/out) object to which the frame is to be added.
+  /// frame - (in/out) frame data in ARGB or YUV(A) format. If it is in YUV(A)
+  /// format, it will be converted to ARGB, which incurs a small loss.
+  /// timestamp_ms - (in) timestamp of this frame in milliseconds.
+  /// Duration of a frame would be calculated as
+  /// "timestamp of next frame - timestamp of this frame".
+  /// Hence, timestamps should be in non-decreasing order.
+  /// config - (in) encoding options; can be passed NULL to pick
+  /// reasonable defaults.
+  /// Returns:
+  /// On error, returns false and frame->error_code is set appropriately.
+  /// Otherwise, returns true.
+  int WebPAnimEncoderAdd(
+    ffi.Pointer<WebPAnimEncoder> enc,
+    ffi.Pointer<WebPPicture> frame,
+    int timestamp_ms,
+    ffi.Pointer<WebPConfig> config,
+  ) {
+    return _WebPAnimEncoderAdd(
+      enc,
+      frame,
+      timestamp_ms,
+      config,
+    );
+  }
+
+  late final _WebPAnimEncoderAddPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<WebPAnimEncoder>,
+              ffi.Pointer<WebPPicture>,
+              ffi.Int,
+              ffi.Pointer<WebPConfig>)>>('WebPAnimEncoderAdd');
+  late final _WebPAnimEncoderAdd = _WebPAnimEncoderAddPtr.asFunction<
+      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPPicture>, int,
+          ffi.Pointer<WebPConfig>)>();
+
+  /// Assemble all frames added so far into a WebP bitstream.
+  /// This call should be preceded by  a call to 'WebPAnimEncoderAdd' with
+  /// frame = NULL; if not, the duration of the last frame will be internally
+  /// estimated.
+  /// Parameters:
+  /// enc - (in/out) object from which the frames are to be assembled.
+  /// webp_data - (out) generated WebP bitstream.
+  /// Returns:
+  /// True on success.
+  int WebPAnimEncoderAssemble(
+    ffi.Pointer<WebPAnimEncoder> enc,
+    ffi.Pointer<WebPData> webp_data,
+  ) {
+    return _WebPAnimEncoderAssemble(
+      enc,
+      webp_data,
+    );
+  }
+
+  late final _WebPAnimEncoderAssemblePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<WebPAnimEncoder>,
+              ffi.Pointer<WebPData>)>>('WebPAnimEncoderAssemble');
+  late final _WebPAnimEncoderAssemble = _WebPAnimEncoderAssemblePtr.asFunction<
+      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPData>)>();
+
+  /// Get error string corresponding to the most recent call using 'enc'. The
+  /// returned string is owned by 'enc' and is valid only until the next call to
+  /// WebPAnimEncoderAdd() or WebPAnimEncoderAssemble() or WebPAnimEncoderDelete().
+  /// Parameters:
+  /// enc - (in/out) object from which the error string is to be fetched.
+  /// Returns:
+  /// NULL if 'enc' is NULL. Otherwise, returns the error string if the last call
+  /// to 'enc' had an error, or an empty string if the last call was a success.
+  ffi.Pointer<ffi.Char> WebPAnimEncoderGetError(
+    ffi.Pointer<WebPAnimEncoder> enc,
+  ) {
+    return _WebPAnimEncoderGetError(
+      enc,
+    );
+  }
+
+  late final _WebPAnimEncoderGetErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<WebPAnimEncoder>)>>('WebPAnimEncoderGetError');
+  late final _WebPAnimEncoderGetError = _WebPAnimEncoderGetErrorPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<WebPAnimEncoder>)>();
+
+  /// Deletes the WebPAnimEncoder object.
+  /// Parameters:
+  /// enc - (in/out) object to be deleted
+  void WebPAnimEncoderDelete(
+    ffi.Pointer<WebPAnimEncoder> enc,
+  ) {
+    return _WebPAnimEncoderDelete(
+      enc,
+    );
+  }
+
+  late final _WebPAnimEncoderDeletePtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPAnimEncoder>)>>(
+      'WebPAnimEncoderDelete');
+  late final _WebPAnimEncoderDelete = _WebPAnimEncoderDeletePtr.asFunction<
+      void Function(ffi.Pointer<WebPAnimEncoder>)>();
 }
 
-abstract class VP8LImageTransformType {
-  static const int PREDICTOR_TRANSFORM = 0;
-  static const int CROSS_COLOR_TRANSFORM = 1;
-  static const int SUBTRACT_GREEN_TRANSFORM = 2;
-  static const int COLOR_INDEXING_TRANSFORM = 3;
+typedef va_list = ffi.Pointer<ffi.Char>;
+
+final class __crt_locale_data_public extends ffi.Struct {
+  external ffi.Pointer<ffi.UnsignedShort> _locale_pctype;
+
+  @ffi.Int()
+  external int _locale_mb_cur_max;
+
+  @ffi.UnsignedInt()
+  external int _locale_lc_codepage;
 }
 
-/// mbstate_t is an opaque object to keep conversion state, during multibyte
-/// stream conversions.  The content must not be referenced by user programs.
-final class __mbstate_t extends ffi.Union {
-  @ffi.Array.multi([128])
-  external ffi.Array<ffi.Char> __mbstate8;
+final class __crt_locale_pointers extends ffi.Struct {
+  external ffi.Pointer<__crt_locale_data> locinfo;
 
-  /// for alignment
-  @ffi.LongLong()
-  external int _mbstateL;
+  external ffi.Pointer<__crt_multibyte_data> mbcinfo;
 }
 
-final class __darwin_pthread_handler_rec extends ffi.Struct {
-  /// Routine to call
-  external ffi
-      .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-      __routine;
+final class __crt_locale_data extends ffi.Opaque {}
 
-  /// Argument to pass
-  external ffi.Pointer<ffi.Void> __arg;
+final class __crt_multibyte_data extends ffi.Opaque {}
 
-  external ffi.Pointer<__darwin_pthread_handler_rec> __next;
-}
+final class _Mbstatet extends ffi.Struct {
+  @ffi.UnsignedLong()
+  external int _Wchar;
 
-final class _opaque_pthread_attr_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
+  @ffi.UnsignedShort()
+  external int _Byte;
 
-  @ffi.Array.multi([56])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_cond_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([40])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_condattr_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([8])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_mutex_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([56])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_mutexattr_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([8])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_once_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([8])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_rwlock_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([192])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_rwlockattr_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  @ffi.Array.multi([16])
-  external ffi.Array<ffi.Char> __opaque;
-}
-
-final class _opaque_pthread_t extends ffi.Struct {
-  @ffi.Long()
-  external int __sig;
-
-  external ffi.Pointer<__darwin_pthread_handler_rec> __cleanup_stack;
-
-  @ffi.Array.multi([8176])
-  external ffi.Array<ffi.Char> __opaque;
+  @ffi.UnsignedShort()
+  external int _State;
 }
 
 typedef errno_t = ffi.Int;
 typedef Darterrno_t = int;
-typedef rsize_t = __darwin_size_t;
-typedef __darwin_size_t = ffi.UnsignedLong;
-typedef Dart__darwin_size_t = int;
-typedef ssize_t = __darwin_ssize_t;
-typedef __darwin_ssize_t = ffi.Long;
-typedef Dart__darwin_ssize_t = int;
-typedef intmax_t = ffi.Long;
-typedef Dartintmax_t = int;
 
-/// 7.8.2.2
-final class imaxdiv_t extends ffi.Struct {
-  @intmax_t()
-  external int quot;
+/// ------------------------------------------------------------------------------
+/// WebPDecBuffer: Generic structure for describing the output sample buffer.
+final class WebPRGBABuffer extends ffi.Struct {
+  /// pointer to RGBA samples
+  external ffi.Pointer<ffi.Uint8> rgba;
 
-  @intmax_t()
-  external int rem;
+  /// stride in bytes from one scanline to the next.
+  @ffi.Int()
+  external int stride;
+
+  /// total size of the *rgba buffer.
+  @ffi.Size()
+  external int size;
 }
 
-typedef uintmax_t = ffi.UnsignedLong;
-typedef Dartuintmax_t = int;
+final class WebPYUVABuffer extends ffi.Struct {
+  /// pointer to luma, chroma U/V, alpha samples
+  external ffi.Pointer<ffi.Uint8> y;
+
+  external ffi.Pointer<ffi.Uint8> u;
+
+  external ffi.Pointer<ffi.Uint8> v;
+
+  external ffi.Pointer<ffi.Uint8> a;
+
+  /// luma stride
+  @ffi.Int()
+  external int y_stride;
+
+  /// chroma strides
+  @ffi.Int()
+  external int u_stride;
+
+  @ffi.Int()
+  external int v_stride;
+
+  /// alpha stride
+  @ffi.Int()
+  external int a_stride;
+
+  /// luma plane size
+  @ffi.Size()
+  external int y_size;
+
+  /// chroma planes size
+  @ffi.Size()
+  external int u_size;
+
+  @ffi.Size()
+  external int v_size;
+
+  /// alpha-plane size
+  @ffi.Size()
+  external int a_size;
+}
+
+/// Output buffer
+final class WebPDecBuffer extends ffi.Struct {
+  /// Colorspace.
+  @ffi.Int32()
+  external int colorspace;
+
+  /// Dimensions.
+  @ffi.Int()
+  external int width;
+
+  @ffi.Int()
+  external int height;
+
+  /// If non-zero, 'internal_memory' pointer is not
+  /// used. If value is '2' or more, the external
+  /// memory is considered 'slow' and multiple
+  /// read/write will be avoided.
+  @ffi.Int()
+  external int is_external_memory;
+
+  /// Nameless union of buffer parameters.
+  external UnnamedUnion1 u;
+
+  /// padding for later use
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint32> pad;
+
+  /// Internally allocated memory (only when
+  /// is_external_memory is 0). Should not be used
+  /// externally, but accessed via the buffer union.
+  external ffi.Pointer<ffi.Uint8> private_memory;
+}
+
+/// Colorspaces
+/// Note: the naming describes the byte-ordering of packed samples in memory.
+/// For instance, MODE_BGRA relates to samples ordered as B,G,R,A,B,G,R,A,...
+/// Non-capital names (e.g.:MODE_Argb) relates to pre-multiplied RGB channels.
+/// RGBA-4444 and RGB-565 colorspaces are represented by following byte-order:
+/// RGBA-4444: [r3 r2 r1 r0 g3 g2 g1 g0], [b3 b2 b1 b0 a3 a2 a1 a0], ...
+/// RGB-565: [r4 r3 r2 r1 r0 g5 g4 g3], [g2 g1 g0 b4 b3 b2 b1 b0], ...
+/// In the case WEBP_SWAP_16BITS_CSP is defined, the bytes are swapped for
+/// these two modes:
+/// RGBA-4444: [b3 b2 b1 b0 a3 a2 a1 a0], [r3 r2 r1 r0 g3 g2 g1 g0], ...
+/// RGB-565: [g2 g1 g0 b4 b3 b2 b1 b0], [r4 r3 r2 r1 r0 g5 g4 g3], ...
+abstract class WEBP_CSP_MODE {
+  static const int MODE_RGB = 0;
+  static const int MODE_RGBA = 1;
+  static const int MODE_BGR = 2;
+  static const int MODE_BGRA = 3;
+  static const int MODE_ARGB = 4;
+  static const int MODE_RGBA_4444 = 5;
+  static const int MODE_RGB_565 = 6;
+
+  /// RGB-premultiplied transparent modes (alpha value is preserved)
+  static const int MODE_rgbA = 7;
+  static const int MODE_bgrA = 8;
+  static const int MODE_Argb = 9;
+  static const int MODE_rgbA_4444 = 10;
+
+  /// yuv 4:2:0
+  static const int MODE_YUV = 11;
+  static const int MODE_YUVA = 12;
+  static const int MODE_LAST = 13;
+}
+
+final class UnnamedUnion1 extends ffi.Union {
+  external WebPRGBABuffer RGBA;
+
+  external WebPYUVABuffer YUVA;
+}
+
+final class WebPIDecoder extends ffi.Opaque {}
+
+/// Features gathered from the bitstream
+final class WebPBitstreamFeatures extends ffi.Struct {
+  /// Width in pixels, as read from the bitstream.
+  @ffi.Int()
+  external int width;
+
+  /// Height in pixels, as read from the bitstream.
+  @ffi.Int()
+  external int height;
+
+  /// True if the bitstream contains an alpha channel.
+  @ffi.Int()
+  external int has_alpha;
+
+  /// True if the bitstream is an animation.
+  @ffi.Int()
+  external int has_animation;
+
+  /// 0 = undefined (/mixed), 1 = lossy, 2 = lossless
+  @ffi.Int()
+  external int format;
+
+  /// padding for later use
+  @ffi.Array.multi([5])
+  external ffi.Array<ffi.Uint32> pad;
+}
+
+/// Decoding options
+final class WebPDecoderOptions extends ffi.Struct {
+  /// if true, skip the in-loop filtering
+  @ffi.Int()
+  external int bypass_filtering;
+
+  /// if true, use faster pointwise upsampler
+  @ffi.Int()
+  external int no_fancy_upsampling;
+
+  /// if true, cropping is applied _first_
+  @ffi.Int()
+  external int use_cropping;
+
+  /// top-left position for cropping.
+  /// Will be snapped to even values.
+  @ffi.Int()
+  external int crop_left;
+
+  @ffi.Int()
+  external int crop_top;
+
+  /// dimension of the cropping area
+  @ffi.Int()
+  external int crop_width;
+
+  @ffi.Int()
+  external int crop_height;
+
+  /// if true, scaling is applied _afterward_
+  @ffi.Int()
+  external int use_scaling;
+
+  /// final resolution
+  @ffi.Int()
+  external int scaled_width;
+
+  @ffi.Int()
+  external int scaled_height;
+
+  /// if true, use multi-threaded decoding
+  @ffi.Int()
+  external int use_threads;
+
+  /// dithering strength (0=Off, 100=full)
+  @ffi.Int()
+  external int dithering_strength;
+
+  /// if true, flip output vertically
+  @ffi.Int()
+  external int flip;
+
+  /// alpha dithering strength in [0..100]
+  @ffi.Int()
+  external int alpha_dithering_strength;
+
+  /// padding for later use
+  @ffi.Array.multi([5])
+  external ffi.Array<ffi.Uint32> pad;
+}
+
+/// Main object storing the configuration for advanced decoding.
+final class WebPDecoderConfig extends ffi.Struct {
+  /// Immutable bitstream features (optional)
+  external WebPBitstreamFeatures input;
+
+  /// Output buffer (can point to external mem)
+  external WebPDecBuffer output;
+
+  /// Decoding options
+  external WebPDecoderOptions options;
+}
+
+/// ------------------------------------------------------------------------------
+/// Enumeration of the status codes
+abstract class VP8StatusCode {
+  static const int VP8_STATUS_OK = 0;
+  static const int VP8_STATUS_OUT_OF_MEMORY = 1;
+  static const int VP8_STATUS_INVALID_PARAM = 2;
+  static const int VP8_STATUS_BITSTREAM_ERROR = 3;
+  static const int VP8_STATUS_UNSUPPORTED_FEATURE = 4;
+  static const int VP8_STATUS_SUSPENDED = 5;
+  static const int VP8_STATUS_USER_ABORT = 6;
+  static const int VP8_STATUS_NOT_ENOUGH_DATA = 7;
+}
+
+typedef _locale_t = ffi.Pointer<__crt_locale_pointers>;
+typedef rsize_t = ffi.Size;
+typedef Dartrsize_t = int;
 
 /// Data type used to describe 'raw' data, e.g., chunk data
 /// (ICC profile, metadata) and WebP compressed image data.
@@ -4268,142 +5897,321 @@ abstract class WebPMuxAnimBlend {
   static const int WEBP_MUX_NO_BLEND = 1;
 }
 
-final class WebPMux extends ffi.Opaque {}
+final class WebPDemuxer extends ffi.Opaque {}
 
-/// Encapsulates data about a single frame.
-final class WebPMuxFrameInfo extends ffi.Struct {
-  /// image data: can be a raw VP8/VP8L bitstream
-  /// or a single-image WebP file.
-  external WebPData bitstream;
+/// ------------------------------------------------------------------------------
+/// Frame iteration.
+final class WebPIterator extends ffi.Struct {
+  @ffi.Int()
+  external int frame_num;
 
-  /// x-offset of the frame.
+  /// equivalent to WEBP_FF_FRAME_COUNT.
+  @ffi.Int()
+  external int num_frames;
+
+  /// offset relative to the canvas.
   @ffi.Int()
   external int x_offset;
 
-  /// y-offset of the frame.
   @ffi.Int()
   external int y_offset;
 
-  /// duration of the frame (in milliseconds).
+  /// dimensions of this frame.
+  @ffi.Int()
+  external int width;
+
+  @ffi.Int()
+  external int height;
+
+  /// display duration in milliseconds.
   @ffi.Int()
   external int duration;
 
-  /// frame type: should be one of WEBP_CHUNK_ANMF
-  /// or WEBP_CHUNK_IMAGE
-  @ffi.Int32()
-  external int id;
-
-  /// Disposal method for the frame.
+  /// dispose method for the frame.
   @ffi.Int32()
   external int dispose_method;
+
+  /// true if 'fragment' contains a full frame. partial images
+  /// may still be decoded with the WebP incremental decoder.
+  @ffi.Int()
+  external int complete;
+
+  /// The frame given by 'frame_num'. Note for historical
+  /// reasons this is called a fragment.
+  external WebPData fragment;
+
+  /// True if the frame contains transparency.
+  @ffi.Int()
+  external int has_alpha;
 
   /// Blend operation for the frame.
   @ffi.Int32()
   external int blend_method;
 
-  /// padding for later use
-  @ffi.Array.multi([1])
+  /// padding for later use.
+  @ffi.Array.multi([2])
   external ffi.Array<ffi.Uint32> pad;
+
+  /// for internal use only.
+  external ffi.Pointer<ffi.Void> private_;
 }
 
-/// IDs for different types of chunks.
-abstract class WebPChunkId {
-  /// VP8X
-  static const int WEBP_CHUNK_VP8X = 0;
+/// ------------------------------------------------------------------------------
+/// Chunk iteration.
+final class WebPChunkIterator extends ffi.Struct {
+  /// The current and total number of chunks with the fourcc given to
+  /// WebPDemuxGetChunk().
+  @ffi.Int()
+  external int chunk_num;
 
-  /// ICCP
-  static const int WEBP_CHUNK_ICCP = 1;
+  @ffi.Int()
+  external int num_chunks;
 
-  /// ANIM
-  static const int WEBP_CHUNK_ANIM = 2;
+  /// The payload of the chunk.
+  external WebPData chunk;
 
-  /// ANMF
-  static const int WEBP_CHUNK_ANMF = 3;
+  /// padding for later use
+  @ffi.Array.multi([6])
+  external ffi.Array<ffi.Uint32> pad;
 
-  /// (deprecated from FRGM)
-  static const int WEBP_CHUNK_DEPRECATED = 4;
-
-  /// ALPH
-  static const int WEBP_CHUNK_ALPHA = 5;
-
-  /// VP8/VP8L
-  static const int WEBP_CHUNK_IMAGE = 6;
-
-  /// EXIF
-  static const int WEBP_CHUNK_EXIF = 7;
-
-  /// XMP
-  static const int WEBP_CHUNK_XMP = 8;
-
-  /// Other chunks.
-  static const int WEBP_CHUNK_UNKNOWN = 9;
-  static const int WEBP_CHUNK_NIL = 10;
+  external ffi.Pointer<ffi.Void> private_;
 }
 
-/// Animation parameters.
-final class WebPMuxAnimParams extends ffi.Struct {
-  /// Background color of the canvas stored (in MSB order) as:
-  /// Bits 00 to 07: Alpha.
-  /// Bits 08 to 15: Red.
-  /// Bits 16 to 23: Green.
-  /// Bits 24 to 31: Blue.
+/// Global information about the animation..
+final class WebPAnimInfo extends ffi.Struct {
+  @ffi.Uint32()
+  external int canvas_width;
+
+  @ffi.Uint32()
+  external int canvas_height;
+
+  @ffi.Uint32()
+  external int loop_count;
+
   @ffi.Uint32()
   external int bgcolor;
 
-  /// Number of times to repeat the animation [0 = infinite].
-  @ffi.Int()
-  external int loop_count;
+  @ffi.Uint32()
+  external int frame_count;
+
+  /// padding for later use
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint32> pad;
 }
 
 /// Global options.
-final class WebPAnimEncoderOptions extends ffi.Struct {
-  /// Animation parameters.
-  external WebPMuxAnimParams anim_params;
+final class WebPAnimDecoderOptions extends ffi.Struct {
+  /// Output colorspace. Only the following modes are supported:
+  /// MODE_RGBA, MODE_BGRA, MODE_rgbA and MODE_bgrA.
+  @ffi.Int32()
+  external int color_mode;
 
-  /// If true, minimize the output size (slow). Implicitly
-  /// disables key-frame insertion.
+  /// If true, use multi-threaded decoding.
   @ffi.Int()
-  external int minimize_size;
-
-  @ffi.Int()
-  external int kmin;
-
-  /// Minimum and maximum distance between consecutive key
-  /// frames in the output. The library may insert some key
-  /// frames as needed to satisfy this criteria.
-  /// Note that these conditions should hold: kmax > kmin
-  /// and kmin >= kmax / 2 + 1. Also, if kmax <= 0, then
-  /// key-frame insertion is disabled; and if kmax == 1,
-  /// then all frames will be key-frames (kmin value does
-  /// not matter for these special cases).
-  @ffi.Int()
-  external int kmax;
-
-  /// If true, use mixed compression mode; may choose
-  /// either lossy and lossless for each frame.
-  @ffi.Int()
-  external int allow_mixed;
-
-  /// If true, print info and warning messages to stderr.
-  @ffi.Int()
-  external int verbose;
+  external int use_threads;
 
   /// Padding for later use.
-  @ffi.Array.multi([4])
+  @ffi.Array.multi([7])
   external ffi.Array<ffi.Uint32> padding;
 }
 
-/// Error codes
-abstract class WebPMuxError {
-  static const int WEBP_MUX_OK = 1;
-  static const int WEBP_MUX_NOT_FOUND = 0;
-  static const int WEBP_MUX_INVALID_ARGUMENT = -1;
-  static const int WEBP_MUX_BAD_DATA = -2;
-  static const int WEBP_MUX_MEMORY_ERROR = -3;
-  static const int WEBP_MUX_NOT_ENOUGH_DATA = -4;
+/// ------------------------------------------------------------------------------
+/// Life of a Demux object
+abstract class WebPDemuxState {
+  /// An error occurred while parsing.
+  static const int WEBP_DEMUX_PARSE_ERROR = -1;
+
+  /// Not enough data to parse full header.
+  static const int WEBP_DEMUX_PARSING_HEADER = 0;
+
+  /// Header parsing complete,
+  /// data may be available.
+  static const int WEBP_DEMUX_PARSED_HEADER = 1;
+
+  /// Entire file has been parsed.
+  static const int WEBP_DEMUX_DONE = 2;
 }
 
-final class WebPAnimEncoder extends ffi.Opaque {}
+/// ------------------------------------------------------------------------------
+/// Data/information extraction.
+abstract class WebPFormatFeature {
+  /// bit-wise combination of WebPFeatureFlags
+  /// corresponding to the 'VP8X' chunk (if present).
+  static const int WEBP_FF_FORMAT_FLAGS = 0;
+  static const int WEBP_FF_CANVAS_WIDTH = 1;
+  static const int WEBP_FF_CANVAS_HEIGHT = 2;
+
+  /// only relevant for animated file
+  static const int WEBP_FF_LOOP_COUNT = 3;
+
+  /// idem.
+  static const int WEBP_FF_BACKGROUND_COLOR = 4;
+
+  /// Number of frames present in the demux object.
+  /// In case of a partial demux, this is the number
+  /// of frames seen so far, with the last frame
+  /// possibly being partial.
+  static const int WEBP_FF_FRAME_COUNT = 5;
+}
+
+final class WebPAnimDecoder extends ffi.Opaque {}
+
+/// Compression parameters.
+final class WebPConfig extends ffi.Struct {
+  /// Lossless encoding (0=lossy(default), 1=lossless).
+  @ffi.Int()
+  external int lossless;
+
+  /// between 0 and 100. For lossy, 0 gives the smallest
+  /// size and 100 the largest. For lossless, this
+  /// parameter is the amount of effort put into the
+  /// compression: 0 is the fastest but gives larger
+  /// files compared to the slowest, but best, 100.
+  @ffi.Float()
+  external double quality;
+
+  /// quality/speed trade-off (0=fast, 6=slower-better)
+  @ffi.Int()
+  external int method;
+
+  /// Hint for image type (lossless only for now).
+  @ffi.Int32()
+  external int image_hint;
+
+  /// if non-zero, set the desired target size in bytes.
+  /// Takes precedence over the 'compression' parameter.
+  @ffi.Int()
+  external int target_size;
+
+  /// if non-zero, specifies the minimal distortion to
+  /// try to achieve. Takes precedence over target_size.
+  @ffi.Float()
+  external double target_PSNR;
+
+  /// maximum number of segments to use, in [1..4]
+  @ffi.Int()
+  external int segments;
+
+  /// Spatial Noise Shaping. 0=off, 100=maximum.
+  @ffi.Int()
+  external int sns_strength;
+
+  /// range: [0 = off .. 100 = strongest]
+  @ffi.Int()
+  external int filter_strength;
+
+  /// range: [0 = off .. 7 = least sharp]
+  @ffi.Int()
+  external int filter_sharpness;
+
+  /// filtering type: 0 = simple, 1 = strong (only used
+  /// if filter_strength > 0 or autofilter > 0)
+  @ffi.Int()
+  external int filter_type;
+
+  /// Auto adjust filter's strength [0 = off, 1 = on]
+  @ffi.Int()
+  external int autofilter;
+
+  /// Algorithm for encoding the alpha plane (0 = none,
+  /// 1 = compressed with WebP lossless). Default is 1.
+  @ffi.Int()
+  external int alpha_compression;
+
+  /// Predictive filtering method for alpha plane.
+  /// 0: none, 1: fast, 2: best. Default if 1.
+  @ffi.Int()
+  external int alpha_filtering;
+
+  /// Between 0 (smallest size) and 100 (lossless).
+  /// Default is 100.
+  @ffi.Int()
+  external int alpha_quality;
+
+  /// number of entropy-analysis passes (in [1..10]).
+  @ffi.Int()
+  external int pass;
+
+  /// if true, export the compressed picture back.
+  /// In-loop filtering is not applied.
+  @ffi.Int()
+  external int show_compressed;
+
+  /// preprocessing filter:
+  /// 0=none, 1=segment-smooth, 2=pseudo-random dithering
+  @ffi.Int()
+  external int preprocessing;
+
+  /// log2(number of token partitions) in [0..3]. Default
+  /// is set to 0 for easier progressive decoding.
+  @ffi.Int()
+  external int partitions;
+
+  /// quality degradation allowed to fit the 512k limit
+  /// on prediction modes coding (0: no degradation,
+  /// 100: maximum possible degradation).
+  @ffi.Int()
+  external int partition_limit;
+
+  /// If true, compression parameters will be remapped
+  /// to better match the expected output size from
+  /// JPEG compression. Generally, the output size will
+  /// be similar but the degradation will be lower.
+  @ffi.Int()
+  external int emulate_jpeg_size;
+
+  /// If non-zero, try and use multi-threaded encoding.
+  @ffi.Int()
+  external int thread_level;
+
+  /// If set, reduce memory usage (but increase CPU use).
+  @ffi.Int()
+  external int low_memory;
+
+  /// Near lossless encoding [0 = max loss .. 100 = off
+  /// (default)].
+  @ffi.Int()
+  external int near_lossless;
+
+  /// if non-zero, preserve the exact RGB values under
+  /// transparent area. Otherwise, discard this invisible
+  /// RGB information for better compression. The default
+  /// value is 0.
+  @ffi.Int()
+  external int exact;
+
+  /// reserved for future lossless feature
+  @ffi.Int()
+  external int use_delta_palette;
+
+  /// if needed, use sharp (and slow) RGB->YUV conversion
+  @ffi.Int()
+  external int use_sharp_yuv;
+
+  /// minimum permissible quality factor
+  @ffi.Int()
+  external int qmin;
+
+  /// maximum permissible quality factor
+  @ffi.Int()
+  external int qmax;
+}
+
+/// Image characteristics hint for the underlying encoder.
+abstract class WebPImageHint {
+  /// default preset.
+  static const int WEBP_HINT_DEFAULT = 0;
+
+  /// digital picture, like portrait, inner shot
+  static const int WEBP_HINT_PICTURE = 1;
+
+  /// outdoor photograph, with natural lighting
+  static const int WEBP_HINT_PHOTO = 2;
+
+  /// Discrete tone image (graph, map-tile etc).
+  static const int WEBP_HINT_GRAPH = 3;
+  static const int WEBP_HINT_LAST = 4;
+}
 
 /// Main exchange structure (input samples, output bytes, statistics)
 ///
@@ -4688,564 +6496,6 @@ typedef WebPProgressHookFunction = ffi.Int Function(
 typedef DartWebPProgressHookFunction = int Function(
     int percent, ffi.Pointer<WebPPicture> picture);
 
-/// Compression parameters.
-final class WebPConfig extends ffi.Struct {
-  /// Lossless encoding (0=lossy(default), 1=lossless).
-  @ffi.Int()
-  external int lossless;
-
-  /// between 0 and 100. For lossy, 0 gives the smallest
-  /// size and 100 the largest. For lossless, this
-  /// parameter is the amount of effort put into the
-  /// compression: 0 is the fastest but gives larger
-  /// files compared to the slowest, but best, 100.
-  @ffi.Float()
-  external double quality;
-
-  /// quality/speed trade-off (0=fast, 6=slower-better)
-  @ffi.Int()
-  external int method;
-
-  /// Hint for image type (lossless only for now).
-  @ffi.Int32()
-  external int image_hint;
-
-  /// if non-zero, set the desired target size in bytes.
-  /// Takes precedence over the 'compression' parameter.
-  @ffi.Int()
-  external int target_size;
-
-  /// if non-zero, specifies the minimal distortion to
-  /// try to achieve. Takes precedence over target_size.
-  @ffi.Float()
-  external double target_PSNR;
-
-  /// maximum number of segments to use, in [1..4]
-  @ffi.Int()
-  external int segments;
-
-  /// Spatial Noise Shaping. 0=off, 100=maximum.
-  @ffi.Int()
-  external int sns_strength;
-
-  /// range: [0 = off .. 100 = strongest]
-  @ffi.Int()
-  external int filter_strength;
-
-  /// range: [0 = off .. 7 = least sharp]
-  @ffi.Int()
-  external int filter_sharpness;
-
-  /// filtering type: 0 = simple, 1 = strong (only used
-  /// if filter_strength > 0 or autofilter > 0)
-  @ffi.Int()
-  external int filter_type;
-
-  /// Auto adjust filter's strength [0 = off, 1 = on]
-  @ffi.Int()
-  external int autofilter;
-
-  /// Algorithm for encoding the alpha plane (0 = none,
-  /// 1 = compressed with WebP lossless). Default is 1.
-  @ffi.Int()
-  external int alpha_compression;
-
-  /// Predictive filtering method for alpha plane.
-  /// 0: none, 1: fast, 2: best. Default if 1.
-  @ffi.Int()
-  external int alpha_filtering;
-
-  /// Between 0 (smallest size) and 100 (lossless).
-  /// Default is 100.
-  @ffi.Int()
-  external int alpha_quality;
-
-  /// number of entropy-analysis passes (in [1..10]).
-  @ffi.Int()
-  external int pass;
-
-  /// if true, export the compressed picture back.
-  /// In-loop filtering is not applied.
-  @ffi.Int()
-  external int show_compressed;
-
-  /// preprocessing filter:
-  /// 0=none, 1=segment-smooth, 2=pseudo-random dithering
-  @ffi.Int()
-  external int preprocessing;
-
-  /// log2(number of token partitions) in [0..3]. Default
-  /// is set to 0 for easier progressive decoding.
-  @ffi.Int()
-  external int partitions;
-
-  /// quality degradation allowed to fit the 512k limit
-  /// on prediction modes coding (0: no degradation,
-  /// 100: maximum possible degradation).
-  @ffi.Int()
-  external int partition_limit;
-
-  /// If true, compression parameters will be remapped
-  /// to better match the expected output size from
-  /// JPEG compression. Generally, the output size will
-  /// be similar but the degradation will be lower.
-  @ffi.Int()
-  external int emulate_jpeg_size;
-
-  /// If non-zero, try and use multi-threaded encoding.
-  @ffi.Int()
-  external int thread_level;
-
-  /// If set, reduce memory usage (but increase CPU use).
-  @ffi.Int()
-  external int low_memory;
-
-  /// Near lossless encoding [0 = max loss .. 100 = off
-  /// (default)].
-  @ffi.Int()
-  external int near_lossless;
-
-  /// if non-zero, preserve the exact RGB values under
-  /// transparent area. Otherwise, discard this invisible
-  /// RGB information for better compression. The default
-  /// value is 0.
-  @ffi.Int()
-  external int exact;
-
-  /// reserved for future lossless feature
-  @ffi.Int()
-  external int use_delta_palette;
-
-  /// if needed, use sharp (and slow) RGB->YUV conversion
-  @ffi.Int()
-  external int use_sharp_yuv;
-
-  /// minimum permissible quality factor
-  @ffi.Int()
-  external int qmin;
-
-  /// maximum permissible quality factor
-  @ffi.Int()
-  external int qmax;
-}
-
-/// Image characteristics hint for the underlying encoder.
-abstract class WebPImageHint {
-  /// default preset.
-  static const int WEBP_HINT_DEFAULT = 0;
-
-  /// digital picture, like portrait, inner shot
-  static const int WEBP_HINT_PICTURE = 1;
-
-  /// outdoor photograph, with natural lighting
-  static const int WEBP_HINT_PHOTO = 2;
-
-  /// Discrete tone image (graph, map-tile etc).
-  static const int WEBP_HINT_GRAPH = 3;
-  static const int WEBP_HINT_LAST = 4;
-}
-
-/// ------------------------------------------------------------------------------
-/// WebPDecBuffer: Generic structure for describing the output sample buffer.
-final class WebPRGBABuffer extends ffi.Struct {
-  /// pointer to RGBA samples
-  external ffi.Pointer<ffi.Uint8> rgba;
-
-  /// stride in bytes from one scanline to the next.
-  @ffi.Int()
-  external int stride;
-
-  /// total size of the *rgba buffer.
-  @ffi.Size()
-  external int size;
-}
-
-final class WebPYUVABuffer extends ffi.Struct {
-  /// pointer to luma, chroma U/V, alpha samples
-  external ffi.Pointer<ffi.Uint8> y;
-
-  external ffi.Pointer<ffi.Uint8> u;
-
-  external ffi.Pointer<ffi.Uint8> v;
-
-  external ffi.Pointer<ffi.Uint8> a;
-
-  /// luma stride
-  @ffi.Int()
-  external int y_stride;
-
-  /// chroma strides
-  @ffi.Int()
-  external int u_stride;
-
-  @ffi.Int()
-  external int v_stride;
-
-  /// alpha stride
-  @ffi.Int()
-  external int a_stride;
-
-  /// luma plane size
-  @ffi.Size()
-  external int y_size;
-
-  /// chroma planes size
-  @ffi.Size()
-  external int u_size;
-
-  @ffi.Size()
-  external int v_size;
-
-  /// alpha-plane size
-  @ffi.Size()
-  external int a_size;
-}
-
-/// Output buffer
-final class WebPDecBuffer extends ffi.Struct {
-  /// Colorspace.
-  @ffi.Int32()
-  external int colorspace;
-
-  /// Dimensions.
-  @ffi.Int()
-  external int width;
-
-  @ffi.Int()
-  external int height;
-
-  /// If non-zero, 'internal_memory' pointer is not
-  /// used. If value is '2' or more, the external
-  /// memory is considered 'slow' and multiple
-  /// read/write will be avoided.
-  @ffi.Int()
-  external int is_external_memory;
-
-  /// Nameless union of buffer parameters.
-  external UnnamedUnion1 u;
-
-  /// padding for later use
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Uint32> pad;
-
-  /// Internally allocated memory (only when
-  /// is_external_memory is 0). Should not be used
-  /// externally, but accessed via the buffer union.
-  external ffi.Pointer<ffi.Uint8> private_memory;
-}
-
-/// Colorspaces
-/// Note: the naming describes the byte-ordering of packed samples in memory.
-/// For instance, MODE_BGRA relates to samples ordered as B,G,R,A,B,G,R,A,...
-/// Non-capital names (e.g.:MODE_Argb) relates to pre-multiplied RGB channels.
-/// RGBA-4444 and RGB-565 colorspaces are represented by following byte-order:
-/// RGBA-4444: [r3 r2 r1 r0 g3 g2 g1 g0], [b3 b2 b1 b0 a3 a2 a1 a0], ...
-/// RGB-565: [r4 r3 r2 r1 r0 g5 g4 g3], [g2 g1 g0 b4 b3 b2 b1 b0], ...
-/// In the case WEBP_SWAP_16BITS_CSP is defined, the bytes are swapped for
-/// these two modes:
-/// RGBA-4444: [b3 b2 b1 b0 a3 a2 a1 a0], [r3 r2 r1 r0 g3 g2 g1 g0], ...
-/// RGB-565: [g2 g1 g0 b4 b3 b2 b1 b0], [r4 r3 r2 r1 r0 g5 g4 g3], ...
-abstract class WEBP_CSP_MODE {
-  static const int MODE_RGB = 0;
-  static const int MODE_RGBA = 1;
-  static const int MODE_BGR = 2;
-  static const int MODE_BGRA = 3;
-  static const int MODE_ARGB = 4;
-  static const int MODE_RGBA_4444 = 5;
-  static const int MODE_RGB_565 = 6;
-
-  /// RGB-premultiplied transparent modes (alpha value is preserved)
-  static const int MODE_rgbA = 7;
-  static const int MODE_bgrA = 8;
-  static const int MODE_Argb = 9;
-  static const int MODE_rgbA_4444 = 10;
-
-  /// yuv 4:2:0
-  static const int MODE_YUV = 11;
-  static const int MODE_YUVA = 12;
-  static const int MODE_LAST = 13;
-}
-
-final class UnnamedUnion1 extends ffi.Union {
-  external WebPRGBABuffer RGBA;
-
-  external WebPYUVABuffer YUVA;
-}
-
-final class WebPIDecoder extends ffi.Opaque {}
-
-/// Features gathered from the bitstream
-final class WebPBitstreamFeatures extends ffi.Struct {
-  /// Width in pixels, as read from the bitstream.
-  @ffi.Int()
-  external int width;
-
-  /// Height in pixels, as read from the bitstream.
-  @ffi.Int()
-  external int height;
-
-  /// True if the bitstream contains an alpha channel.
-  @ffi.Int()
-  external int has_alpha;
-
-  /// True if the bitstream is an animation.
-  @ffi.Int()
-  external int has_animation;
-
-  /// 0 = undefined (/mixed), 1 = lossy, 2 = lossless
-  @ffi.Int()
-  external int format;
-
-  /// padding for later use
-  @ffi.Array.multi([5])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// Decoding options
-final class WebPDecoderOptions extends ffi.Struct {
-  /// if true, skip the in-loop filtering
-  @ffi.Int()
-  external int bypass_filtering;
-
-  /// if true, use faster pointwise upsampler
-  @ffi.Int()
-  external int no_fancy_upsampling;
-
-  /// if true, cropping is applied _first_
-  @ffi.Int()
-  external int use_cropping;
-
-  /// top-left position for cropping.
-  /// Will be snapped to even values.
-  @ffi.Int()
-  external int crop_left;
-
-  @ffi.Int()
-  external int crop_top;
-
-  /// dimension of the cropping area
-  @ffi.Int()
-  external int crop_width;
-
-  @ffi.Int()
-  external int crop_height;
-
-  /// if true, scaling is applied _afterward_
-  @ffi.Int()
-  external int use_scaling;
-
-  /// final resolution
-  @ffi.Int()
-  external int scaled_width;
-
-  @ffi.Int()
-  external int scaled_height;
-
-  /// if true, use multi-threaded decoding
-  @ffi.Int()
-  external int use_threads;
-
-  /// dithering strength (0=Off, 100=full)
-  @ffi.Int()
-  external int dithering_strength;
-
-  /// if true, flip output vertically
-  @ffi.Int()
-  external int flip;
-
-  /// alpha dithering strength in [0..100]
-  @ffi.Int()
-  external int alpha_dithering_strength;
-
-  /// padding for later use
-  @ffi.Array.multi([5])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// Main object storing the configuration for advanced decoding.
-final class WebPDecoderConfig extends ffi.Struct {
-  /// Immutable bitstream features (optional)
-  external WebPBitstreamFeatures input;
-
-  /// Output buffer (can point to external mem)
-  external WebPDecBuffer output;
-
-  /// Decoding options
-  external WebPDecoderOptions options;
-}
-
-/// ------------------------------------------------------------------------------
-/// Enumeration of the status codes
-abstract class VP8StatusCode {
-  static const int VP8_STATUS_OK = 0;
-  static const int VP8_STATUS_OUT_OF_MEMORY = 1;
-  static const int VP8_STATUS_INVALID_PARAM = 2;
-  static const int VP8_STATUS_BITSTREAM_ERROR = 3;
-  static const int VP8_STATUS_UNSUPPORTED_FEATURE = 4;
-  static const int VP8_STATUS_SUSPENDED = 5;
-  static const int VP8_STATUS_USER_ABORT = 6;
-  static const int VP8_STATUS_NOT_ENOUGH_DATA = 7;
-}
-
-final class WebPDemuxer extends ffi.Opaque {}
-
-/// ------------------------------------------------------------------------------
-/// Frame iteration.
-final class WebPIterator extends ffi.Struct {
-  @ffi.Int()
-  external int frame_num;
-
-  /// equivalent to WEBP_FF_FRAME_COUNT.
-  @ffi.Int()
-  external int num_frames;
-
-  /// offset relative to the canvas.
-  @ffi.Int()
-  external int x_offset;
-
-  @ffi.Int()
-  external int y_offset;
-
-  /// dimensions of this frame.
-  @ffi.Int()
-  external int width;
-
-  @ffi.Int()
-  external int height;
-
-  /// display duration in milliseconds.
-  @ffi.Int()
-  external int duration;
-
-  /// dispose method for the frame.
-  @ffi.Int32()
-  external int dispose_method;
-
-  /// true if 'fragment' contains a full frame. partial images
-  /// may still be decoded with the WebP incremental decoder.
-  @ffi.Int()
-  external int complete;
-
-  /// The frame given by 'frame_num'. Note for historical
-  /// reasons this is called a fragment.
-  external WebPData fragment;
-
-  /// True if the frame contains transparency.
-  @ffi.Int()
-  external int has_alpha;
-
-  /// Blend operation for the frame.
-  @ffi.Int32()
-  external int blend_method;
-
-  /// padding for later use.
-  @ffi.Array.multi([2])
-  external ffi.Array<ffi.Uint32> pad;
-
-  /// for internal use only.
-  external ffi.Pointer<ffi.Void> private_;
-}
-
-/// ------------------------------------------------------------------------------
-/// Chunk iteration.
-final class WebPChunkIterator extends ffi.Struct {
-  /// The current and total number of chunks with the fourcc given to
-  /// WebPDemuxGetChunk().
-  @ffi.Int()
-  external int chunk_num;
-
-  @ffi.Int()
-  external int num_chunks;
-
-  /// The payload of the chunk.
-  external WebPData chunk;
-
-  /// padding for later use
-  @ffi.Array.multi([6])
-  external ffi.Array<ffi.Uint32> pad;
-
-  external ffi.Pointer<ffi.Void> private_;
-}
-
-/// Global information about the animation..
-final class WebPAnimInfo extends ffi.Struct {
-  @ffi.Uint32()
-  external int canvas_width;
-
-  @ffi.Uint32()
-  external int canvas_height;
-
-  @ffi.Uint32()
-  external int loop_count;
-
-  @ffi.Uint32()
-  external int bgcolor;
-
-  @ffi.Uint32()
-  external int frame_count;
-
-  /// padding for later use
-  @ffi.Array.multi([4])
-  external ffi.Array<ffi.Uint32> pad;
-}
-
-/// Global options.
-final class WebPAnimDecoderOptions extends ffi.Struct {
-  /// Output colorspace. Only the following modes are supported:
-  /// MODE_RGBA, MODE_BGRA, MODE_rgbA and MODE_bgrA.
-  @ffi.Int32()
-  external int color_mode;
-
-  /// If true, use multi-threaded decoding.
-  @ffi.Int()
-  external int use_threads;
-
-  /// Padding for later use.
-  @ffi.Array.multi([7])
-  external ffi.Array<ffi.Uint32> padding;
-}
-
-/// ------------------------------------------------------------------------------
-/// Life of a Demux object
-abstract class WebPDemuxState {
-  /// An error occurred while parsing.
-  static const int WEBP_DEMUX_PARSE_ERROR = -1;
-
-  /// Not enough data to parse full header.
-  static const int WEBP_DEMUX_PARSING_HEADER = 0;
-
-  /// Header parsing complete,
-  /// data may be available.
-  static const int WEBP_DEMUX_PARSED_HEADER = 1;
-
-  /// Entire file has been parsed.
-  static const int WEBP_DEMUX_DONE = 2;
-}
-
-/// ------------------------------------------------------------------------------
-/// Data/information extraction.
-abstract class WebPFormatFeature {
-  /// bit-wise combination of WebPFeatureFlags
-  /// corresponding to the 'VP8X' chunk (if present).
-  static const int WEBP_FF_FORMAT_FLAGS = 0;
-  static const int WEBP_FF_CANVAS_WIDTH = 1;
-  static const int WEBP_FF_CANVAS_HEIGHT = 2;
-
-  /// only relevant for animated file
-  static const int WEBP_FF_LOOP_COUNT = 3;
-
-  /// idem.
-  static const int WEBP_FF_BACKGROUND_COLOR = 4;
-
-  /// Number of frames present in the demux object.
-  /// In case of a partial demux, this is the number
-  /// of frames seen so far, with the last frame
-  /// possibly being partial.
-  static const int WEBP_FF_FRAME_COUNT = 5;
-}
-
-final class WebPAnimDecoder extends ffi.Opaque {}
-
 /// WebPMemoryWrite: a special WebPWriterFunction that writes to memory using
 /// the following WebPMemoryWriter object (to be set as a custom_ptr).
 final class WebPMemoryWriter extends ffi.Struct {
@@ -5292,1272 +6542,383 @@ typedef NativeWebPMemoryWrite = ffi.Int Function(ffi.Pointer<ffi.Uint8> data,
 typedef DartWebPMemoryWrite = int Function(ffi.Pointer<ffi.Uint8> data,
     int data_size, ffi.Pointer<WebPPicture> picture);
 
-const int VP8_SIGNATURE = 10289450;
+final class WebPMux extends ffi.Opaque {}
+
+/// Encapsulates data about a single frame.
+final class WebPMuxFrameInfo extends ffi.Struct {
+  /// image data: can be a raw VP8/VP8L bitstream
+  /// or a single-image WebP file.
+  external WebPData bitstream;
+
+  /// x-offset of the frame.
+  @ffi.Int()
+  external int x_offset;
+
+  /// y-offset of the frame.
+  @ffi.Int()
+  external int y_offset;
+
+  /// duration of the frame (in milliseconds).
+  @ffi.Int()
+  external int duration;
+
+  /// frame type: should be one of WEBP_CHUNK_ANMF
+  /// or WEBP_CHUNK_IMAGE
+  @ffi.Int32()
+  external int id;
+
+  /// Disposal method for the frame.
+  @ffi.Int32()
+  external int dispose_method;
+
+  /// Blend operation for the frame.
+  @ffi.Int32()
+  external int blend_method;
+
+  /// padding for later use
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Uint32> pad;
+}
+
+/// IDs for different types of chunks.
+abstract class WebPChunkId {
+  /// VP8X
+  static const int WEBP_CHUNK_VP8X = 0;
+
+  /// ICCP
+  static const int WEBP_CHUNK_ICCP = 1;
+
+  /// ANIM
+  static const int WEBP_CHUNK_ANIM = 2;
+
+  /// ANMF
+  static const int WEBP_CHUNK_ANMF = 3;
+
+  /// (deprecated from FRGM)
+  static const int WEBP_CHUNK_DEPRECATED = 4;
+
+  /// ALPH
+  static const int WEBP_CHUNK_ALPHA = 5;
+
+  /// VP8/VP8L
+  static const int WEBP_CHUNK_IMAGE = 6;
+
+  /// EXIF
+  static const int WEBP_CHUNK_EXIF = 7;
+
+  /// XMP
+  static const int WEBP_CHUNK_XMP = 8;
+
+  /// Other chunks.
+  static const int WEBP_CHUNK_UNKNOWN = 9;
+  static const int WEBP_CHUNK_NIL = 10;
+}
+
+/// Animation parameters.
+final class WebPMuxAnimParams extends ffi.Struct {
+  /// Background color of the canvas stored (in MSB order) as:
+  /// Bits 00 to 07: Alpha.
+  /// Bits 08 to 15: Red.
+  /// Bits 16 to 23: Green.
+  /// Bits 24 to 31: Blue.
+  @ffi.Uint32()
+  external int bgcolor;
+
+  /// Number of times to repeat the animation [0 = infinite].
+  @ffi.Int()
+  external int loop_count;
+}
+
+/// Global options.
+final class WebPAnimEncoderOptions extends ffi.Struct {
+  /// Animation parameters.
+  external WebPMuxAnimParams anim_params;
+
+  /// If true, minimize the output size (slow). Implicitly
+  /// disables key-frame insertion.
+  @ffi.Int()
+  external int minimize_size;
+
+  @ffi.Int()
+  external int kmin;
+
+  /// Minimum and maximum distance between consecutive key
+  /// frames in the output. The library may insert some key
+  /// frames as needed to satisfy this criteria.
+  /// Note that these conditions should hold: kmax > kmin
+  /// and kmin >= kmax / 2 + 1. Also, if kmax <= 0, then
+  /// key-frame insertion is disabled; and if kmax == 1,
+  /// then all frames will be key-frames (kmin value does
+  /// not matter for these special cases).
+  @ffi.Int()
+  external int kmax;
 
-const int VP8_MAX_PARTITION0_SIZE = 524288;
+  /// If true, use mixed compression mode; may choose
+  /// either lossy and lossless for each frame.
+  @ffi.Int()
+  external int allow_mixed;
 
-const int VP8_MAX_PARTITION_SIZE = 16777216;
+  /// If true, print info and warning messages to stderr.
+  @ffi.Int()
+  external int verbose;
 
-const int VP8_FRAME_HEADER_SIZE = 10;
+  /// Padding for later use.
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint32> padding;
+}
 
-const int VP8L_SIGNATURE_SIZE = 1;
+/// Error codes
+abstract class WebPMuxError {
+  static const int WEBP_MUX_OK = 1;
+  static const int WEBP_MUX_NOT_FOUND = 0;
+  static const int WEBP_MUX_INVALID_ARGUMENT = -1;
+  static const int WEBP_MUX_BAD_DATA = -2;
+  static const int WEBP_MUX_MEMORY_ERROR = -3;
+  static const int WEBP_MUX_NOT_ENOUGH_DATA = -4;
+}
 
-const int VP8L_MAGIC_BYTE = 47;
+final class WebPAnimEncoder extends ffi.Opaque {}
 
-const int VP8L_IMAGE_SIZE_BITS = 14;
+const int _VCRT_COMPILER_PREPROCESSOR = 1;
 
-const int VP8L_VERSION_BITS = 3;
+const int _SAL_VERSION = 20;
 
-const int VP8L_VERSION = 0;
+const int __SAL_H_VERSION = 180000000;
 
-const int VP8L_FRAME_HEADER_SIZE = 5;
+const int _USE_DECLSPECS_FOR_SAL = 0;
 
-const int MAX_PALETTE_SIZE = 256;
+const int _USE_ATTRIBUTES_FOR_SAL = 0;
 
-const int MAX_CACHE_BITS = 11;
+const int _CRT_PACKING = 8;
 
-const int HUFFMAN_CODES_PER_META_CODE = 5;
+const int _VCRUNTIME_DISABLED_WARNINGS = 4514;
 
-const int ARGB_BLACK = 4278190080;
+const int _HAS_EXCEPTIONS = 1;
 
-const int DEFAULT_CODE_LENGTH = 8;
-
-const int MAX_ALLOWED_CODE_LENGTH = 15;
-
-const int NUM_LITERAL_CODES = 256;
-
-const int NUM_LENGTH_CODES = 24;
-
-const int NUM_DISTANCE_CODES = 40;
-
-const int CODE_LENGTH_CODES = 19;
-
-const int MIN_HUFFMAN_BITS = 2;
-
-const int MAX_HUFFMAN_BITS = 9;
-
-const int TRANSFORM_PRESENT = 1;
-
-const int NUM_TRANSFORMS = 4;
-
-const int ALPHA_HEADER_LEN = 1;
-
-const int ALPHA_NO_COMPRESSION = 0;
-
-const int ALPHA_LOSSLESS_COMPRESSION = 1;
-
-const int ALPHA_PREPROCESSED_LEVELS = 1;
-
-const int TAG_SIZE = 4;
-
-const int CHUNK_SIZE_BYTES = 4;
-
-const int CHUNK_HEADER_SIZE = 8;
-
-const int RIFF_HEADER_SIZE = 12;
-
-const int ANMF_CHUNK_SIZE = 16;
-
-const int ANIM_CHUNK_SIZE = 6;
-
-const int VP8X_CHUNK_SIZE = 10;
-
-const int MAX_CANVAS_SIZE = 16777216;
-
-const int MAX_IMAGE_AREA = 4294967296;
-
-const int MAX_LOOP_COUNT = 65536;
-
-const int MAX_DURATION = 16777216;
-
-const int MAX_POSITION_OFFSET = 16777216;
-
-const int MAX_CHUNK_PAYLOAD = 4294967286;
-
-const int __has_safe_buffers = 1;
-
-const int __DARWIN_ONLY_64_BIT_INO_T = 1;
-
-const int __DARWIN_ONLY_UNIX_CONFORMANCE = 1;
-
-const int __DARWIN_ONLY_VERS_1050 = 1;
-
-const int __DARWIN_UNIX03 = 1;
-
-const int __DARWIN_64_BIT_INO_T = 1;
-
-const int __DARWIN_VERS_1050 = 1;
-
-const int __DARWIN_NON_CANCELABLE = 0;
-
-const String __DARWIN_SUF_EXTSN = '\$DARWIN_EXTSN';
-
-const int __DARWIN_C_ANSI = 4096;
-
-const int __DARWIN_C_FULL = 900000;
-
-const int __DARWIN_C_LEVEL = 900000;
-
-const int __STDC_WANT_LIB_EXT1__ = 1;
-
-const int __DARWIN_NO_LONG_LONG = 0;
-
-const int _DARWIN_FEATURE_64_BIT_INODE = 1;
-
-const int _DARWIN_FEATURE_ONLY_64_BIT_INODE = 1;
-
-const int _DARWIN_FEATURE_ONLY_VERS_1050 = 1;
-
-const int _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE = 1;
-
-const int _DARWIN_FEATURE_UNIX_CONFORMANCE = 3;
-
-const int __has_ptrcheck = 0;
-
-const int __DARWIN_NULL = 0;
-
-const int __PTHREAD_SIZE__ = 8176;
-
-const int __PTHREAD_ATTR_SIZE__ = 56;
-
-const int __PTHREAD_MUTEXATTR_SIZE__ = 8;
-
-const int __PTHREAD_MUTEX_SIZE__ = 56;
-
-const int __PTHREAD_CONDATTR_SIZE__ = 8;
-
-const int __PTHREAD_COND_SIZE__ = 40;
-
-const int __PTHREAD_ONCE_SIZE__ = 8;
-
-const int __PTHREAD_RWLOCK_SIZE__ = 192;
-
-const int __PTHREAD_RWLOCKATTR_SIZE__ = 16;
-
-const int __DARWIN_WCHAR_MAX = 2147483647;
-
-const int __DARWIN_WCHAR_MIN = -2147483648;
-
-const int __DARWIN_WEOF = -1;
-
-const int _FORTIFY_SOURCE = 2;
-
-const int __API_TO_BE_DEPRECATED = 100000;
-
-const int __API_TO_BE_DEPRECATED_MACOS = 100000;
-
-const int __API_TO_BE_DEPRECATED_IOS = 100000;
-
-const int __API_TO_BE_DEPRECATED_MACCATALYST = 100000;
-
-const int __API_TO_BE_DEPRECATED_WATCHOS = 100000;
-
-const int __API_TO_BE_DEPRECATED_TVOS = 100000;
-
-const int __API_TO_BE_DEPRECATED_DRIVERKIT = 100000;
-
-const int __API_TO_BE_DEPRECATED_VISIONOS = 100000;
-
-const int __MAC_10_0 = 1000;
-
-const int __MAC_10_1 = 1010;
-
-const int __MAC_10_2 = 1020;
-
-const int __MAC_10_3 = 1030;
-
-const int __MAC_10_4 = 1040;
-
-const int __MAC_10_5 = 1050;
-
-const int __MAC_10_6 = 1060;
-
-const int __MAC_10_7 = 1070;
-
-const int __MAC_10_8 = 1080;
-
-const int __MAC_10_9 = 1090;
-
-const int __MAC_10_10 = 101000;
-
-const int __MAC_10_10_2 = 101002;
-
-const int __MAC_10_10_3 = 101003;
-
-const int __MAC_10_11 = 101100;
-
-const int __MAC_10_11_2 = 101102;
-
-const int __MAC_10_11_3 = 101103;
-
-const int __MAC_10_11_4 = 101104;
-
-const int __MAC_10_12 = 101200;
-
-const int __MAC_10_12_1 = 101201;
-
-const int __MAC_10_12_2 = 101202;
-
-const int __MAC_10_12_4 = 101204;
-
-const int __MAC_10_13 = 101300;
-
-const int __MAC_10_13_1 = 101301;
-
-const int __MAC_10_13_2 = 101302;
-
-const int __MAC_10_13_4 = 101304;
-
-const int __MAC_10_14 = 101400;
-
-const int __MAC_10_14_1 = 101401;
-
-const int __MAC_10_14_4 = 101404;
-
-const int __MAC_10_14_5 = 101405;
-
-const int __MAC_10_14_6 = 101406;
-
-const int __MAC_10_15 = 101500;
-
-const int __MAC_10_15_1 = 101501;
-
-const int __MAC_10_15_4 = 101504;
-
-const int __MAC_10_16 = 101600;
-
-const int __MAC_11_0 = 110000;
-
-const int __MAC_11_1 = 110100;
-
-const int __MAC_11_3 = 110300;
-
-const int __MAC_11_4 = 110400;
-
-const int __MAC_11_5 = 110500;
-
-const int __MAC_11_6 = 110600;
-
-const int __MAC_12_0 = 120000;
-
-const int __MAC_12_1 = 120100;
-
-const int __MAC_12_2 = 120200;
-
-const int __MAC_12_3 = 120300;
-
-const int __MAC_12_4 = 120400;
-
-const int __MAC_12_5 = 120500;
-
-const int __MAC_12_6 = 120600;
-
-const int __MAC_12_7 = 120700;
-
-const int __MAC_13_0 = 130000;
-
-const int __MAC_13_1 = 130100;
-
-const int __MAC_13_2 = 130200;
-
-const int __MAC_13_3 = 130300;
-
-const int __MAC_13_4 = 130400;
-
-const int __MAC_13_5 = 130500;
-
-const int __MAC_13_6 = 130600;
-
-const int __MAC_14_0 = 140000;
-
-const int __MAC_14_1 = 140100;
-
-const int __MAC_14_2 = 140200;
-
-const int __MAC_14_3 = 140300;
-
-const int __MAC_14_4 = 140400;
-
-const int __IPHONE_2_0 = 20000;
-
-const int __IPHONE_2_1 = 20100;
-
-const int __IPHONE_2_2 = 20200;
-
-const int __IPHONE_3_0 = 30000;
-
-const int __IPHONE_3_1 = 30100;
-
-const int __IPHONE_3_2 = 30200;
-
-const int __IPHONE_4_0 = 40000;
-
-const int __IPHONE_4_1 = 40100;
-
-const int __IPHONE_4_2 = 40200;
-
-const int __IPHONE_4_3 = 40300;
-
-const int __IPHONE_5_0 = 50000;
-
-const int __IPHONE_5_1 = 50100;
-
-const int __IPHONE_6_0 = 60000;
-
-const int __IPHONE_6_1 = 60100;
-
-const int __IPHONE_7_0 = 70000;
-
-const int __IPHONE_7_1 = 70100;
-
-const int __IPHONE_8_0 = 80000;
-
-const int __IPHONE_8_1 = 80100;
-
-const int __IPHONE_8_2 = 80200;
-
-const int __IPHONE_8_3 = 80300;
-
-const int __IPHONE_8_4 = 80400;
-
-const int __IPHONE_9_0 = 90000;
-
-const int __IPHONE_9_1 = 90100;
-
-const int __IPHONE_9_2 = 90200;
-
-const int __IPHONE_9_3 = 90300;
-
-const int __IPHONE_10_0 = 100000;
-
-const int __IPHONE_10_1 = 100100;
-
-const int __IPHONE_10_2 = 100200;
-
-const int __IPHONE_10_3 = 100300;
-
-const int __IPHONE_11_0 = 110000;
-
-const int __IPHONE_11_1 = 110100;
-
-const int __IPHONE_11_2 = 110200;
-
-const int __IPHONE_11_3 = 110300;
-
-const int __IPHONE_11_4 = 110400;
-
-const int __IPHONE_12_0 = 120000;
-
-const int __IPHONE_12_1 = 120100;
-
-const int __IPHONE_12_2 = 120200;
-
-const int __IPHONE_12_3 = 120300;
-
-const int __IPHONE_12_4 = 120400;
-
-const int __IPHONE_13_0 = 130000;
-
-const int __IPHONE_13_1 = 130100;
-
-const int __IPHONE_13_2 = 130200;
-
-const int __IPHONE_13_3 = 130300;
-
-const int __IPHONE_13_4 = 130400;
-
-const int __IPHONE_13_5 = 130500;
-
-const int __IPHONE_13_6 = 130600;
-
-const int __IPHONE_13_7 = 130700;
-
-const int __IPHONE_14_0 = 140000;
-
-const int __IPHONE_14_1 = 140100;
-
-const int __IPHONE_14_2 = 140200;
-
-const int __IPHONE_14_3 = 140300;
-
-const int __IPHONE_14_5 = 140500;
-
-const int __IPHONE_14_4 = 140400;
-
-const int __IPHONE_14_6 = 140600;
-
-const int __IPHONE_14_7 = 140700;
-
-const int __IPHONE_14_8 = 140800;
-
-const int __IPHONE_15_0 = 150000;
-
-const int __IPHONE_15_1 = 150100;
-
-const int __IPHONE_15_2 = 150200;
-
-const int __IPHONE_15_3 = 150300;
-
-const int __IPHONE_15_4 = 150400;
-
-const int __IPHONE_15_5 = 150500;
-
-const int __IPHONE_15_6 = 150600;
-
-const int __IPHONE_15_7 = 150700;
-
-const int __IPHONE_15_8 = 150800;
-
-const int __IPHONE_16_0 = 160000;
-
-const int __IPHONE_16_1 = 160100;
-
-const int __IPHONE_16_2 = 160200;
-
-const int __IPHONE_16_3 = 160300;
-
-const int __IPHONE_16_4 = 160400;
-
-const int __IPHONE_16_5 = 160500;
-
-const int __IPHONE_16_6 = 160600;
-
-const int __IPHONE_16_7 = 160700;
-
-const int __IPHONE_17_0 = 170000;
-
-const int __IPHONE_17_1 = 170100;
-
-const int __IPHONE_17_2 = 170200;
-
-const int __IPHONE_17_3 = 170300;
-
-const int __IPHONE_17_4 = 170400;
-
-const int __WATCHOS_1_0 = 10000;
-
-const int __WATCHOS_2_0 = 20000;
-
-const int __WATCHOS_2_1 = 20100;
-
-const int __WATCHOS_2_2 = 20200;
-
-const int __WATCHOS_3_0 = 30000;
-
-const int __WATCHOS_3_1 = 30100;
-
-const int __WATCHOS_3_1_1 = 30101;
-
-const int __WATCHOS_3_2 = 30200;
-
-const int __WATCHOS_4_0 = 40000;
-
-const int __WATCHOS_4_1 = 40100;
-
-const int __WATCHOS_4_2 = 40200;
-
-const int __WATCHOS_4_3 = 40300;
-
-const int __WATCHOS_5_0 = 50000;
-
-const int __WATCHOS_5_1 = 50100;
-
-const int __WATCHOS_5_2 = 50200;
-
-const int __WATCHOS_5_3 = 50300;
-
-const int __WATCHOS_6_0 = 60000;
-
-const int __WATCHOS_6_1 = 60100;
-
-const int __WATCHOS_6_2 = 60200;
-
-const int __WATCHOS_7_0 = 70000;
-
-const int __WATCHOS_7_1 = 70100;
-
-const int __WATCHOS_7_2 = 70200;
-
-const int __WATCHOS_7_3 = 70300;
-
-const int __WATCHOS_7_4 = 70400;
-
-const int __WATCHOS_7_5 = 70500;
-
-const int __WATCHOS_7_6 = 70600;
-
-const int __WATCHOS_8_0 = 80000;
-
-const int __WATCHOS_8_1 = 80100;
-
-const int __WATCHOS_8_3 = 80300;
-
-const int __WATCHOS_8_4 = 80400;
-
-const int __WATCHOS_8_5 = 80500;
-
-const int __WATCHOS_8_6 = 80600;
-
-const int __WATCHOS_8_7 = 80700;
-
-const int __WATCHOS_8_8 = 80800;
-
-const int __WATCHOS_9_0 = 90000;
-
-const int __WATCHOS_9_1 = 90100;
-
-const int __WATCHOS_9_2 = 90200;
-
-const int __WATCHOS_9_3 = 90300;
-
-const int __WATCHOS_9_4 = 90400;
-
-const int __WATCHOS_9_5 = 90500;
-
-const int __WATCHOS_9_6 = 90600;
-
-const int __WATCHOS_10_0 = 100000;
-
-const int __WATCHOS_10_1 = 100100;
-
-const int __WATCHOS_10_2 = 100200;
-
-const int __WATCHOS_10_3 = 100300;
-
-const int __WATCHOS_10_4 = 100400;
-
-const int __TVOS_9_0 = 90000;
-
-const int __TVOS_9_1 = 90100;
-
-const int __TVOS_9_2 = 90200;
-
-const int __TVOS_10_0 = 100000;
-
-const int __TVOS_10_0_1 = 100001;
-
-const int __TVOS_10_1 = 100100;
-
-const int __TVOS_10_2 = 100200;
-
-const int __TVOS_11_0 = 110000;
-
-const int __TVOS_11_1 = 110100;
-
-const int __TVOS_11_2 = 110200;
-
-const int __TVOS_11_3 = 110300;
-
-const int __TVOS_11_4 = 110400;
-
-const int __TVOS_12_0 = 120000;
-
-const int __TVOS_12_1 = 120100;
-
-const int __TVOS_12_2 = 120200;
-
-const int __TVOS_12_3 = 120300;
-
-const int __TVOS_12_4 = 120400;
-
-const int __TVOS_13_0 = 130000;
-
-const int __TVOS_13_2 = 130200;
-
-const int __TVOS_13_3 = 130300;
-
-const int __TVOS_13_4 = 130400;
-
-const int __TVOS_14_0 = 140000;
-
-const int __TVOS_14_1 = 140100;
-
-const int __TVOS_14_2 = 140200;
-
-const int __TVOS_14_3 = 140300;
-
-const int __TVOS_14_5 = 140500;
-
-const int __TVOS_14_6 = 140600;
-
-const int __TVOS_14_7 = 140700;
-
-const int __TVOS_15_0 = 150000;
-
-const int __TVOS_15_1 = 150100;
-
-const int __TVOS_15_2 = 150200;
-
-const int __TVOS_15_3 = 150300;
-
-const int __TVOS_15_4 = 150400;
-
-const int __TVOS_15_5 = 150500;
-
-const int __TVOS_15_6 = 150600;
-
-const int __TVOS_16_0 = 160000;
-
-const int __TVOS_16_1 = 160100;
-
-const int __TVOS_16_2 = 160200;
-
-const int __TVOS_16_3 = 160300;
-
-const int __TVOS_16_4 = 160400;
-
-const int __TVOS_16_5 = 160500;
-
-const int __TVOS_16_6 = 160600;
-
-const int __TVOS_17_0 = 170000;
-
-const int __TVOS_17_1 = 170100;
-
-const int __TVOS_17_2 = 170200;
-
-const int __TVOS_17_3 = 170300;
-
-const int __TVOS_17_4 = 170400;
-
-const int __BRIDGEOS_2_0 = 20000;
-
-const int __BRIDGEOS_3_0 = 30000;
-
-const int __BRIDGEOS_3_1 = 30100;
-
-const int __BRIDGEOS_3_4 = 30400;
-
-const int __BRIDGEOS_4_0 = 40000;
-
-const int __BRIDGEOS_4_1 = 40100;
-
-const int __BRIDGEOS_5_0 = 50000;
-
-const int __BRIDGEOS_5_1 = 50100;
-
-const int __BRIDGEOS_5_3 = 50300;
-
-const int __BRIDGEOS_6_0 = 60000;
-
-const int __BRIDGEOS_6_2 = 60200;
-
-const int __BRIDGEOS_6_4 = 60400;
-
-const int __BRIDGEOS_6_5 = 60500;
-
-const int __BRIDGEOS_6_6 = 60600;
-
-const int __BRIDGEOS_7_0 = 70000;
-
-const int __BRIDGEOS_7_1 = 70100;
-
-const int __BRIDGEOS_7_2 = 70200;
-
-const int __BRIDGEOS_7_3 = 70300;
-
-const int __BRIDGEOS_7_4 = 70400;
-
-const int __BRIDGEOS_7_6 = 70600;
-
-const int __BRIDGEOS_8_0 = 80000;
-
-const int __BRIDGEOS_8_1 = 80100;
-
-const int __BRIDGEOS_8_2 = 80200;
-
-const int __BRIDGEOS_8_3 = 80300;
-
-const int __BRIDGEOS_8_4 = 80400;
-
-const int __DRIVERKIT_19_0 = 190000;
-
-const int __DRIVERKIT_20_0 = 200000;
-
-const int __DRIVERKIT_21_0 = 210000;
-
-const int __DRIVERKIT_22_0 = 220000;
-
-const int __DRIVERKIT_22_4 = 220400;
-
-const int __DRIVERKIT_22_5 = 220500;
-
-const int __DRIVERKIT_22_6 = 220600;
-
-const int __DRIVERKIT_23_0 = 230000;
-
-const int __DRIVERKIT_23_1 = 230100;
-
-const int __DRIVERKIT_23_2 = 230200;
-
-const int __DRIVERKIT_23_3 = 230300;
-
-const int __DRIVERKIT_23_4 = 230400;
-
-const int __VISIONOS_1_0 = 10000;
-
-const int __VISIONOS_1_1 = 10100;
-
-const int MAC_OS_X_VERSION_10_0 = 1000;
-
-const int MAC_OS_X_VERSION_10_1 = 1010;
-
-const int MAC_OS_X_VERSION_10_2 = 1020;
-
-const int MAC_OS_X_VERSION_10_3 = 1030;
-
-const int MAC_OS_X_VERSION_10_4 = 1040;
-
-const int MAC_OS_X_VERSION_10_5 = 1050;
-
-const int MAC_OS_X_VERSION_10_6 = 1060;
-
-const int MAC_OS_X_VERSION_10_7 = 1070;
-
-const int MAC_OS_X_VERSION_10_8 = 1080;
-
-const int MAC_OS_X_VERSION_10_9 = 1090;
-
-const int MAC_OS_X_VERSION_10_10 = 101000;
-
-const int MAC_OS_X_VERSION_10_10_2 = 101002;
-
-const int MAC_OS_X_VERSION_10_10_3 = 101003;
-
-const int MAC_OS_X_VERSION_10_11 = 101100;
-
-const int MAC_OS_X_VERSION_10_11_2 = 101102;
-
-const int MAC_OS_X_VERSION_10_11_3 = 101103;
-
-const int MAC_OS_X_VERSION_10_11_4 = 101104;
-
-const int MAC_OS_X_VERSION_10_12 = 101200;
-
-const int MAC_OS_X_VERSION_10_12_1 = 101201;
-
-const int MAC_OS_X_VERSION_10_12_2 = 101202;
-
-const int MAC_OS_X_VERSION_10_12_4 = 101204;
-
-const int MAC_OS_X_VERSION_10_13 = 101300;
-
-const int MAC_OS_X_VERSION_10_13_1 = 101301;
-
-const int MAC_OS_X_VERSION_10_13_2 = 101302;
-
-const int MAC_OS_X_VERSION_10_13_4 = 101304;
-
-const int MAC_OS_X_VERSION_10_14 = 101400;
-
-const int MAC_OS_X_VERSION_10_14_1 = 101401;
-
-const int MAC_OS_X_VERSION_10_14_4 = 101404;
-
-const int MAC_OS_X_VERSION_10_14_5 = 101405;
-
-const int MAC_OS_X_VERSION_10_14_6 = 101406;
-
-const int MAC_OS_X_VERSION_10_15 = 101500;
-
-const int MAC_OS_X_VERSION_10_15_1 = 101501;
-
-const int MAC_OS_X_VERSION_10_15_4 = 101504;
-
-const int MAC_OS_X_VERSION_10_16 = 101600;
-
-const int MAC_OS_VERSION_11_0 = 110000;
-
-const int MAC_OS_VERSION_11_1 = 110100;
-
-const int MAC_OS_VERSION_11_3 = 110300;
-
-const int MAC_OS_VERSION_11_4 = 110400;
-
-const int MAC_OS_VERSION_11_5 = 110500;
-
-const int MAC_OS_VERSION_11_6 = 110600;
-
-const int MAC_OS_VERSION_12_0 = 120000;
-
-const int MAC_OS_VERSION_12_1 = 120100;
-
-const int MAC_OS_VERSION_12_2 = 120200;
-
-const int MAC_OS_VERSION_12_3 = 120300;
-
-const int MAC_OS_VERSION_12_4 = 120400;
-
-const int MAC_OS_VERSION_12_5 = 120500;
-
-const int MAC_OS_VERSION_12_6 = 120600;
-
-const int MAC_OS_VERSION_12_7 = 120700;
-
-const int MAC_OS_VERSION_13_0 = 130000;
-
-const int MAC_OS_VERSION_13_1 = 130100;
-
-const int MAC_OS_VERSION_13_2 = 130200;
-
-const int MAC_OS_VERSION_13_3 = 130300;
-
-const int MAC_OS_VERSION_13_4 = 130400;
-
-const int MAC_OS_VERSION_13_5 = 130500;
-
-const int MAC_OS_VERSION_13_6 = 130600;
-
-const int MAC_OS_VERSION_14_0 = 140000;
-
-const int MAC_OS_VERSION_14_1 = 140100;
-
-const int MAC_OS_VERSION_14_2 = 140200;
-
-const int MAC_OS_VERSION_14_3 = 140300;
-
-const int MAC_OS_VERSION_14_4 = 140400;
-
-const int __MAC_OS_X_VERSION_MIN_REQUIRED = 140000;
-
-const int __MAC_OS_X_VERSION_MAX_ALLOWED = 140400;
-
-const int __ENABLE_LEGACY_MAC_AVAILABILITY = 1;
+const int _WCHAR_T_DEFINED = 1;
 
 const int NULL = 0;
 
-const int USER_ADDR_NULL = 0;
+const int _HAS_CXX17 = 0;
 
-const String __PRI_8_LENGTH_MODIFIER__ = 'hh';
+const int _HAS_CXX20 = 0;
 
-const String __PRI_64_LENGTH_MODIFIER__ = 'll';
+const int _HAS_CXX23 = 0;
 
-const String __SCN_64_LENGTH_MODIFIER__ = 'll';
+const int _HAS_NODISCARD = 1;
 
-const String __PRI_MAX_LENGTH_MODIFIER__ = 'j';
+const int _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE = 1;
 
-const String __SCN_MAX_LENGTH_MODIFIER__ = 'j';
+const int _CRT_BUILD_DESKTOP_APP = 1;
 
-const String PRId8 = 'hhd';
+const int _UCRT_DISABLED_WARNINGS = 4324;
 
-const String PRIi8 = 'hhi';
+const int _ARGMAX = 100;
 
-const String PRIo8 = 'hho';
+const int _TRUNCATE = -1;
 
-const String PRIu8 = 'hhu';
+const int _CRT_INT_MAX = 2147483647;
 
-const String PRIx8 = 'hhx';
+const int _CRT_SIZE_MAX = -1;
 
-const String PRIX8 = 'hhX';
+const String __FILEW__ = 'C';
 
-const String PRId16 = 'hd';
+const int _CRT_FUNCTIONS_REQUIRED = 1;
 
-const String PRIi16 = 'hi';
+const int _CRT_HAS_CXX17 = 0;
 
-const String PRIo16 = 'ho';
+const int _CRT_HAS_C11 = 0;
 
-const String PRIu16 = 'hu';
+const int _CRT_INTERNAL_NONSTDC_NAMES = 1;
 
-const String PRIx16 = 'hx';
+const int __STDC_SECURE_LIB__ = 200411;
 
-const String PRIX16 = 'hX';
+const int __GOT_SECURE_LIB__ = 200411;
 
-const String PRId32 = 'd';
+const int __STDC_WANT_SECURE_LIB__ = 1;
 
-const String PRIi32 = 'i';
+const int _SECURECRT_FILL_BUFFER_PATTERN = 254;
 
-const String PRIo32 = 'o';
+const int _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES = 0;
 
-const String PRIu32 = 'u';
+const int _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT = 0;
 
-const String PRIx32 = 'x';
+const int _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES = 1;
 
-const String PRIX32 = 'X';
+const int _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_MEMORY = 0;
 
-const String PRId64 = 'lld';
-
-const String PRIi64 = 'lli';
-
-const String PRIo64 = 'llo';
-
-const String PRIu64 = 'llu';
-
-const String PRIx64 = 'llx';
-
-const String PRIX64 = 'llX';
-
-const String PRIdLEAST8 = 'hhd';
-
-const String PRIiLEAST8 = 'hhi';
-
-const String PRIoLEAST8 = 'hho';
-
-const String PRIuLEAST8 = 'hhu';
-
-const String PRIxLEAST8 = 'hhx';
-
-const String PRIXLEAST8 = 'hhX';
-
-const String PRIdLEAST16 = 'hd';
-
-const String PRIiLEAST16 = 'hi';
-
-const String PRIoLEAST16 = 'ho';
-
-const String PRIuLEAST16 = 'hu';
-
-const String PRIxLEAST16 = 'hx';
-
-const String PRIXLEAST16 = 'hX';
-
-const String PRIdLEAST32 = 'd';
-
-const String PRIiLEAST32 = 'i';
-
-const String PRIoLEAST32 = 'o';
-
-const String PRIuLEAST32 = 'u';
-
-const String PRIxLEAST32 = 'x';
-
-const String PRIXLEAST32 = 'X';
-
-const String PRIdLEAST64 = 'lld';
-
-const String PRIiLEAST64 = 'lli';
-
-const String PRIoLEAST64 = 'llo';
-
-const String PRIuLEAST64 = 'llu';
-
-const String PRIxLEAST64 = 'llx';
-
-const String PRIXLEAST64 = 'llX';
-
-const String PRIdFAST8 = 'hhd';
-
-const String PRIiFAST8 = 'hhi';
-
-const String PRIoFAST8 = 'hho';
-
-const String PRIuFAST8 = 'hhu';
-
-const String PRIxFAST8 = 'hhx';
-
-const String PRIXFAST8 = 'hhX';
-
-const String PRIdFAST16 = 'hd';
-
-const String PRIiFAST16 = 'hi';
-
-const String PRIoFAST16 = 'ho';
-
-const String PRIuFAST16 = 'hu';
-
-const String PRIxFAST16 = 'hx';
-
-const String PRIXFAST16 = 'hX';
-
-const String PRIdFAST32 = 'd';
-
-const String PRIiFAST32 = 'i';
-
-const String PRIoFAST32 = 'o';
-
-const String PRIuFAST32 = 'u';
-
-const String PRIxFAST32 = 'x';
-
-const String PRIXFAST32 = 'X';
-
-const String PRIdFAST64 = 'lld';
-
-const String PRIiFAST64 = 'lli';
-
-const String PRIoFAST64 = 'llo';
-
-const String PRIuFAST64 = 'llu';
-
-const String PRIxFAST64 = 'llx';
-
-const String PRIXFAST64 = 'llX';
-
-const String PRIdPTR = 'ld';
-
-const String PRIiPTR = 'li';
-
-const String PRIoPTR = 'lo';
-
-const String PRIuPTR = 'lu';
-
-const String PRIxPTR = 'lx';
-
-const String PRIXPTR = 'lX';
-
-const String PRIdMAX = 'jd';
-
-const String PRIiMAX = 'ji';
-
-const String PRIoMAX = 'jo';
-
-const String PRIuMAX = 'ju';
-
-const String PRIxMAX = 'jx';
-
-const String PRIXMAX = 'jX';
-
-const String SCNd8 = 'hhd';
-
-const String SCNi8 = 'hhi';
-
-const String SCNo8 = 'hho';
-
-const String SCNu8 = 'hhu';
-
-const String SCNx8 = 'hhx';
-
-const String SCNd16 = 'hd';
-
-const String SCNi16 = 'hi';
-
-const String SCNo16 = 'ho';
-
-const String SCNu16 = 'hu';
-
-const String SCNx16 = 'hx';
-
-const String SCNd32 = 'd';
-
-const String SCNi32 = 'i';
-
-const String SCNo32 = 'o';
-
-const String SCNu32 = 'u';
-
-const String SCNx32 = 'x';
-
-const String SCNd64 = 'lld';
-
-const String SCNi64 = 'lli';
-
-const String SCNo64 = 'llo';
-
-const String SCNu64 = 'llu';
-
-const String SCNx64 = 'llx';
-
-const String SCNdLEAST8 = 'hhd';
-
-const String SCNiLEAST8 = 'hhi';
-
-const String SCNoLEAST8 = 'hho';
-
-const String SCNuLEAST8 = 'hhu';
-
-const String SCNxLEAST8 = 'hhx';
-
-const String SCNdLEAST16 = 'hd';
-
-const String SCNiLEAST16 = 'hi';
-
-const String SCNoLEAST16 = 'ho';
-
-const String SCNuLEAST16 = 'hu';
-
-const String SCNxLEAST16 = 'hx';
-
-const String SCNdLEAST32 = 'd';
-
-const String SCNiLEAST32 = 'i';
-
-const String SCNoLEAST32 = 'o';
-
-const String SCNuLEAST32 = 'u';
-
-const String SCNxLEAST32 = 'x';
-
-const String SCNdLEAST64 = 'lld';
-
-const String SCNiLEAST64 = 'lli';
-
-const String SCNoLEAST64 = 'llo';
-
-const String SCNuLEAST64 = 'llu';
-
-const String SCNxLEAST64 = 'llx';
-
-const String SCNdFAST8 = 'hhd';
-
-const String SCNiFAST8 = 'hhi';
-
-const String SCNoFAST8 = 'hho';
-
-const String SCNuFAST8 = 'hhu';
-
-const String SCNxFAST8 = 'hhx';
-
-const String SCNdFAST16 = 'hd';
-
-const String SCNiFAST16 = 'hi';
-
-const String SCNoFAST16 = 'ho';
-
-const String SCNuFAST16 = 'hu';
-
-const String SCNxFAST16 = 'hx';
-
-const String SCNdFAST32 = 'd';
-
-const String SCNiFAST32 = 'i';
-
-const String SCNoFAST32 = 'o';
-
-const String SCNuFAST32 = 'u';
-
-const String SCNxFAST32 = 'x';
-
-const String SCNdFAST64 = 'lld';
-
-const String SCNiFAST64 = 'lli';
-
-const String SCNoFAST64 = 'llo';
-
-const String SCNuFAST64 = 'llu';
-
-const String SCNxFAST64 = 'llx';
-
-const String SCNdPTR = 'ld';
-
-const String SCNiPTR = 'li';
-
-const String SCNoPTR = 'lo';
-
-const String SCNuPTR = 'lu';
-
-const String SCNxPTR = 'lx';
-
-const String SCNdMAX = 'jd';
-
-const String SCNiMAX = 'ji';
-
-const String SCNoMAX = 'jo';
-
-const String SCNuMAX = 'ju';
-
-const String SCNxMAX = 'jx';
-
-const int __WORDSIZE = 64;
-
-const int INT8_MAX = 127;
-
-const int INT16_MAX = 32767;
-
-const int INT32_MAX = 2147483647;
-
-const int INT64_MAX = 9223372036854775807;
-
-const int INT8_MIN = -128;
-
-const int INT16_MIN = -32768;
-
-const int INT32_MIN = -2147483648;
-
-const int INT64_MIN = -9223372036854775808;
-
-const int UINT8_MAX = 255;
-
-const int UINT16_MAX = 65535;
-
-const int UINT32_MAX = 4294967295;
-
-const int UINT64_MAX = -1;
-
-const int INT_LEAST8_MIN = -128;
-
-const int INT_LEAST16_MIN = -32768;
-
-const int INT_LEAST32_MIN = -2147483648;
-
-const int INT_LEAST64_MIN = -9223372036854775808;
-
-const int INT_LEAST8_MAX = 127;
-
-const int INT_LEAST16_MAX = 32767;
-
-const int INT_LEAST32_MAX = 2147483647;
-
-const int INT_LEAST64_MAX = 9223372036854775807;
-
-const int UINT_LEAST8_MAX = 255;
-
-const int UINT_LEAST16_MAX = 65535;
-
-const int UINT_LEAST32_MAX = 4294967295;
-
-const int UINT_LEAST64_MAX = -1;
-
-const int INT_FAST8_MIN = -128;
-
-const int INT_FAST16_MIN = -32768;
-
-const int INT_FAST32_MIN = -2147483648;
-
-const int INT_FAST64_MIN = -9223372036854775808;
-
-const int INT_FAST8_MAX = 127;
-
-const int INT_FAST16_MAX = 32767;
-
-const int INT_FAST32_MAX = 2147483647;
-
-const int INT_FAST64_MAX = 9223372036854775807;
-
-const int UINT_FAST8_MAX = 255;
-
-const int UINT_FAST16_MAX = 65535;
-
-const int UINT_FAST32_MAX = 4294967295;
-
-const int UINT_FAST64_MAX = -1;
-
-const int INTPTR_MAX = 9223372036854775807;
-
-const int INTPTR_MIN = -9223372036854775808;
-
-const int UINTPTR_MAX = -1;
-
-const int INTMAX_MAX = 9223372036854775807;
-
-const int UINTMAX_MAX = -1;
-
-const int INTMAX_MIN = -9223372036854775808;
-
-const int PTRDIFF_MIN = -9223372036854775808;
-
-const int PTRDIFF_MAX = 9223372036854775807;
-
-const int SIZE_MAX = -1;
-
-const int RSIZE_MAX = 9223372036854775807;
-
-const int WCHAR_MAX = 2147483647;
-
-const int WCHAR_MIN = -2147483648;
-
-const int WINT_MIN = -2147483648;
-
-const int WINT_MAX = 2147483647;
-
-const int SIG_ATOMIC_MIN = -2147483648;
-
-const int SIG_ATOMIC_MAX = 2147483647;
-
-const int WEBP_MUX_ABI_VERSION = 264;
+const int _CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES_MEMORY = 0;
 
 const int WEBP_DECODER_ABI_VERSION = 521;
+
+const int EPERM = 1;
+
+const int ENOENT = 2;
+
+const int ESRCH = 3;
+
+const int EINTR = 4;
+
+const int EIO = 5;
+
+const int ENXIO = 6;
+
+const int E2BIG = 7;
+
+const int ENOEXEC = 8;
+
+const int EBADF = 9;
+
+const int ECHILD = 10;
+
+const int EAGAIN = 11;
+
+const int ENOMEM = 12;
+
+const int EACCES = 13;
+
+const int EFAULT = 14;
+
+const int EBUSY = 16;
+
+const int EEXIST = 17;
+
+const int EXDEV = 18;
+
+const int ENODEV = 19;
+
+const int ENOTDIR = 20;
+
+const int EISDIR = 21;
+
+const int ENFILE = 23;
+
+const int EMFILE = 24;
+
+const int ENOTTY = 25;
+
+const int EFBIG = 27;
+
+const int ENOSPC = 28;
+
+const int ESPIPE = 29;
+
+const int EROFS = 30;
+
+const int EMLINK = 31;
+
+const int EPIPE = 32;
+
+const int EDOM = 33;
+
+const int EDEADLK = 36;
+
+const int ENAMETOOLONG = 38;
+
+const int ENOLCK = 39;
+
+const int ENOSYS = 40;
+
+const int ENOTEMPTY = 41;
+
+const int EINVAL = 22;
+
+const int ERANGE = 34;
+
+const int EILSEQ = 42;
+
+const int STRUNCATE = 80;
+
+const int EDEADLOCK = 36;
+
+const int EADDRINUSE = 100;
+
+const int EADDRNOTAVAIL = 101;
+
+const int EAFNOSUPPORT = 102;
+
+const int EALREADY = 103;
+
+const int EBADMSG = 104;
+
+const int ECANCELED = 105;
+
+const int ECONNABORTED = 106;
+
+const int ECONNREFUSED = 107;
+
+const int ECONNRESET = 108;
+
+const int EDESTADDRREQ = 109;
+
+const int EHOSTUNREACH = 110;
+
+const int EIDRM = 111;
+
+const int EINPROGRESS = 112;
+
+const int EISCONN = 113;
+
+const int ELOOP = 114;
+
+const int EMSGSIZE = 115;
+
+const int ENETDOWN = 116;
+
+const int ENETRESET = 117;
+
+const int ENETUNREACH = 118;
+
+const int ENOBUFS = 119;
+
+const int ENODATA = 120;
+
+const int ENOLINK = 121;
+
+const int ENOMSG = 122;
+
+const int ENOPROTOOPT = 123;
+
+const int ENOSR = 124;
+
+const int ENOSTR = 125;
+
+const int ENOTCONN = 126;
+
+const int ENOTRECOVERABLE = 127;
+
+const int ENOTSOCK = 128;
+
+const int ENOTSUP = 129;
+
+const int EOPNOTSUPP = 130;
+
+const int EOTHER = 131;
+
+const int EOVERFLOW = 132;
+
+const int EOWNERDEAD = 133;
+
+const int EPROTO = 134;
+
+const int EPROTONOSUPPORT = 135;
+
+const int EPROTOTYPE = 136;
+
+const int ETIME = 137;
+
+const int ETIMEDOUT = 138;
+
+const int ETXTBSY = 139;
+
+const int EWOULDBLOCK = 140;
+
+const int _NLSCMPERROR = 2147483647;
 
 const int WEBP_DEMUX_ABI_VERSION = 263;
 
 const int WEBP_ENCODER_ABI_VERSION = 527;
 
 const int WEBP_MAX_DIMENSION = 16383;
+
+const int WEBP_MUX_ABI_VERSION = 264;

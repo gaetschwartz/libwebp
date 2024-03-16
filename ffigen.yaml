@@ -18,4 +18,9 @@ preamble: |
   // ignore_for_file: camel_case_types, non_constant_identifier_names, unused_element, unused_field
 headers:
   entry-points:
-    - "libwebp_flutter_libs/libwebp/src/webp/*.h"
+    - "temp/libwebp/src/webp/decode.h"
+    - "temp/libwebp/src/webp/demux.h"
+    - "temp/libwebp/src/webp/encode.h"
+    - "temp/libwebp/src/webp/mux.h"
+    - "temp/libwebp/src/webp/types.h"
+    - "temp/libwebp/src/webp/mux_types.h"

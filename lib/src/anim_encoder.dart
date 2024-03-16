@@ -84,7 +84,7 @@ class WebPAnimEncoder {
   void add(WebPImage image, WebPAnimationTiming timings) {
     final info = image.info;
 
-    _log("Adding image with ${info.frame_count} frames");
+    _log('Adding image with ${info.frame_count} frames');
 
     final frameStart = _frames;
 
@@ -388,10 +388,6 @@ class WebPConfig implements _WebpConfigBase {
     a.releaseAll();
   });
 
-  const WebPConfig.native(this._ffi);
-
-  final Pointer<bindings.WebPConfig> _ffi;
-
   factory WebPConfig({
     WebPPreset preset = WebPPreset.default_,
     double quality = 75.0,
@@ -415,6 +411,10 @@ class WebPConfig implements _WebpConfigBase {
 
     return webpConfig;
   }
+
+  const WebPConfig.native(this._ffi);
+
+  final Pointer<bindings.WebPConfig> _ffi;
 
   @override
   int get lossless => _ffi.ref.lossless;

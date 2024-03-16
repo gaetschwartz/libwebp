@@ -200,10 +200,6 @@ class WebPImageFramesIterator implements Iterator<WebPFrame> {
   final Pointer<bindings.WebPAnimDecoder> _decoder;
   final Allocator _alloc;
 
-  WebPImageFramesIterator._(this._alloc, this._decoder);
-
-  WebPFrame? _current;
-
   factory WebPImageFramesIterator(WebPImage image) {
     final arena = Arena(calloc);
     final dec = _animDecoder(
@@ -215,6 +211,10 @@ class WebPImageFramesIterator implements Iterator<WebPFrame> {
     _finalizer.attach(wrapper, (arena: arena, decoder: dec), detach: wrapper);
     return wrapper;
   }
+
+  WebPImageFramesIterator._(this._alloc, this._decoder);
+
+  WebPFrame? _current;
 
   @override
   WebPFrame get current {

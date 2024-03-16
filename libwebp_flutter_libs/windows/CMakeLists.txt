@@ -21,7 +21,9 @@ set(libwebp_flutter_libs_bundled_libraries
   # $<TARGET_FILE:libwebp_flutter_libs>
   # Add any other libraries that should be bundled with the plugin.
   "${CMAKE_CURRENT_SOURCE_DIR}/release-dynamic/x64/bin/libsharpyuv.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/release-dynamic/x64/bin/libwebpmux.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/release-dynamic/x64/bin/libwebpdemux.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/release-dynamic/x64/bin/libwebpdecoder.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/release-dynamic/x64/bin/libwebp.dll"
-  # "${CMAKE_CURRENT_SOURCE_DIR}/windows/release-dynamic/x64/bin/libwebp.dll"
   PARENT_SCOPE
 )

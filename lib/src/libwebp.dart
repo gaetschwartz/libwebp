@@ -9,37 +9,137 @@ import 'package:logging/logging.dart';
 
 bool get isTest => Platform.environment['FLUTTER_TEST'] == 'true';
 
-const String _libName = 'libwebp_flutter_libs';
+const _libName = 'libwebp_flutter_libs';
 
-/// The dynamic library in which the symbols for [LibwebpFlutterLibsBindings] can be found.
-final DynamicLibrary _dylib = () {
-  if (Platform.isIOS) {
-    return DynamicLibrary.open('$_libName.framework/$_libName');
-  }
-  if (Platform.isMacOS) {
-    if (isTest) {
-      return DynamicLibrary.open(
-          'build/macos/Build/Products/Release/libwebp/libwebp.framework/libwebp');
-    }
+enum OperatingSystem {
+  android,
+  fuchsia,
+  ios,
+  linux,
+  macos,
+  windows,
+  unknown,
+  ;
 
-    const libName = 'libwebp';
+  static OperatingSystem get current {
+    final os = Platform.operatingSystem;
+    return switch (os) {
+      'android' => OperatingSystem.android,
+      'fuchsia' => OperatingSystem.fuchsia,
+      'ios' => OperatingSystem.ios,
+      'linux' => OperatingSystem.linux,
+      'macos' => OperatingSystem.macos,
+      'windows' => OperatingSystem.windows,
+      _ => OperatingSystem.unknown,
+    };
+  }
+}
 
-    return DynamicLibrary.open('$libName.framework/$libName');
-  }
-  if (Platform.isAndroid || Platform.isLinux) {
-    return DynamicLibrary.open('lib$_libName.so');
-  }
-  if (Platform.isWindows) {
-    return DynamicLibrary.open('libwebp.dll');
-  }
-  throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
-}();
+DynamicLibrary _openLib() {
+  switch (OperatingSystem.current) {
+    case OperatingSystem.android:
+    case OperatingSystem.linux:
+      return DynamicLibrary.open('lib$_libName.so');
+    case OperatingSystem.ios:
+      return DynamicLibrary.open('$_libName.framework/$_libName');
+    case OperatingSystem.macos:
+      const libName = 'libwebp';
 
-final webPMemoryWritePtr = _dylib
+      if (isTest) {
+        return DynamicLibrary.open(
+          'build/macos/Build/Products/Release/$libName/$libName.framework/libwebp',
+        );
+      }
+
+      return DynamicLibrary.open('$libName.framework/$libName');
+    case OperatingSystem.windows:
+      DynamicLibrary.open('libsharpyuv.dll');
+      DynamicLibrary.open('libwebpdemux.dll');
+      DynamicLibrary.open('libwebpmux.dll');
+      DynamicLibrary.open('libwebpdecoder.dll');
+      return DynamicLibrary.open('libwebp.dll');
+    case OperatingSystem.fuchsia:
+      throw UnsupportedError('Fuchsia is not supported.');
+    case OperatingSystem.unknown:
+      throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
+  }
+}
+
+final webPMemoryWritePtr = _openLib()
     .lookup<NativeFunction<bindings.NativeWebPMemoryWrite>>('WebPMemoryWrite');
 
-/// The bindings to the native functions in [_dylib].
-final libwebp = bindings.LibwebpFlutterLibsBindings(_dylib);
+/// The bindings to the native WebP library.
+final libwebp = bindings.LibwebpFlutterLibsBindings(_openLib());
+
+class LibWebPVersions {
+  final String? decoder;
+  final String? encoder;
+  final String? mux;
+  final String? demux;
+
+  LibWebPVersions._({
+    required this.decoder,
+    required this.encoder,
+    required this.mux,
+    required this.demux,
+  });
+
+  factory LibWebPVersions.fromNative() {
+    return LibWebPVersions._(
+      decoder: _try(_getWebpDecoderVersion),
+      encoder: _try(_getWebpEncoderVersion),
+      mux: _try(_getWebpMuxVersion),
+      demux: _try(_getWebpDemuxVersion),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'LibWebPVersions(decoder: $decoder, encoder: $encoder, mux: $mux, demux: $demux)';
+  }
+
+  static T? _try<T>(T Function() f) {
+    try {
+      return f();
+      // ignore: avoid_catching_errors
+    } on ArgumentError catch (e) {
+      print('Failed to get version: $e');
+      return null;
+    }
+  }
+
+  static String _getWebpDecoderVersion() {
+    // Return the decoder's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+    final version = libwebp.WebPGetDecoderVersion();
+    final (major, minor, revision) =
+        (version >> 16, (version >> 8) & 0xff, version & 0xff);
+    return '$major.$minor.$revision';
+  }
+
+  static String _getWebpEncoderVersion() {
+    // Return the encoder's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+    final version = libwebp.WebPGetEncoderVersion();
+    final (major, minor, revision) =
+        (version >> 16, (version >> 8) & 0xff, version & 0xff);
+    return '$major.$minor.$revision';
+  }
+
+  static String _getWebpMuxVersion() {
+    // Return the mux's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+    final version = libwebp.WebPGetMuxVersion();
+    final (major, minor, revision) =
+        (version >> 16, (version >> 8) & 0xff, version & 0xff);
+    return '$major.$minor.$revision';
+  }
+
+  static String _getWebpDemuxVersion() {
+    // Return the demux's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
+    final version = libwebp.WebPGetDemuxVersion();
+    final (major, minor, revision) =
+        (version >> 16, (version >> 8) & 0xff, version & 0xff);
+    return '$major.$minor.$revision';
+  }
+}
 
 ({int width, int height}) getWebpDimensions(FfiByteData data) {
   return using((a) {
@@ -68,7 +168,7 @@ Uint8List resizeWebp(
       data.asList.setAll(0, input);
       final curr = getWebpDimensions(data);
 
-      Uint8List outData = _resizeWebp(
+      final Uint8List outData = _resizeWebp(
         alloc,
         curr,
         targetDimensions,
@@ -110,7 +210,8 @@ Uint8List _resizeWebp(
   final info = alloc<bindings.WebPAnimInfo>();
   check(
       libwebp.WebPAnimDecoderGetInfo(animDecoder, info), 'Failed to get info.');
-  log.fine('''Rescaling WebP:
+  log.fine('''
+Rescaling WebP:
     canvas_width: ${info.ref.canvas_width}
     canvas_height: ${info.ref.canvas_height}
     loop_count: ${info.ref.loop_count}
