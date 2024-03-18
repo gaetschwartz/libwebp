@@ -38,6 +38,7 @@ enum OperatingSystem {
 DynamicLibrary _openLib() {
   switch (OperatingSystem.current) {
     case OperatingSystem.android:
+      return DynamicLibrary.open('libwebp.so');
     case OperatingSystem.linux:
       return DynamicLibrary.open('lib$_libName.so');
     case OperatingSystem.ios:
@@ -57,7 +58,8 @@ DynamicLibrary _openLib() {
       DynamicLibrary.open('libwebpdemux.dll');
       DynamicLibrary.open('libwebpmux.dll');
       DynamicLibrary.open('libwebpdecoder.dll');
-      return DynamicLibrary.open('libwebp.dll');
+      DynamicLibrary.open('libwebp.dll');
+      return DynamicLibrary.process();
     case OperatingSystem.fuchsia:
       throw UnsupportedError('Fuchsia is not supported.');
     case OperatingSystem.unknown:
@@ -72,10 +74,10 @@ final webPMemoryWritePtr = _openLib()
 final libwebp = bindings.LibwebpFlutterLibsBindings(_openLib());
 
 class LibWebPVersions {
-  final String? decoder;
-  final String? encoder;
-  final String? mux;
-  final String? demux;
+  final LibWebPFrameworkInfo decoder;
+  final LibWebPFrameworkInfo encoder;
+  final LibWebPFrameworkInfo mux;
+  final LibWebPFrameworkInfo demux;
 
   LibWebPVersions._({
     required this.decoder,
@@ -86,10 +88,10 @@ class LibWebPVersions {
 
   factory LibWebPVersions.fromNative() {
     return LibWebPVersions._(
-      decoder: _try(_getWebpDecoderVersion),
-      encoder: _try(_getWebpEncoderVersion),
-      mux: _try(_getWebpMuxVersion),
-      demux: _try(_getWebpDemuxVersion),
+      decoder: _getVersion(libwebp.WebPGetDecoderVersion, 'decoder'),
+      encoder: _getVersion(libwebp.WebPGetEncoderVersion, 'encoder'),
+      mux: _getVersion(libwebp.WebPGetMuxVersion, 'mux'),
+      demux: _getVersion(libwebp.WebPGetDemuxVersion, 'demux'),
     );
   }
 
@@ -98,46 +100,59 @@ class LibWebPVersions {
     return 'LibWebPVersions(decoder: $decoder, encoder: $encoder, mux: $mux, demux: $demux)';
   }
 
-  static T? _try<T>(T Function() f) {
+  static LibWebPFrameworkInfo _getVersion(
+      int Function() f, String frameworkName) {
     try {
-      return f();
+      return LibWebPFrameworkVersion(Version.fromInt(f()));
       // ignore: avoid_catching_errors
     } on ArgumentError catch (e) {
-      print('Failed to get version: $e');
-      return null;
+      return LibWebPFrameworkMissing(frameworkName, e);
     }
   }
+}
 
-  static String _getWebpDecoderVersion() {
-    // Return the decoder's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-    final version = libwebp.WebPGetDecoderVersion();
-    final (major, minor, revision) =
-        (version >> 16, (version >> 8) & 0xff, version & 0xff);
-    return '$major.$minor.$revision';
+class Version {
+  final int major;
+  final int minor;
+  final int patch;
+
+  const Version(this.major, this.minor, this.patch);
+
+  factory Version.fromInt(int version) {
+    return Version(
+      version >> 16,
+      (version >> 8) & 0xff,
+      version & 0xff,
+    );
   }
 
-  static String _getWebpEncoderVersion() {
-    // Return the encoder's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-    final version = libwebp.WebPGetEncoderVersion();
-    final (major, minor, revision) =
-        (version >> 16, (version >> 8) & 0xff, version & 0xff);
-    return '$major.$minor.$revision';
-  }
+  @override
+  String toString() => '$major.$minor.$patch';
+}
 
-  static String _getWebpMuxVersion() {
-    // Return the mux's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-    final version = libwebp.WebPGetMuxVersion();
-    final (major, minor, revision) =
-        (version >> 16, (version >> 8) & 0xff, version & 0xff);
-    return '$major.$minor.$revision';
-  }
+sealed class LibWebPFrameworkInfo {
+  const LibWebPFrameworkInfo();
+}
 
-  static String _getWebpDemuxVersion() {
-    // Return the demux's version number, packed in hexadecimal using 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
-    final version = libwebp.WebPGetDemuxVersion();
-    final (major, minor, revision) =
-        (version >> 16, (version >> 8) & 0xff, version & 0xff);
-    return '$major.$minor.$revision';
+class LibWebPFrameworkVersion extends LibWebPFrameworkInfo {
+  final Version version;
+
+  const LibWebPFrameworkVersion(this.version);
+
+  @override
+  String toString() => version.toString();
+}
+
+class LibWebPFrameworkMissing extends LibWebPFrameworkInfo
+    implements Exception {
+  final String frameworkName;
+  final ArgumentError error;
+
+  const LibWebPFrameworkMissing(this.frameworkName, this.error);
+
+  @override
+  String toString() {
+    return 'LibWebPFrameworkMissing: $frameworkName ($error)';
   }
 }
 
