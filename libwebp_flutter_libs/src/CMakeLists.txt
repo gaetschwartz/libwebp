@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project-level configuration.
-set(PROJECT_NAME "libwebp_flutter_libs")
+set(PROJECT_NAME "webp_flutter_library")
 project(${PROJECT_NAME} LANGUAGES C)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 

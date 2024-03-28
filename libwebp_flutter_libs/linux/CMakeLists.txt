@@ -4,12 +4,12 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project-level configuration.
-set(PROJECT_NAME "libwebp_flutter_libs")
+set(PROJECT_NAME "libwebp_flutter")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 # Invoke the build for native code shared with the other target platforms.
 # This can be changed to accommodate different builds.
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DIR}/shared")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DIR}/shared")
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
@@ -17,6 +17,6 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 set(libwebp_flutter_libs_bundled_libraries
   # Defined in ../src/CMakeLists.txt.
   # This can be changed to accommodate different builds.
-  # $<TARGET_FILE:libwebp_flutter_libs>
+  $<TARGET_FILE:webp_flutter_libs>
   PARENT_SCOPE
 )
