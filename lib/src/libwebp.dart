@@ -38,9 +38,9 @@ enum OperatingSystem {
 DynamicLibrary _openLib() {
   switch (OperatingSystem.current) {
     case OperatingSystem.android:
-      return DynamicLibrary.open('libwebp.so');
+      return DynamicLibrary.open('$_libName.so');
     case OperatingSystem.linux:
-      return DynamicLibrary.open('lib$_libName.so');
+      return DynamicLibrary.open('$_libName.so');
     case OperatingSystem.ios:
       return DynamicLibrary.open('$_libName.framework/$_libName');
     case OperatingSystem.macos:
