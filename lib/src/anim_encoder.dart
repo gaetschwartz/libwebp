@@ -73,30 +73,31 @@ class WebPAnimEncoder {
         _timestamp = 0;
 
   int _timestamp;
-  int _frames = 0;
+  int _frame = 0;
 
   int get currentTimestamp => _timestamp;
 
-  void _log(String message) {
-    if (options.verbose) _logger.fine(message);
+  void log(String message) {
+    if (options.verbose) _logger.finer(message);
   }
 
   void add(WebPImage image, WebPAnimationTiming timings) {
     final info = image.info;
 
-    _log('Adding image with ${info.frame_count} frames');
+    log('Adding image with ${info.frame_count} frames');
 
-    final frameStart = _frames;
+    final frameBase = _frame;
 
     for (final frame in image.frames) {
-      final duration = timings.resolve(_frames - frameStart);
+      final duration = timings.at(_frame - frameBase);
 
       if (duration == Duration.zero) {
-        _log('  Skipping frame $_frames');
+        log('  Skipping frame $_frame');
+        _frame++;
         continue;
       }
 
-      _log('  Adding frame $_frames at $_timestamp ms');
+      log('  Adding frame $_frame at $_timestamp ms');
 
       final pic = _alloc<bindings.WebPPicture>();
       check(
@@ -132,13 +133,13 @@ class WebPAnimEncoder {
 
       check(
         libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
-        'Failed to add frame $_frames to encoder.',
+        'Failed to add frame $_frame to encoder.',
         pic: pic,
         encoder: _encoder,
       );
 
       _timestamp += duration.inMilliseconds;
-      _frames++;
+      _frame++;
 
       libwebp.WebPPictureFree(pic);
     }
@@ -146,11 +147,11 @@ class WebPAnimEncoder {
 
   Duration get duration => Duration(milliseconds: _timestamp);
 
-  int get frameCount => _frames;
+  int get frameCount => _frame;
 
   Uint8List assemble() {
     // add a blank frame to make sure the last frame is included
-    _log('Adding blank frame at $_timestamp ms');
+    log('Adding blank frame at $_timestamp ms');
     check(
       libwebp.WebPAnimEncoderAdd(
         _encoder,
@@ -574,60 +575,52 @@ extension on WebPConfig? {
   Pointer<bindings.WebPConfig> get ptr => this?._ffi ?? nullptr;
 }
 
-typedef WebPAnimationTimingMapper = Duration Function(
-    int frame, Duration duration);
+typedef WebPAnimationTimingTransformer = Duration Function(
+  int frame,
+  Duration duration,
+);
 
 sealed class WebPAnimationTiming {
   const WebPAnimationTiming();
 
-  Duration resolve(int frame);
+  Duration at(int frame);
 
-  WebPAnimationTiming map(WebPAnimationTimingMapper mapper) {
-    return WebPAnimationTimingMapped(this, mapper);
+  @pragma('vm:prefer-inline')
+  WebPAnimationTiming map(WebPAnimationTimingTransformer mapper) {
+    return MappedWebPAnimationTiming(this, mapper);
   }
 
   WebPAnimationTiming divideFps(int divisor) {
-    return WebPAnimationTimingMapped(
-      this,
+    return map(
       (frame, duration) => frame % divisor == 0 ? duration : Duration.zero,
     );
   }
 }
 
-class WebPAnimationTimingList extends WebPAnimationTiming {
+class ListWebPAnimationTiming extends WebPAnimationTiming {
   final List<Duration> value;
 
-  const WebPAnimationTimingList(this.value);
+  const ListWebPAnimationTiming(this.value);
 
   @override
-  Duration resolve(int frame) => value[frame];
+  Duration at(int frame) => value[frame];
 }
 
-class WebPAnimationTimingAllFrames extends WebPAnimationTiming {
+class ConstantWebPAnimationTiming extends WebPAnimationTiming {
   final Duration duration;
 
-  const WebPAnimationTimingAllFrames(this.duration);
+  const ConstantWebPAnimationTiming(this.duration);
 
   @override
-  Duration resolve(int frame) => duration;
+  Duration at(int frame) => duration;
 }
 
-class WebPAnimationTimingMapped extends WebPAnimationTiming {
+class MappedWebPAnimationTiming extends WebPAnimationTiming {
   final WebPAnimationTiming source;
-  final Duration Function(int frame, Duration duration) mapper;
+  final WebPAnimationTimingTransformer transformer;
 
-  const WebPAnimationTimingMapped(this.source, this.mapper);
-
-  factory WebPAnimationTimingMapped.max(
-    WebPAnimationTiming source,
-    Duration max,
-  ) {
-    return WebPAnimationTimingMapped(
-      source,
-      (frame, duration) => duration < max ? duration : max,
-    );
-  }
+  const MappedWebPAnimationTiming(this.source, this.transformer);
 
   @override
-  Duration resolve(int frame) => mapper(frame, source.resolve(frame));
+  Duration at(int frame) => transformer(frame, source.at(frame));
 }

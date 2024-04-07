@@ -18,33 +18,33 @@ void main() {
 
   group('animation timings', () {
     test('list', () {
-      const timings = WebPAnimationTimingList([
+      const timings = ListWebPAnimationTiming([
         Duration(seconds: 1),
         Duration(seconds: 2),
         Duration(seconds: 3),
       ]);
-      expect(timings.resolve(0), const Duration(seconds: 1));
-      expect(timings.resolve(1), const Duration(seconds: 2));
-      expect(timings.resolve(2), const Duration(seconds: 3));
+      expect(timings.at(0), const Duration(seconds: 1));
+      expect(timings.at(1), const Duration(seconds: 2));
+      expect(timings.at(2), const Duration(seconds: 3));
     });
 
     test('all', () {
-      const timings = WebPAnimationTimingAllFrames(Duration(seconds: 1));
-      expect(timings.resolve(0), const Duration(seconds: 1));
-      expect(timings.resolve(1), const Duration(seconds: 1));
-      expect(timings.resolve(2), const Duration(seconds: 1));
+      const timings = ConstantWebPAnimationTiming(Duration(seconds: 1));
+      expect(timings.at(0), const Duration(seconds: 1));
+      expect(timings.at(1), const Duration(seconds: 1));
+      expect(timings.at(2), const Duration(seconds: 1));
     });
 
     test('map', () {
       const length = 12;
-      final source = WebPAnimationTimingList(
+      final source = ListWebPAnimationTiming(
         List.generate(length, (i) => Duration(seconds: i + 1)),
       );
-      final timings = WebPAnimationTimingMapped(
+      final timings = MappedWebPAnimationTiming(
         source,
         (index, duration) => index.isEven ? duration : duration * 2,
       );
-      expect(List.generate(length, timings.resolve), [
+      expect(List.generate(length, timings.at), [
         const Duration(seconds: 1),
         const Duration(seconds: 4),
         const Duration(seconds: 3),

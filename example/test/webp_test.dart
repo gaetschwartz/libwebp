@@ -106,7 +106,7 @@ void main() {
       options: const WebPAnimEncoderOptions(verbose: true),
     );
 
-    const webPAnimationTimingAllFrames = WebPAnimationTimingAllFrames(
+    const webPAnimationTimingAllFrames = ConstantWebPAnimationTiming(
       Duration(milliseconds: 100),
     );
 

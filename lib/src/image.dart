@@ -76,7 +76,7 @@ class WebPImage {
   Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
 
   late final timings =
-      WebPAnimationTimingList(frames.map((e) => e.duration).toList());
+      ListWebPAnimationTiming(frames.map((e) => e.duration).toList());
 
   double get fps => 1000 * info.frame_count / timings.value.last.inMilliseconds;
 
