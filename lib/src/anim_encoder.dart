@@ -89,7 +89,15 @@ class WebPAnimEncoder {
     final frameStart = _frames;
 
     for (final frame in image.frames) {
+      final duration = timings.resolve(_frames - frameStart);
+
+      if (duration == Duration.zero) {
+        _log('  Skipping frame $_frames');
+        continue;
+      }
+
       _log('  Adding frame $_frames at $_timestamp ms');
+
       final pic = _alloc<bindings.WebPPicture>();
       check(
         libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
@@ -129,7 +137,7 @@ class WebPAnimEncoder {
         encoder: _encoder,
       );
 
-      _timestamp += timings.resolve(_frames - frameStart).inMilliseconds;
+      _timestamp += duration.inMilliseconds;
       _frames++;
 
       libwebp.WebPPictureFree(pic);
@@ -576,6 +584,13 @@ sealed class WebPAnimationTiming {
 
   WebPAnimationTiming map(WebPAnimationTimingMapper mapper) {
     return WebPAnimationTimingMapped(this, mapper);
+  }
+
+  WebPAnimationTiming divideFps(int divisor) {
+    return WebPAnimationTimingMapped(
+      this,
+      (frame, duration) => frame % divisor == 0 ? duration : Duration.zero,
+    );
   }
 }
 
