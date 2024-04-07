@@ -590,9 +590,10 @@ sealed class WebPAnimationTiming {
     return MappedWebPAnimationTiming(this, mapper);
   }
 
-  WebPAnimationTiming divideFps(int divisor) {
+  WebPAnimationTiming reduceFps(int divisor) {
     return map(
-      (frame, duration) => frame % divisor == 0 ? duration : Duration.zero,
+      (frame, duration) =>
+          frame % divisor == 0 ? (duration * divisor) : Duration.zero,
     );
   }
 }
