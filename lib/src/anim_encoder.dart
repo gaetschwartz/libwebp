@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
 import 'package:libwebp/src/libwebp.dart';
@@ -13,63 +14,61 @@ typedef WebPEncoderFinalizable = ({
   Pointer<bindings.WebPAnimEncoder> encoder
 });
 
-class WebPAnimEncoder {
+class WebPAnimEncoder implements Finalizable {
   static final _logger = Logger('WebPAnimEncoder');
-  static final _finalizer = Finalizer<WebPEncoderFinalizable>((a) {
-    _logger.finest('Finalizing WebPAnimEncoder');
-    a.arena.releaseAll();
-    libwebp.WebPAnimEncoderDelete(a.encoder);
-  });
+  static final webPAnimEncoderDeletePtr =
+      rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
+    'WebPAnimEncoderDelete',
+  );
 
-  final Allocator _alloc;
+  static final _encoderFinalizer = NativeFinalizer(
+    webPAnimEncoderDeletePtr.cast(),
+  );
+
   final Pointer<bindings.WebPAnimEncoder> _encoder;
   final WebPConfig? config;
   final int width;
   final int height;
   final WebPAnimEncoderOptions options;
+  bool _disposed = false;
 
   factory WebPAnimEncoder({
     required int width,
     required int height,
     WebPConfig? config,
-    WebPAnimEncoderOptions options = const WebPAnimEncoderOptions(),
+    WebPAnimEncoderOptions? options,
   }) {
-    final arena = Arena(calloc);
-
-    final opts = options.toNative(arena);
+    final opts = options ?? WebPAnimEncoderOptions();
 
     final encoder = checkAlloc(libwebp.WebPAnimEncoderNewInternal(
       width,
       height,
-      opts,
+      opts._ffi,
       bindings.WEBP_MUX_ABI_VERSION,
     ));
 
     final wrapper = WebPAnimEncoder._(
-      alloc: arena,
       encoder: encoder,
       config: config,
       width: width,
       height: height,
-      options: options,
+      options: opts,
     );
-    _finalizer.attach(
+    _encoderFinalizer.attach(
       wrapper,
-      (arena: arena, encoder: encoder),
+      encoder.cast(),
       detach: wrapper,
     );
     return wrapper;
   }
 
   WebPAnimEncoder._({
-    required Allocator alloc,
     required Pointer<bindings.WebPAnimEncoder> encoder,
     required this.config,
     required this.width,
     required this.height,
     required this.options,
-  })  : _alloc = alloc,
-        _encoder = encoder,
+  })  : _encoder = encoder,
         _timestamp = 0;
 
   int _timestamp;
@@ -82,6 +81,10 @@ class WebPAnimEncoder {
   }
 
   void add(WebPImage image, WebPAnimationTiming timings) {
+    if (_disposed) {
+      throw StateError('WebPAnimEncoder has been disposed.');
+    }
+
     final info = image.info;
 
     log('Adding image with ${info.frame_count} frames');
@@ -89,7 +92,7 @@ class WebPAnimEncoder {
     final frameBase = _frame;
 
     for (final frame in image.frames) {
-      final duration = timings.at(_frame - frameBase);
+      final duration = timings.frames.elementAt(_frame - frameBase);
 
       if (duration == Duration.zero) {
         log('  Skipping frame $_frame');
@@ -99,49 +102,52 @@ class WebPAnimEncoder {
 
       log('  Adding frame $_frame at $_timestamp ms');
 
-      final pic = _alloc<bindings.WebPPicture>();
-      check(
-        libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
-        'Failed to init WebPPicture.',
-      );
-      pic.ref.use_argb = 1;
-      pic.ref.width = info.canvas_width;
-      pic.ref.height = info.canvas_height;
+      using((a) {
+        final pic = a<bindings.WebPPicture>();
+        check(
+          libwebp.WebPPictureInitInternal(
+              pic, bindings.WEBP_ENCODER_ABI_VERSION),
+          'Failed to init WebPPicture.',
+        );
+        pic.ref.use_argb = 1;
+        pic.ref.width = info.canvas_width;
+        pic.ref.height = info.canvas_height;
 
-      check(
-        libwebp.WebPPictureAlloc(pic),
-        'Failed to allocate WebPPicture.',
-      );
+        check(
+          libwebp.WebPPictureAlloc(pic),
+          'Failed to allocate WebPPicture.',
+        );
 
-      check(
-        libwebp.WebPPictureImportRGBA(
-          pic,
-          frame.data,
-          info.canvas_width * 4,
-        ),
-        'Failed to import RGBA data.',
-      );
+        check(
+          libwebp.WebPPictureImportRGBA(
+            pic,
+            frame.data,
+            info.canvas_width * 4,
+          ),
+          'Failed to import RGBA data.',
+        );
 
-      check(
-        libwebp.WebPPictureRescale(
-          pic,
-          width,
-          height,
-        ),
-        'Failed to rescale WebPPicture.',
-      );
+        check(
+          libwebp.WebPPictureRescale(
+            pic,
+            width,
+            height,
+          ),
+          'Failed to rescale WebPPicture.',
+        );
 
-      check(
-        libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
-        'Failed to add frame $_frame to encoder.',
-        pic: pic,
-        encoder: _encoder,
-      );
+        check(
+          libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
+          'Failed to add frame $_frame to encoder.',
+          pic: pic,
+          encoder: _encoder,
+        );
 
-      _timestamp += duration.inMilliseconds;
-      _frame++;
+        _timestamp += duration.inMilliseconds;
+        _frame++;
 
-      libwebp.WebPPictureFree(pic);
+        libwebp.WebPPictureFree(pic);
+      });
     }
   }
 
@@ -150,39 +156,64 @@ class WebPAnimEncoder {
   int get frameCount => _frame;
 
   Uint8List assemble() {
-    // add a blank frame to make sure the last frame is included
-    log('Adding blank frame at $_timestamp ms');
-    check(
-      libwebp.WebPAnimEncoderAdd(
-        _encoder,
-        nullptr,
-        _timestamp,
-        config.ptr,
-      ),
-      'Failed to add blank frame to encoder.',
-      encoder: _encoder,
-    );
+    return using((a) {
+// add a blank frame to make sure the last frame is included
+      log('Adding blank frame at $_timestamp ms');
+      check(
+        libwebp.WebPAnimEncoderAdd(
+          _encoder,
+          nullptr,
+          _timestamp,
+          config.ptr,
+        ),
+        'Failed to add blank frame to encoder.',
+        encoder: _encoder,
+      );
 
-    final data = _alloc<bindings.WebPData>();
+      final data = a<bindings.WebPData>();
 
-    check(
-      libwebp.WebPAnimEncoderAssemble(_encoder, data),
-      'Failed to assemble WebP.',
-      encoder: _encoder,
-    );
-    libwebp.WebPAnimEncoderDelete(_encoder);
+      check(
+        libwebp.WebPAnimEncoderAssemble(_encoder, data),
+        'Failed to assemble WebP.',
+        encoder: _encoder,
+      );
+      libwebp.WebPAnimEncoderDelete(_encoder);
+      _encoderFinalizer.detach(this);
+      _disposed = true;
 
-    return data.ref.asTypedList;
+      // Copy to a Dart list and free the native memory.
+      return data.ref.toList();
+    });
   }
 }
 
-final class WebPAnimEncoderOptions {
+final class WebPAnimEncoderOptions implements Finalizable {
+  static final _finalizer = NativeFinalizer(calloc.nativeFree);
+
+  final Pointer<bindings.WebPAnimEncoderOptions> _ffi;
+
   /// Animation parameters.
-  final WebPMuxAnimParams animParams;
+
+  /// Animation parameters.
+  bindings.WebPMuxAnimParams get animParams => _ffi.ref.anim_params;
+
+  /// Animation parameters.
+  set animParams(bindings.WebPMuxAnimParams value) {
+    _ffi.ref.anim_params = value;
+  }
 
   /// If true, minimize the output size (slow). Implicitly
   /// disables key-frame insertion.
-  final bool minimizeSize;
+
+  /// If true, minimize the output size (slow). Implicitly
+  /// disables key-frame insertion.
+  bool get minimizeSize => _ffi.ref.minimize_size == 1;
+
+  /// If true, minimize the output size (slow). Implicitly
+  /// disables key-frame insertion.
+  set minimizeSize(bool value) {
+    _ffi.ref.minimize_size = value ? 1 : 0;
+  }
 
   /// Minimum and maximum distance between consecutive key
   /// frames in the output. The library may insert some key
@@ -192,62 +223,84 @@ final class WebPAnimEncoderOptions {
   /// key-frame insertion is disabled; and if kmax == 1,
   /// then all frames will be key-frames (kmin value does
   /// not matter for these special cases).
-  final int kmin;
-  final int kmax;
+  int get kmin => _ffi.ref.kmin;
+
+  /// Minimum and maximum distance between consecutive key
+  /// frames in the output. The library may insert some key
+  /// frames as needed to satisfy this criteria.
+  /// Note that these conditions should hold: kmax > kmin
+  /// and kmin >= kmax / 2 + 1. Also, if kmax <= 0, then
+  /// key-frame insertion is disabled; and if kmax == 1,
+  /// then all frames will be key-frames (kmin value does
+  /// not matter for these special cases).
+  set kmin(int value) {
+    _ffi.ref.kmin = value;
+  }
+
+  int get kmax => _ffi.ref.kmax;
+  set kmax(int value) {
+    _ffi.ref.kmax = value;
+  }
 
   /// If true, use mixed compression mode; may choose
   /// either lossy and lossless for each frame.
+  bool get allowMixed => _ffi.ref.allow_mixed == 1;
 
-  final bool allowMixed;
+  /// If true, use mixed compression mode; may choose
+  /// either lossy and lossless for each frame.
+  set allowMixed(bool value) {
+    _ffi.ref.allow_mixed = value ? 1 : 0;
+  }
 
   /// If true, print info and warning messages to stderr.
 
-  final bool verbose;
+  bool get verbose => _ffi.ref.verbose == 1;
 
-  const WebPAnimEncoderOptions({
-    this.animParams = const WebPMuxAnimParams(),
-    this.minimizeSize = false,
-    this.kmin = 0,
-    this.kmax = 0,
-    this.allowMixed = false,
-    this.verbose = false,
-  });
-
-  Pointer<bindings.WebPAnimEncoderOptions> toNative(Allocator allocator) {
-    final options = allocator<bindings.WebPAnimEncoderOptions>();
-    options.ref.anim_params = animParams.toNative(allocator).ref;
-    options.ref.minimize_size = minimizeSize ? 1 : 0;
-    options.ref.kmin = kmin;
-    options.ref.kmax = kmax;
-    options.ref.allow_mixed = allowMixed ? 1 : 0;
-    options.ref.verbose = verbose ? 1 : 0;
-    return options;
+  set verbose(bool value) {
+    _ffi.ref.verbose = value ? 1 : 0;
   }
-}
 
-/// Animation parameters.
-final class WebPMuxAnimParams {
-  /// Background color of the canvas stored (in MSB order) as:
-  /// Bits 00 to 07: Alpha.
-  /// Bits 08 to 15: Red.
-  /// Bits 16 to 23: Green.
-  /// Bits 24 to 31: Blue.
-  final int bgcolor;
+  factory WebPAnimEncoderOptions({
+    bool? minimizeSize,
+    int? kmin,
+    int? kmax,
+    bool? allowMixed,
+    bool? verbose,
+  }) {
+    final opts = calloc<bindings.WebPAnimEncoderOptions>();
 
-  /// Number of times to repeat the animation [0 = infinite].
-  final int loopCount;
+    check(
+      libwebp.WebPAnimEncoderOptionsInitInternal(
+        opts,
+        bindings.WEBP_MUX_ABI_VERSION,
+      ),
+      'Failed to initialize WebPAnimEncoderOptions.',
+    );
 
-  const WebPMuxAnimParams({
-    this.bgcolor = 0,
-    this.loopCount = 0,
-  });
+    if (minimizeSize case final minimizeSize?) {
+      opts.ref.minimize_size = minimizeSize ? 1 : 0;
+    }
+    if (kmin case final kmin?) {
+      opts.ref.kmin = kmin;
+    }
+    if (kmax case final kmax?) {
+      opts.ref.kmax = kmax;
+    }
+    if (allowMixed case final allowMixed?) {
+      opts.ref.allow_mixed = allowMixed ? 1 : 0;
+    }
+    if (verbose case final verbose?) {
+      opts.ref.verbose = verbose ? 1 : 0;
+    }
 
-  Pointer<bindings.WebPMuxAnimParams> toNative(Allocator allocator) {
-    final params = allocator<bindings.WebPMuxAnimParams>();
-    params.ref.bgcolor = bgcolor;
-    params.ref.loop_count = loopCount;
-    return params;
+    final wrapper = WebPAnimEncoderOptions._(opts);
+
+    _finalizer.attach(wrapper, opts.cast(), detach: wrapper);
+
+    return wrapper;
   }
+
+  const WebPAnimEncoderOptions._(this._ffi);
 }
 
 abstract class _WebpConfigBase {
@@ -390,20 +443,14 @@ abstract class _WebpConfigBase {
   set qmax(int value);
 }
 
-class WebPConfig implements _WebpConfigBase {
-  static final _logger = Logger('WebPConfig');
-  static final _finalizer = Finalizer<Arena>((a) {
-    _logger.finest('Finalizing WebPConfig');
-    a.releaseAll();
-  });
+class WebPConfig implements _WebpConfigBase, Finalizable {
+  static final _finalizer = NativeFinalizer(calloc.nativeFree);
 
   factory WebPConfig({
     WebPPreset preset = WebPPreset.default_,
     double quality = 75.0,
   }) {
-    final alloc = Arena(calloc);
-
-    final cfg = alloc<bindings.WebPConfig>();
+    final cfg = calloc<bindings.WebPConfig>();
     check(
       libwebp.WebPConfigInitInternal(
         cfg,
@@ -414,14 +461,14 @@ class WebPConfig implements _WebpConfigBase {
       'Failed to init WebPConfig.',
     );
 
-    final webpConfig = WebPConfig.native(cfg);
+    final webpConfig = WebPConfig._(cfg);
 
-    _finalizer.attach(webpConfig, alloc, detach: webpConfig);
+    _finalizer.attach(webpConfig, cfg.cast(), detach: webpConfig);
 
     return webpConfig;
   }
 
-  const WebPConfig.native(this._ffi);
+  const WebPConfig._(this._ffi);
 
   final Pointer<bindings.WebPConfig> _ffi;
 
@@ -583,17 +630,23 @@ typedef WebPAnimationTimingTransformer = Duration Function(
 sealed class WebPAnimationTiming {
   const WebPAnimationTiming();
 
-  Duration at(int frame);
+  Iterable<Duration> get frames;
+
+  double get fps;
 
   @pragma('vm:prefer-inline')
   WebPAnimationTiming map(WebPAnimationTimingTransformer mapper) {
     return MappedWebPAnimationTiming(this, mapper);
   }
 
+  Duration at(int index) => frames.elementAt(index);
+
+  Duration get totalDuration => frames.sum;
+
   WebPAnimationTiming reduceFps(int divisor) {
-    return map(
-      (frame, duration) =>
-          frame % divisor == 0 ? (duration * divisor) : Duration.zero,
+    return MappedWebPAnimationTiming(
+      this,
+      (i, dur) => i % divisor == 0 ? (dur * divisor) : Duration.zero,
     );
   }
 }
@@ -601,27 +654,54 @@ sealed class WebPAnimationTiming {
 class ListWebPAnimationTiming extends WebPAnimationTiming {
   final List<Duration> value;
 
-  const ListWebPAnimationTiming(this.value);
+  @override
+  Iterable<Duration> get frames => value;
 
   @override
-  Duration at(int frame) => value[frame];
+  double get fps =>
+      1000 * value.length / value.map((e) => e.inMilliseconds).sum;
+
+  const ListWebPAnimationTiming(this.value);
 }
 
 class ConstantWebPAnimationTiming extends WebPAnimationTiming {
   final Duration duration;
-
-  const ConstantWebPAnimationTiming(this.duration);
+  final int length;
 
   @override
-  Duration at(int frame) => duration;
+  Iterable<Duration> get frames => Iterable.generate(length, (_) => duration);
+
+  @override
+  double get fps => 1000 / duration.inMilliseconds;
+
+  const ConstantWebPAnimationTiming(this.duration, this.length);
 }
 
 class MappedWebPAnimationTiming extends WebPAnimationTiming {
   final WebPAnimationTiming source;
   final WebPAnimationTimingTransformer transformer;
 
-  const MappedWebPAnimationTiming(this.source, this.transformer);
+  @override
+  Iterable<Duration> get frames => Iterable.generate(
+        source.frames.length,
+        (i) => transformer(i, source.frames.elementAt(i)),
+      );
 
   @override
-  Duration at(int frame) => transformer(frame, source.at(frame));
+  double get fps {
+    final (:len, :sum) = frames.nonZero.fold<({int len, Duration sum})>(
+      (len: 0, sum: Duration.zero),
+      (acc, e) => (len: acc.len + 1, sum: acc.sum + e),
+    );
+
+    return 1000 * len / sum.inMilliseconds;
+  }
+
+  const MappedWebPAnimationTiming(this.source, this.transformer);
+}
+
+extension IterDuration on Iterable<Duration> {
+  Duration get sum => reduce((a, b) => a + b);
+
+  Iterable<Duration> get nonZero => where((e) => e != Duration.zero);
 }

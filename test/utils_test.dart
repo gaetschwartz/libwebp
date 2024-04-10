@@ -29,7 +29,7 @@ void main() {
     });
 
     test('all', () {
-      const timings = ConstantWebPAnimationTiming(Duration(seconds: 1));
+      const timings = ConstantWebPAnimationTiming(Duration(seconds: 1), 3);
       expect(timings.at(0), const Duration(seconds: 1));
       expect(timings.at(1), const Duration(seconds: 1));
       expect(timings.at(2), const Duration(seconds: 1));

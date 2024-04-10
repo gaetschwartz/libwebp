@@ -1,12 +1,11 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:libwebp/src/utils.dart';
 
 extension ReadFileIntoFfiByteDataExtension on File {
-  FfiByteData readIntoFfiByteData(Allocator allocator) {
+  FfiByteData readIntoFfiByteData() {
     final size = lengthSync();
-    final data = FfiByteData.allocate(allocator, size);
+    final data = FfiByteData(size);
     final file = openSync();
     try {
       file.readIntoSync(data.asList);

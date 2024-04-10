@@ -77,7 +77,7 @@ void main() {
     final encoder = WebPAnimEncoder(
       width: 512,
       height: 512,
-      options: const WebPAnimEncoderOptions(verbose: true),
+      options: WebPAnimEncoderOptions(verbose: true),
     );
 
     encoder.add(webpImage, webpImage.timings);
@@ -103,11 +103,12 @@ void main() {
       width: 512,
       height: 512,
       config: config,
-      options: const WebPAnimEncoderOptions(verbose: true),
+      options: WebPAnimEncoderOptions(verbose: true),
     );
 
     const webPAnimationTimingAllFrames = ConstantWebPAnimationTiming(
       Duration(milliseconds: 100),
+      2000, // arbitrarily high number
     );
 
     encoder.add(WebPImage(xdd), webPAnimationTimingAllFrames);
@@ -134,7 +135,7 @@ void main() {
     final enc1 = WebPAnimEncoder(
       width: 512,
       height: 512,
-      options: const WebPAnimEncoderOptions(verbose: true),
+      options: WebPAnimEncoderOptions(verbose: true),
     );
 
     enc1.add(webPImage, webPImage.timings);
@@ -149,7 +150,7 @@ void main() {
     final enc2 = WebPAnimEncoder(
       width: 512,
       height: 512,
-      options: const WebPAnimEncoderOptions(verbose: true),
+      options: WebPAnimEncoderOptions(verbose: true),
       config: cfg,
     );
 

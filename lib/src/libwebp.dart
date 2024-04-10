@@ -67,11 +67,13 @@ DynamicLibrary _openLib() {
   }
 }
 
-final webPMemoryWritePtr = _openLib()
+final rawBindings = _openLib();
+
+final webPMemoryWritePtr = rawBindings
     .lookup<NativeFunction<bindings.NativeWebPMemoryWrite>>('WebPMemoryWrite');
 
 /// The bindings to the native WebP library.
-final libwebp = bindings.LibwebpFlutterLibsBindings(_openLib());
+final libwebp = bindings.LibwebpFlutterLibsBindings(rawBindings);
 
 class LibWebPVersions {
   final LibWebPFrameworkInfo decoder;
@@ -178,9 +180,8 @@ Uint8List resizeWebp(
   ({int width, int height}) targetDimensions, {
   BoxFit fit = BoxFit.fill,
 }) =>
-    using((Arena alloc) {
-      final data = alloc.byteData(input.length);
-      data.asList.setAll(0, input);
+    using((alloc) {
+      final data = FfiByteData.fromTypedList(input);
       final curr = getWebpDimensions(data);
 
       final Uint8List outData = _resizeWebp(
@@ -321,28 +322,3 @@ Pointer<bindings.WebPAnimDecoder> _animDecoder(Allocator a, FfiByteData data) {
 
   return decoder;
 }
-
-// ({int width, int height, int top, int left}) _contain({
-//   required ({int width, int height}) src,
-//   required ({int width, int height}) target,
-// }) {
-//   final srcRatio = src.width / src.height;
-//   final targetRatio = target.width / target.height;
-
-//   final width =
-//       srcRatio > targetRatio ? target.width : (target.height * srcRatio);
-//   final height =
-//       srcRatio > targetRatio ? (target.width / srcRatio) : target.height;
-
-//   final top = (target.height - height) ~/ 2;
-//   final left = (target.width - width) ~/ 2;
-
-//   return (width: width.toInt(), height: height.toInt(), top: top, left: left);
-// }
-
-// ({int width, int height, int top, int left}) _fill({
-//   required ({int width, int height}) src,
-//   required ({int width, int height}) target,
-// }) {
-//   return (width: src.width, height: src.height, top: 0, left: 0);
-// }

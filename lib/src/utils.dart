@@ -8,24 +8,28 @@ import 'libwebp.dart';
 
 // ignore: non_constant_identifier_names
 
-class FfiByteData {
+class FfiByteData implements Finalizable {
+  static final _finalizer = NativeFinalizer(calloc.nativeFree);
+
   final Pointer<Uint8> ptr;
   final int size;
 
-  FfiByteData.ffi({required this.ptr, required this.size});
+  factory FfiByteData(int size) {
+    final ptr = calloc<Uint8>(size);
 
-  factory FfiByteData.allocate(Allocator allocator, int size) {
-    return FfiByteData.ffi(
-      ptr: allocator.call<Uint8>(size),
+    final wrapper = FfiByteData._(
+      ptr: ptr,
       size: size,
     );
+
+    _finalizer.attach(wrapper, ptr.cast(), detach: wrapper);
+    return wrapper;
   }
 
-  factory FfiByteData.fromTypedList(Uint8List list, Allocator allocator) {
-    final data = FfiByteData.ffi(
-      ptr: allocator.call<Uint8>(list.length),
-      size: list.length,
-    );
+  FfiByteData._({required this.ptr, required this.size});
+
+  factory FfiByteData.fromTypedList(Uint8List list) {
+    final data = FfiByteData(list.length);
     data.ptr.asTypedList(list.length).setAll(0, list);
     return data;
   }
@@ -35,14 +39,6 @@ class FfiByteData {
   void setAll(int index, Uint8List list) {
     ptr.asTypedList(size).setAll(index, list);
   }
-}
-
-extension AllocatorX on Allocator {
-  FfiByteData byteData(int size) =>
-      FfiByteData.ffi(ptr: call<Uint8>(size), size: size);
-
-  FfiByteData fromTypedList(Uint8List list) =>
-      FfiByteData.fromTypedList(list, this);
 }
 
 extension IterableIntX on Iterable<int> {
@@ -205,5 +201,37 @@ extension BoolInt on int {
 }
 
 extension WebpDataX on bindings.WebPData {
-  Uint8List get asTypedList => bytes.asTypedList(size);
+  Uint8List toList() => bytes.asTypedList(size);
+}
+
+class FinalizableAlloc implements Allocator {
+  final _allocations = <Pointer>[];
+  final Allocator _allocator;
+
+  FinalizableAlloc([Allocator allocator = calloc]) : _allocator = allocator;
+
+  @override
+  Pointer<T> allocate<T extends NativeType>(int byteCount, {int? alignment}) {
+    final pointer = _allocator.allocate<T>(byteCount, alignment: alignment);
+    _allocations.add(pointer);
+    return pointer;
+  }
+
+  @override
+  void free(Pointer pointer) {
+    _allocations.remove(pointer);
+    _allocator.free(pointer);
+  }
+}
+
+final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
+
+F finalizing<F extends Finalizable>(F Function(FinalizableAlloc a) create) {
+  final a = FinalizableAlloc();
+  final instance = create(a);
+  for (final e in a._allocations) {
+    _callocFinalizer.attach(instance, e.cast(), detach: instance);
+  }
+
+  return instance;
 }
