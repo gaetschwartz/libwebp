@@ -82,7 +82,7 @@ void main() {
 
     encoder.add(webpImage, webpImage.timings);
 
-    final encoded = encoder.assemble();
+    final encoded = Uint8List.fromList(encoder.assemble().asTypedList);
 
     final decoded = WebPImage(encoded);
     expect(decoded.info.canvas_width, 512);
@@ -116,7 +116,7 @@ void main() {
 
     expect(encoder.frameCount, 2);
 
-    final encoded = encoder.assemble();
+    final encoded = Uint8List.fromList(encoder.assemble().asTypedList);
 
     final decoded = WebPImage(encoded);
     expect(decoded.info.canvas_width, 512);
@@ -140,7 +140,7 @@ void main() {
 
     enc1.add(webPImage, webPImage.timings);
 
-    final encoded1 = enc1.assemble();
+    final encoded1 = enc1.assemble().asTypedList.toList();
 
     final cfg = WebPConfig(quality: 0);
     cfg.threadLevel = 1;
@@ -156,7 +156,7 @@ void main() {
 
     enc2.add(webPImage, webPImage.timings);
 
-    final encoded2 = enc2.assemble();
+    final encoded2 = enc2.assemble().asTypedList.toList();
 
     expect(encoded1.length, greaterThan(encoded2.length));
 
