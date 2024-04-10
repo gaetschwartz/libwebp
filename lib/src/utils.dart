@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
+import 'package:libwebp/src/finalizers.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 
 import 'libwebp.dart';
@@ -9,8 +10,6 @@ import 'libwebp.dart';
 // ignore: non_constant_identifier_names
 
 class FfiByteData implements Finalizable {
-  static final _finalizer = NativeFinalizer(calloc.nativeFree);
-
   final Pointer<Uint8> ptr;
   final int size;
   bool _disposed = false;
@@ -23,7 +22,8 @@ class FfiByteData implements Finalizable {
       size: size,
     );
 
-    _finalizer.attach(wrapper, ptr.cast(), detach: wrapper);
+    callocFinalizer.attach(wrapper, ptr.cast(), detach: wrapper);
+
     return wrapper;
   }
 
@@ -54,7 +54,7 @@ class FfiByteData implements Finalizable {
       throw StateError('FfiByteData already disposed');
     }
     calloc.free(ptr);
-    _finalizer.detach(this);
+    callocFinalizer.detach(this);
     _disposed = true;
   }
 }
@@ -236,16 +236,20 @@ class FinalizableAlloc implements Allocator {
     _allocations.remove(pointer);
     _allocator.free(pointer);
   }
-}
 
-final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
+  static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
+
+  void attachFinalizer<F extends Finalizable>(F instance) {
+    for (final e in _allocations) {
+      _callocFinalizer.attach(instance, e.cast(), detach: instance);
+    }
+  }
+}
 
 F finalizing<F extends Finalizable>(F Function(FinalizableAlloc a) create) {
   final a = FinalizableAlloc();
   final instance = create(a);
-  for (final e in a._allocations) {
-    _callocFinalizer.attach(instance, e.cast(), detach: instance);
-  }
+  a.attachFinalizer(instance);
 
   return instance;
 }

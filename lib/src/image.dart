@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
+import 'package:libwebp/src/finalizers.dart';
 import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
@@ -15,11 +16,8 @@ typedef WebPDecoderFinalizable = ({
 });
 
 class WebPImage implements Finalizable {
-  static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
-
   final FfiByteData _data;
   final _WebPAnimDecoder _decoder;
-  final Pointer<bindings.WebPAnimInfo> _infoPtr;
 
   factory WebPImage(Uint8List data) {
     final d = FfiByteData.fromTypedList(data);
@@ -27,35 +25,21 @@ class WebPImage implements Finalizable {
   }
 
   factory WebPImage.native(FfiByteData data) {
-    final dec = _WebPAnimDecoder(data);
-    final infoPtr = calloc<bindings.WebPAnimInfo>();
+    final decoder = _WebPAnimDecoder(data);
 
-    final wrapper = WebPImage._(
+    return WebPImage._(
       data: data,
-      decoder: dec,
-      infoPtr: infoPtr,
+      decoder: decoder,
     );
-
-    _callocFinalizer.attach(wrapper, infoPtr.cast(), detach: wrapper);
-
-    return wrapper;
   }
 
   WebPImage._({
     required FfiByteData data,
     required _WebPAnimDecoder decoder,
-    required Pointer<bindings.WebPAnimInfo> infoPtr,
   })  : _data = data,
-        _decoder = decoder,
-        _infoPtr = infoPtr;
+        _decoder = decoder;
 
-  bindings.WebPAnimInfo get info {
-    check(
-      libwebp.WebPAnimDecoderGetInfo(_decoder.ptr, _infoPtr),
-      'Failed to get WebPAnimInfo.',
-    );
-    return _infoPtr.ref;
-  }
+  bindings.WebPAnimInfo get info => _decoder.info;
 
   /// An iterable of frames in the WebP image. Frames data is only valid before
   /// the next frame is decoded.
@@ -174,42 +158,24 @@ class WebPImageFramesIterable extends Iterable<WebPFrame> {
 }
 
 class WebPImageFramesIterator implements Iterator<WebPFrame>, Finalizable {
-  static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
   final _WebPAnimDecoder _decoder;
   final Pointer<Pointer<Uint8>> _frame;
   final Pointer<Int> _ts;
-  final Pointer<bindings.WebPAnimInfo> _infoPtr;
 
   factory WebPImageFramesIterator(WebPImage image) {
     final dec = _WebPAnimDecoder(image._data);
 
-    final frame = calloc<Pointer<Uint8>>();
-    final ts = calloc<Int>();
-    final infoPtr = calloc<bindings.WebPAnimInfo>();
-
-    final wrapper = WebPImageFramesIterator._(
-      decoder: dec,
-      frame: frame,
-      ts: ts,
-      infoPtr: infoPtr,
-    );
-
-    _callocFinalizer.attach(wrapper, frame.cast(), detach: wrapper);
-    _callocFinalizer.attach(wrapper, ts.cast(), detach: wrapper);
-    _callocFinalizer.attach(wrapper, infoPtr.cast(), detach: wrapper);
-
-    return wrapper;
+    return WebPImageFramesIterator._(decoder: dec);
   }
 
   WebPImageFramesIterator._({
     required _WebPAnimDecoder decoder,
-    required Pointer<Pointer<Uint8>> frame,
-    required Pointer<Int> ts,
-    required Pointer<bindings.WebPAnimInfo> infoPtr,
   })  : _decoder = decoder,
-        _frame = frame,
-        _ts = ts,
-        _infoPtr = infoPtr;
+        _frame = calloc<Pointer<Uint8>>(),
+        _ts = calloc<Int>() {
+    callocFinalizer.attach(this, _frame.cast(), detach: this);
+    callocFinalizer.attach(this, _ts.cast(), detach: this);
+  }
 
   WebPFrame? _current;
 
@@ -221,17 +187,11 @@ class WebPImageFramesIterator implements Iterator<WebPFrame>, Finalizable {
     return _current!;
   }
 
-  late final _info = () {
-    check(
-      libwebp.WebPAnimDecoderGetInfo(_decoder.ptr, _infoPtr),
-      'Failed to get WebPAnimInfo.',
-    );
-    return _infoPtr.ref;
-  }();
+  late final _info = _decoder.info;
 
   @override
   bool moveNext() {
-    if (!libwebp.WebPAnimDecoderGetNext(_decoder.ptr, _frame, _ts).asCBoolean) {
+    if (!_decoder.getNext(_frame, _ts)) {
       return false;
     }
     final dur = switch (_current) {
@@ -263,49 +223,113 @@ enum WebPPreset {
 }
 
 class _WebPAnimDecoder implements Finalizable {
-  static final _webPAnimDecoderDeletePtr =
-      rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimDecoderDelete>>(
-    'WebPAnimDecoderDelete',
-  );
-
-  static final _decodeFinalizer =
-      NativeFinalizer(_webPAnimDecoderDeletePtr.cast());
-
   final Pointer<bindings.WebPAnimDecoder> ptr;
+  final Pointer<bindings.WebPAnimInfo> _infoPtr;
+  final WebPAnimDecoderOptions options;
+  final WebPData webpData;
+  final bool _disposed = false;
 
   factory _WebPAnimDecoder(
     FfiByteData data, {
-    int colorMode = bindings.WEBP_CSP_MODE.MODE_RGBA,
+    WebPAnimDecoderOptions? options,
   }) {
-    final dec = using((a) {
-      final webpData = a<bindings.WebPData>()
-        ..ref.bytes = data.ptr
-        ..ref.size = data.size;
+    final webpData = WebPData(freeInnerBuffer: false)
+      ..bytes = data.ptr
+      ..size = data.size;
 
-      final opt = a<bindings.WebPAnimDecoderOptions>();
-      check(
-        libwebp.WebPAnimDecoderOptionsInitInternal(
-          opt,
-          bindings.WEBP_DEMUX_ABI_VERSION,
-        ),
-        'Failed to initialize WebPAnimDecoderOptions.',
-      );
-      opt.ref.color_mode = colorMode;
-      opt.ref.use_threads = 1;
+    final opt = options ?? WebPAnimDecoderOptions();
 
-      return checkAlloc(libwebp.WebPAnimDecoderNewInternal(
-        webpData,
-        opt,
-        bindings.WEBP_DEMUX_ABI_VERSION,
-      ));
-    });
+    final dec = checkAlloc(libwebp.WebPAnimDecoderNewInternal(
+      webpData.ptr,
+      opt.ptr,
+      bindings.WEBP_DEMUX_ABI_VERSION,
+    ));
 
-    final wrapper = _WebPAnimDecoder._(ptr: dec);
+    final wrapper =
+        _WebPAnimDecoder._(ptr: dec, webpData: webpData, options: opt);
 
-    _decodeFinalizer.attach(wrapper, dec.cast(), detach: wrapper);
+    decoderFinalizer.attach(wrapper, dec, detach: wrapper);
 
     return wrapper;
   }
 
-  _WebPAnimDecoder._({required this.ptr});
+  _WebPAnimDecoder._({
+    required this.ptr,
+    required this.webpData,
+    required this.options,
+  }) : _infoPtr = calloc<bindings.WebPAnimInfo>() {
+    callocFinalizer.attach(this, _infoPtr.cast(), detach: this);
+  }
+
+  bindings.WebPAnimInfo get info {
+    if (_disposed) {
+      throw StateError('WebPImage already disposed');
+    }
+    check(
+      libwebp.WebPAnimDecoderGetInfo(ptr, _infoPtr),
+      'Failed to get WebPAnimInfo.',
+    );
+    return _infoPtr.ref;
+  }
+
+  bool getNext(Pointer<Pointer<Uint8>> frame, Pointer<Int> timestamp) {
+    if (_disposed) {
+      throw StateError('WebPImage already disposed');
+    }
+    return libwebp.WebPAnimDecoderGetNext(ptr, frame, timestamp) != 0;
+  }
+
+  void reset() {
+    if (_disposed) {
+      throw StateError('WebPImage already disposed');
+    }
+
+    libwebp.WebPAnimDecoderReset(ptr);
+  }
+
+  void free() {
+    if (_disposed) {
+      throw StateError('WebPImage already disposed');
+    }
+    calloc.free(_infoPtr);
+    libwebp.WebPAnimDecoderDelete(ptr);
+
+    decoderFinalizer.detach(this);
+    callocFinalizer.detach(this);
+  }
+}
+
+final class WebPAnimDecoderOptions implements Finalizable {
+  final Pointer<bindings.WebPAnimDecoderOptions> ptr;
+  bool _disposed = false;
+
+  factory WebPAnimDecoderOptions({
+    int colorMode = bindings.WEBP_CSP_MODE.MODE_RGBA,
+    bool useThreads = false,
+  }) {
+    final opt = WebPAnimDecoderOptions._();
+    check(
+      libwebp.WebPAnimDecoderOptionsInitInternal(
+        opt.ptr,
+        bindings.WEBP_DEMUX_ABI_VERSION,
+      ),
+      'Failed to initialize WebPAnimDecoderOptions.',
+    );
+    opt.ptr.ref.color_mode = colorMode;
+    opt.ptr.ref.use_threads = useThreads ? 1 : 0;
+    return opt;
+  }
+
+  WebPAnimDecoderOptions._() : ptr = calloc<bindings.WebPAnimDecoderOptions>() {
+    callocFinalizer.attach(this, ptr.cast(), detach: this);
+  }
+
+  void free() {
+    if (_disposed) {
+      throw StateError('WebPAnimDecoderOptions already disposed');
+    }
+    calloc.free(ptr);
+    callocFinalizer.detach(this);
+    _disposed = true;
+  }
 }

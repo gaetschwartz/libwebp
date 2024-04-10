@@ -4,10 +4,12 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
+import 'package:libwebp/src/finalizers.dart';
 import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 
 typedef WebPEncoderFinalizable = ({
   Arena arena,
@@ -19,10 +21,6 @@ class WebPAnimEncoder implements Finalizable {
   static final webPAnimEncoderDeletePtr =
       rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
     'WebPAnimEncoderDelete',
-  );
-
-  static final _encoderFinalizer = NativeFinalizer(
-    webPAnimEncoderDeletePtr.cast(),
   );
 
   final Pointer<bindings.WebPAnimEncoder> _encoder;
@@ -54,9 +52,9 @@ class WebPAnimEncoder implements Finalizable {
       height: height,
       options: opts,
     );
-    _encoderFinalizer.attach(
+    encoderFinalizer.attach(
       wrapper,
-      encoder.cast(),
+      encoder,
       detach: wrapper,
     );
     return wrapper;
@@ -106,7 +104,9 @@ class WebPAnimEncoder implements Finalizable {
         final pic = a<bindings.WebPPicture>();
         check(
           libwebp.WebPPictureInitInternal(
-              pic, bindings.WEBP_ENCODER_ABI_VERSION),
+            pic,
+            bindings.WEBP_ENCODER_ABI_VERSION,
+          ),
           'Failed to init WebPPicture.',
         );
         pic.ref.use_argb = 1;
@@ -172,15 +172,14 @@ class WebPAnimEncoder implements Finalizable {
       encoder: _encoder,
     );
 
-    final data = WebPData._new(freeInnerBuffer: true);
+    final data = WebPData(freeInnerBuffer: false);
 
     check(
-      libwebp.WebPAnimEncoderAssemble(_encoder, data._ptr),
+      libwebp.WebPAnimEncoderAssemble(_encoder, data.ptr),
       'Failed to assemble WebP.',
       encoder: _encoder,
     );
 
-    // Copy to a Dart list and free the native memory.
     return data;
   }
 
@@ -189,73 +188,91 @@ class WebPAnimEncoder implements Finalizable {
       throw StateError('WebPAnimEncoder has been disposed.');
     }
     libwebp.WebPAnimEncoderDelete(_encoder);
-    _encoderFinalizer.detach(this);
+    encoderFinalizer.detach(this);
     _disposed = true;
   }
 }
 
 final class WebPData implements Finalizable {
-  static final _webpFreePtr =
-      rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>('WebPFree');
-  static final _finalizer = NativeFinalizer(_webpFreePtr.cast());
-  static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
   bool _disposed = false;
+  final bool freeInnerBuffer;
 
-  final Pointer<bindings.WebPData> _ptr;
+  final Pointer<bindings.WebPData> ptr;
 
   /// Pointer to the data.
-  Uint8List get bytes {
+  @internal
+  Pointer<Uint8> get bytes {
     if (_disposed) {
       throw StateError('WebPData has been disposed.');
     }
-    return _ptr.ref.bytes.asTypedList(_ptr.ref.size);
+    return ptr.ref.bytes;
+  }
+
+  @internal
+  set bytes(Pointer<Uint8> value) {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    ptr.ref.bytes = value;
   }
 
   /// Size of the data.
+  @internal
   int get size {
     if (_disposed) {
       throw StateError('WebPData has been disposed.');
     }
-    return _ptr.ref.size;
+    return ptr.ref.size;
   }
 
-  factory WebPData._new({
-    Pointer<Uint8>? bytes,
-    int? size,
-    required bool freeInnerBuffer,
+  @internal
+  set size(int value) {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    ptr.ref.size = value;
+  }
+
+  Uint8List get asTypedList {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    return bytes.asTypedList(size);
+  }
+
+  factory WebPData({
+    bool freeInnerBuffer = false,
   }) {
     final ptr = calloc<bindings.WebPData>();
-    if (bytes case final bytes?) {
-      ptr.ref.bytes = bytes.cast();
-    }
-    if (size case final size?) {
-      ptr.ref.size = size;
-    }
 
-    final wrapper = WebPData._(ptr);
+    final wrapper = WebPData._(ptr, freeInnerBuffer: freeInnerBuffer);
 
-    _callocFinalizer.attach(wrapper, ptr.cast(), detach: wrapper);
+    callocFinalizer.attach(wrapper, ptr.cast(), detach: wrapper);
     if (freeInnerBuffer) {
-      _finalizer.attach(wrapper, ptr.ref.bytes.cast(), detach: wrapper);
+      webpFreeFinalizer.attach(wrapper, ptr.ref.bytes.cast(), detach: wrapper);
     }
 
     return wrapper;
   }
 
-  WebPData._(this._ptr);
+  WebPData._(this.ptr, {required this.freeInnerBuffer});
 
   void free() {
     if (_disposed) {
       throw StateError('WebPData has been disposed.');
     }
-    _finalizer.detach(this);
+    calloc.free(ptr);
+    callocFinalizer.detach(this);
+
+    if (freeInnerBuffer) {
+      libwebp.WebPFree(ptr.ref.bytes.cast());
+      webpFreeFinalizer.detach(this);
+    }
     _disposed = true;
   }
 }
 
 final class WebPAnimEncoderOptions implements Finalizable {
-  static final _finalizer = NativeFinalizer(calloc.nativeFree);
-
   final Pointer<bindings.WebPAnimEncoderOptions> _ffi;
 
   /// Animation parameters.
@@ -361,7 +378,7 @@ final class WebPAnimEncoderOptions implements Finalizable {
 
     final wrapper = WebPAnimEncoderOptions._(opts);
 
-    _finalizer.attach(wrapper, opts.cast(), detach: wrapper);
+    callocFinalizer.attach(wrapper, opts.cast(), detach: wrapper);
 
     return wrapper;
   }
@@ -510,8 +527,6 @@ abstract class _WebpConfigBase {
 }
 
 class WebPConfig implements _WebpConfigBase, Finalizable {
-  static final _finalizer = NativeFinalizer(calloc.nativeFree);
-
   factory WebPConfig({
     WebPPreset preset = WebPPreset.default_,
     double quality = 75.0,
@@ -529,7 +544,7 @@ class WebPConfig implements _WebpConfigBase, Finalizable {
 
     final webpConfig = WebPConfig._(cfg);
 
-    _finalizer.attach(webpConfig, cfg.cast(), detach: webpConfig);
+    callocFinalizer.attach(webpConfig, cfg.cast(), detach: webpConfig);
 
     return webpConfig;
   }
