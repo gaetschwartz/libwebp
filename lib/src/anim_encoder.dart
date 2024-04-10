@@ -155,36 +155,74 @@ class WebPAnimEncoder implements Finalizable {
 
   int get frameCount => _frame;
 
-  Uint8List assemble() {
-    return using((a) {
+  WebPData assemble() {
 // add a blank frame to make sure the last frame is included
-      log('Adding blank frame at $_timestamp ms');
-      check(
-        libwebp.WebPAnimEncoderAdd(
-          _encoder,
-          nullptr,
-          _timestamp,
-          config.ptr,
-        ),
-        'Failed to add blank frame to encoder.',
-        encoder: _encoder,
-      );
+    log('Adding blank frame at $_timestamp ms');
+    check(
+      libwebp.WebPAnimEncoderAdd(
+        _encoder,
+        nullptr,
+        _timestamp,
+        config.ptr,
+      ),
+      'Failed to add blank frame to encoder.',
+      encoder: _encoder,
+    );
 
-      final data = a<bindings.WebPData>();
+    final data = WebPData._new(freeInnerBuffer: true);
 
-      check(
-        libwebp.WebPAnimEncoderAssemble(_encoder, data),
-        'Failed to assemble WebP.',
-        encoder: _encoder,
-      );
-      libwebp.WebPAnimEncoderDelete(_encoder);
-      _encoderFinalizer.detach(this);
-      _disposed = true;
+    check(
+      libwebp.WebPAnimEncoderAssemble(_encoder, data._ptr),
+      'Failed to assemble WebP.',
+      encoder: _encoder,
+    );
+    libwebp.WebPAnimEncoderDelete(_encoder);
+    _encoderFinalizer.detach(this);
+    _disposed = true;
 
-      // Copy to a Dart list and free the native memory.
-      return data.ref.toList();
-    });
+    // Copy to a Dart list and free the native memory.
+    return data;
   }
+}
+
+final class WebPData implements Finalizable {
+  static final _webpFreePtr =
+      rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>('WebPFree');
+  static final _finalizer = NativeFinalizer(_webpFreePtr.cast());
+  static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
+
+  final Pointer<bindings.WebPData> _ptr;
+
+  /// Pointer to the data.
+  Uint8List get bytes => _ptr.ref.bytes.asTypedList(_ptr.ref.size);
+
+  /// Size of the data.
+  int get size => _ptr.ref.size;
+
+  factory WebPData._new({
+    Pointer<Uint8>? bytes,
+    int? size,
+    required bool freeInnerBuffer,
+  }) {
+    final ptr = calloc<bindings.WebPData>();
+    if (bytes case final bytes?) {
+      ptr.ref.bytes = bytes.cast();
+    }
+    if (size case final size?) {
+      ptr.ref.size = size;
+    }
+
+    final wrapper = WebPData._(ptr);
+
+    _callocFinalizer.attach(wrapper, ptr.cast(), detach: wrapper);
+    if (freeInnerBuffer) {
+      _finalizer.attach(wrapper, ptr.ref.bytes.cast(), detach: wrapper);
+    }
+
+    return wrapper;
+  }
+
+  const WebPData._(this._ptr);
 }
 
 final class WebPAnimEncoderOptions implements Finalizable {

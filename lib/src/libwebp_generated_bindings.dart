@@ -159,10 +159,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPFreePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'WebPFree');
-  late final _WebPFree =
-      _WebPFreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+      _lookup<ffi.NativeFunction<NativeWebPFree>>('WebPFree');
+  late final _WebPFree = _WebPFreePtr.asFunction<DartWebPFree>();
 
   /// Return the decoder's version number, packed in hexadecimal using 8bits for
   /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -4212,6 +4210,8 @@ final class imaxdiv_t extends ffi.Struct {
 
 typedef uintmax_t = ffi.UnsignedLong;
 typedef Dartuintmax_t = int;
+typedef NativeWebPFree = ffi.Void Function(ffi.Pointer<ffi.Void> ptr);
+typedef DartWebPFree = void Function(ffi.Pointer<ffi.Void> ptr);
 
 /// ------------------------------------------------------------------------------
 /// WebPDecBuffer: Generic structure for describing the output sample buffer.

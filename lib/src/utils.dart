@@ -200,10 +200,6 @@ extension BoolInt on int {
   bool get asCBoolean => this != 0;
 }
 
-extension WebpDataX on bindings.WebPData {
-  Uint8List toList() => bytes.asTypedList(size);
-}
-
 class FinalizableAlloc implements Allocator {
   final _allocations = <Pointer>[];
   final Allocator _allocator;
