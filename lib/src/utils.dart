@@ -13,6 +13,7 @@ class FfiByteData implements Finalizable {
 
   final Pointer<Uint8> ptr;
   final int size;
+  bool _disposed = false;
 
   factory FfiByteData(int size) {
     final ptr = calloc<Uint8>(size);
@@ -34,10 +35,27 @@ class FfiByteData implements Finalizable {
     return data;
   }
 
-  List<int> get asList => ptr.asTypedList(size);
+  List<int> get asList {
+    if (_disposed) {
+      throw StateError('FfiByteData already disposed');
+    }
+    return ptr.asTypedList(size);
+  }
 
   void setAll(int index, Uint8List list) {
+    if (_disposed) {
+      throw StateError('FfiByteData already disposed');
+    }
     ptr.asTypedList(size).setAll(index, list);
+  }
+
+  void free() {
+    if (_disposed) {
+      throw StateError('FfiByteData already disposed');
+    }
+    calloc.free(ptr);
+    _finalizer.detach(this);
+    _disposed = true;
   }
 }
 

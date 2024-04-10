@@ -156,6 +156,9 @@ class WebPAnimEncoder implements Finalizable {
   int get frameCount => _frame;
 
   WebPData assemble() {
+    if (_disposed) {
+      throw StateError('WebPAnimEncoder has been disposed.');
+    }
 // add a blank frame to make sure the last frame is included
     log('Adding blank frame at $_timestamp ms');
     check(
@@ -176,12 +179,18 @@ class WebPAnimEncoder implements Finalizable {
       'Failed to assemble WebP.',
       encoder: _encoder,
     );
-    libwebp.WebPAnimEncoderDelete(_encoder);
-    _encoderFinalizer.detach(this);
-    _disposed = true;
 
     // Copy to a Dart list and free the native memory.
     return data;
+  }
+
+  void free() {
+    if (_disposed) {
+      throw StateError('WebPAnimEncoder has been disposed.');
+    }
+    libwebp.WebPAnimEncoderDelete(_encoder);
+    _encoderFinalizer.detach(this);
+    _disposed = true;
   }
 }
 
@@ -190,14 +199,25 @@ final class WebPData implements Finalizable {
       rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>('WebPFree');
   static final _finalizer = NativeFinalizer(_webpFreePtr.cast());
   static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
+  bool _disposed = false;
 
   final Pointer<bindings.WebPData> _ptr;
 
   /// Pointer to the data.
-  Uint8List get bytes => _ptr.ref.bytes.asTypedList(_ptr.ref.size);
+  Uint8List get bytes {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    return _ptr.ref.bytes.asTypedList(_ptr.ref.size);
+  }
 
   /// Size of the data.
-  int get size => _ptr.ref.size;
+  int get size {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    return _ptr.ref.size;
+  }
 
   factory WebPData._new({
     Pointer<Uint8>? bytes,
@@ -222,7 +242,15 @@ final class WebPData implements Finalizable {
     return wrapper;
   }
 
-  const WebPData._(this._ptr);
+  WebPData._(this._ptr);
+
+  void free() {
+    if (_disposed) {
+      throw StateError('WebPData has been disposed.');
+    }
+    _finalizer.detach(this);
+    _disposed = true;
+  }
 }
 
 final class WebPAnimEncoderOptions implements Finalizable {
