@@ -224,20 +224,22 @@ class WebPImageFramesIterator implements Iterator<WebPFrame> {
     return _current!;
   }
 
-  late final _infoPtr = _alloc<bindings.WebPAnimInfo>();
-
   late final _info = () {
+    final infoPtr = _alloc<bindings.WebPAnimInfo>();
     check(
-      libwebp.WebPAnimDecoderGetInfo(_decoder, _infoPtr),
+      libwebp.WebPAnimDecoderGetInfo(_decoder, infoPtr),
       'Failed to get WebPAnimInfo.',
     );
-    return _infoPtr;
+    final ref = infoPtr.ref;
+    _alloc.free(infoPtr);
+    return ref;
   }();
+
+  late final frame = _alloc<Pointer<Uint8>>();
+  late final ts = _alloc<Int>();
 
   @override
   bool moveNext() {
-    final frame = _alloc<Pointer<Uint8>>();
-    final ts = _alloc<Int>();
     if (!libwebp.WebPAnimDecoderGetNext(_decoder, frame, ts).asCBoolean) {
       return false;
     }
@@ -249,8 +251,8 @@ class WebPImageFramesIterator implements Iterator<WebPFrame> {
       timestamp: ts.value,
       duration: dur,
       data: frame.value,
-      width: _info.ref.canvas_width,
-      height: _info.ref.canvas_height,
+      width: _info.canvas_width,
+      height: _info.canvas_height,
     );
     return true;
   }
