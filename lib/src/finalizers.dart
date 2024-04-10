@@ -28,6 +28,16 @@ final webpFreeFinalizer = TypedFinalizer<Void>(
   debugName: 'WebPFreeFinalizer',
 );
 
+final muxFinalizer = TypedFinalizer<bindings.WebPMux>(
+  _muxDeletePtr,
+  debugName: 'WebPMuxFinalizer',
+);
+
+final iteratorFinalizer = TypedFinalizer<bindings.WebPIterator>(
+  _iteratorReleasePtr,
+  debugName: 'WebPIteratorFinalizer',
+);
+
 final _webPAnimDecoderDeletePtr =
     rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimDecoderDelete>>(
   'WebPAnimDecoderDelete',
@@ -41,6 +51,16 @@ final _webPAnimEncoderDeletePtr =
 final _webpFreePtr =
     rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>(
   'WebPFree',
+);
+
+final _muxDeletePtr =
+    rawBindings.lookup<NativeFunction<bindings.NativeWebPMuxDelete>>(
+  'WebPMuxDelete',
+);
+
+final _iteratorReleasePtr =
+    rawBindings.lookup<NativeFunction<bindings.NativeWebPDemuxReleaseIterator>>(
+  'WebPDemuxReleaseIterator',
 );
 
 abstract class TypedFinalizer<T extends NativeType> {

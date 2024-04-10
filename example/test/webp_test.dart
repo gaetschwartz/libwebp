@@ -85,9 +85,9 @@ void main() {
     final encoded = Uint8List.fromList(encoder.assemble().asTypedList);
 
     final decoded = WebPImage(encoded);
-    expect(decoded.info.canvas_width, 512);
-    expect(decoded.info.canvas_height, 512);
-    expect(decoded.info.frame_count, 64);
+    expect(decoded.info.canvasWidth, 512);
+    expect(decoded.info.canvasHeight, 512);
+    expect(decoded.info.frameCount, 64);
 
     final file = temp.file('xdding-512x512-encoder.webp');
     await file.writeAsBytes(encoded);
@@ -119,8 +119,8 @@ void main() {
     final encoded = Uint8List.fromList(encoder.assemble().asTypedList);
 
     final decoded = WebPImage(encoded);
-    expect(decoded.info.canvas_width, 512);
-    expect(decoded.info.canvas_height, 512);
+    expect(decoded.info.canvasWidth, 512);
+    expect(decoded.info.canvasHeight, 512);
     // expect(decoded.info.frame_count, 2);
 
     final file = temp.file('xdd-512x512-encoder.webp');
@@ -176,9 +176,9 @@ void main() {
     final xdd = await load('xdding.webp');
     final img = WebPImage(xdd);
     final info = img.info;
-    expect(info.canvas_width, 228);
-    expect(info.canvas_height, 128);
-    expect(info.frame_count, 64);
+    expect(info.canvasWidth, 228);
+    expect(info.canvasHeight, 128);
+    expect(info.frameCount, 64);
     expect(img.frames.length, 64);
   });
 }

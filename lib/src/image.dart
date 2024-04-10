@@ -8,8 +8,6 @@ import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 
-export 'libwebp_generated_bindings.dart' show WebPAnimInfo;
-
 typedef WebPDecoderFinalizable = ({
   Arena arena,
   Pointer<bindings.WebPAnimDecoder> decoder
@@ -39,16 +37,17 @@ class WebPImage implements Finalizable {
   })  : _data = data,
         _decoder = decoder;
 
-  bindings.WebPAnimInfo get info => _decoder.info;
+  WebPAnimInfo get info => _decoder.info;
 
   /// An iterable of frames in the WebP image. Frames data is only valid before
   /// the next frame is decoded.
   Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
+  Iterable<WebPIteratorFrame> get framesV2 => WebPImageFramesIterableV2(this);
 
   late final timings =
       ListWebPAnimationTiming(frames.map((e) => e.duration).toList());
 
-  double get fps => 1000 * info.frame_count / timings.value.last.inMilliseconds;
+  double get fps => 1000 * info.frameCount / timings.value.last.inMilliseconds;
 
   Duration get averageFrameDuration =>
       timings.value.last ~/ timings.value.length;
@@ -148,6 +147,111 @@ class WebPFrame {
   }
 }
 
+class WebPImageFramesIterableV2 extends Iterable<WebPIteratorFrame> {
+  final WebPImage _image;
+
+  WebPImageFramesIterableV2(this._image);
+
+  @override
+  Iterator<WebPIteratorFrame> get iterator => WebPImageFramesIteratorV2(_image);
+}
+
+class WebPImageFramesIteratorV2
+    implements Iterator<WebPIteratorFrame>, Finalizable {
+  final Pointer<bindings.WebPIterator> _iter;
+  final bool _hasFrameOne;
+
+  factory WebPImageFramesIteratorV2(WebPImage image) {
+    final demuxer = checkAlloc(
+      libwebp.WebPAnimDecoderGetDemuxer(
+        image._decoder.ptr,
+      ),
+      'Failed to create WebPDemux.',
+    );
+    final iter = calloc<bindings.WebPIterator>();
+
+    final hasFrameOne = libwebp.WebPDemuxGetFrame(demuxer, 1, iter).asCBoolean;
+
+    final wrapper = WebPImageFramesIteratorV2._(iter, hasFrameOne);
+
+    iteratorFinalizer.attach(wrapper, iter, detach: wrapper);
+
+    return wrapper;
+  }
+
+  WebPImageFramesIteratorV2._(this._iter, this._hasFrameOne);
+
+  int _frameNum = 0;
+
+  @override
+  WebPIteratorFrame get current {
+    if (_frameNum < 1) {
+      throw StateError('No current frame.');
+    }
+    return WebPIteratorFrame(
+      frameNum: _iter.ref.frame_num,
+      duration: Duration(milliseconds: _iter.ref.duration),
+      numFrames: _iter.ref.num_frames,
+      xOffset: _iter.ref.x_offset,
+      yOffset: _iter.ref.y_offset,
+      dispose: WebPMuxAnimDispose.fromInt(_iter.ref.dispose_method),
+      complete: _iter.ref.complete != 0,
+      fragment: WebPData.view(Pointer.fromAddress(_iter.address)),
+      hasAlpha: _iter.ref.has_alpha != 0,
+      blend: WebPMuxAnimBlend.fromInt(_iter.ref.blend_method),
+      width: _iter.ref.width,
+      height: _iter.ref.height,
+    );
+  }
+
+  @override
+  bool moveNext() {
+    if (!_hasFrameOne) {
+      return false;
+    }
+    if (_frameNum == 0) {
+      _frameNum++;
+      return true;
+    }
+    if (libwebp.WebPDemuxNextFrame(_iter).asCBoolean) {
+      _frameNum++;
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+final class WebPIteratorFrame {
+  final int frameNum;
+  final int numFrames;
+  final int xOffset;
+  final int yOffset;
+  final int width;
+  final int height;
+  final Duration duration;
+  final WebPMuxAnimDispose dispose;
+  final bool complete;
+  final WebPData fragment;
+  final bool hasAlpha;
+  final WebPMuxAnimBlend blend;
+
+  const WebPIteratorFrame({
+    required this.frameNum,
+    required this.numFrames,
+    required this.xOffset,
+    required this.yOffset,
+    required this.width,
+    required this.height,
+    required this.duration,
+    required this.dispose,
+    required this.complete,
+    required this.fragment,
+    required this.hasAlpha,
+    required this.blend,
+  });
+}
+
 class WebPImageFramesIterable extends Iterable<WebPFrame> {
   final WebPImage _image;
 
@@ -202,8 +306,8 @@ class WebPImageFramesIterator implements Iterator<WebPFrame>, Finalizable {
       timestamp: _ts.value,
       duration: dur,
       data: _frame.value,
-      width: _info.canvas_width,
-      height: _info.canvas_height,
+      width: _info.canvasWidth,
+      height: _info.canvasHeight,
     );
     return true;
   }
@@ -224,7 +328,6 @@ enum WebPPreset {
 
 class _WebPAnimDecoder implements Finalizable {
   final Pointer<bindings.WebPAnimDecoder> ptr;
-  final Pointer<bindings.WebPAnimInfo> _infoPtr;
   final WebPAnimDecoderOptions options;
   final WebPData webpData;
   final bool _disposed = false;
@@ -257,20 +360,9 @@ class _WebPAnimDecoder implements Finalizable {
     required this.ptr,
     required this.webpData,
     required this.options,
-  }) : _infoPtr = calloc<bindings.WebPAnimInfo>() {
-    callocFinalizer.attach(this, _infoPtr.cast(), detach: this);
-  }
+  });
 
-  bindings.WebPAnimInfo get info {
-    if (_disposed) {
-      throw StateError('WebPImage already disposed');
-    }
-    check(
-      libwebp.WebPAnimDecoderGetInfo(ptr, _infoPtr),
-      'Failed to get WebPAnimInfo.',
-    );
-    return _infoPtr.ref;
-  }
+  late final info = WebPAnimInfo.readFromAnimDecoder(ptr);
 
   bool getNext(Pointer<Pointer<Uint8>> frame, Pointer<Int> timestamp) {
     if (_disposed) {
@@ -291,11 +383,8 @@ class _WebPAnimDecoder implements Finalizable {
     if (_disposed) {
       throw StateError('WebPImage already disposed');
     }
-    calloc.free(_infoPtr);
     libwebp.WebPAnimDecoderDelete(ptr);
-
     decoderFinalizer.detach(this);
-    callocFinalizer.detach(this);
   }
 }
 
@@ -331,5 +420,26 @@ final class WebPAnimDecoderOptions implements Finalizable {
     calloc.free(ptr);
     callocFinalizer.detach(this);
     _disposed = true;
+  }
+}
+
+final class WebPAnimInfo extends CallocFinalizable<bindings.WebPAnimInfo> {
+  WebPAnimInfo() : super(calloc<bindings.WebPAnimInfo>());
+
+  int get canvasWidth => ptr.ref.canvas_width;
+  int get canvasHeight => ptr.ref.canvas_height;
+  int get loopCount => ptr.ref.loop_count;
+  int get bgColor => ptr.ref.bgcolor;
+  int get frameCount => ptr.ref.frame_count;
+
+  static WebPAnimInfo readFromAnimDecoder(
+    Pointer<bindings.WebPAnimDecoder> ptr,
+  ) {
+    final info = WebPAnimInfo();
+    check(
+      libwebp.WebPAnimDecoderGetInfo(ptr, info.ptr),
+      'Failed to get WebPAnimInfo.',
+    );
+    return info;
   }
 }

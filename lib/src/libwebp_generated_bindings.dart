@@ -2254,10 +2254,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPDemuxReleaseIteratorPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPIterator>)>>(
+      _lookup<ffi.NativeFunction<NativeWebPDemuxReleaseIterator>>(
           'WebPDemuxReleaseIterator');
-  late final _WebPDemuxReleaseIterator = _WebPDemuxReleaseIteratorPtr
-      .asFunction<void Function(ffi.Pointer<WebPIterator>)>();
+  late final _WebPDemuxReleaseIterator =
+      _WebPDemuxReleaseIteratorPtr.asFunction<DartWebPDemuxReleaseIterator>();
 
   /// Retrieves the 'chunk_number' instance of the chunk with id 'fourcc' from
   /// 'dmux'.
@@ -3488,10 +3488,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPMuxDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMux>)>>(
-          'WebPMuxDelete');
-  late final _WebPMuxDelete =
-      _WebPMuxDeletePtr.asFunction<void Function(ffi.Pointer<WebPMux>)>();
+      _lookup<ffi.NativeFunction<NativeWebPMuxDelete>>('WebPMuxDelete');
+  late final _WebPMuxDelete = _WebPMuxDeletePtr.asFunction<DartWebPMuxDelete>();
 
   /// Internal, version-checked, entry point
   ffi.Pointer<WebPMux> WebPMuxCreateInternal(
@@ -4661,6 +4659,11 @@ abstract class WebPFormatFeature {
   static const int WEBP_FF_FRAME_COUNT = 5;
 }
 
+typedef NativeWebPDemuxReleaseIterator = ffi.Void Function(
+    ffi.Pointer<WebPIterator> iter);
+typedef DartWebPDemuxReleaseIterator = void Function(
+    ffi.Pointer<WebPIterator> iter);
+
 final class WebPAnimDecoder extends ffi.Opaque {}
 
 typedef NativeWebPAnimDecoderDelete = ffi.Void Function(
@@ -5288,6 +5291,9 @@ abstract class WebPMuxError {
   static const int WEBP_MUX_MEMORY_ERROR = -3;
   static const int WEBP_MUX_NOT_ENOUGH_DATA = -4;
 }
+
+typedef NativeWebPMuxDelete = ffi.Void Function(ffi.Pointer<WebPMux> mux);
+typedef DartWebPMuxDelete = void Function(ffi.Pointer<WebPMux> mux);
 
 final class WebPAnimEncoder extends ffi.Opaque {}
 

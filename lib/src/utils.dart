@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/src/finalizers.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
+import 'package:meta/meta.dart';
 
 import 'libwebp.dart';
 
@@ -252,4 +253,71 @@ F finalizing<F extends Finalizable>(F Function(FinalizableAlloc a) create) {
   a.attachFinalizer(instance);
 
   return instance;
+}
+
+abstract class FinalizableBase<T extends NativeType> implements Finalizable {
+  @mustCallSuper
+  void free();
+
+  @internal
+  Pointer<T> get ptr;
+
+  bool get disposed;
+}
+
+abstract class CustomFinalizable<T extends NativeType>
+    implements FinalizableBase<T> {
+  @override
+  @internal
+  final Pointer<T> ptr;
+  final TypedFinalizer<T> finalizer;
+  final Pointer<NativeFunction<Void Function(Pointer<Void>)>> finalizerFn;
+  bool _disposed = false;
+
+  CustomFinalizable(this.ptr, this.finalizer,
+      Pointer<NativeFunction<Void Function(Pointer<T>)>> finalizerFn)
+      : finalizerFn = finalizerFn.cast() {
+    finalizer.attach(this, ptr.cast(), detach: this);
+  }
+
+  @override
+  @mustCallSuper
+  void free() {
+    if (_disposed) {
+      throw StateError('FfiWrapper already disposed.');
+    }
+    finalizerFn.asFunction<void Function(Pointer<Void>)>()(ptr.cast());
+    finalizer.detach(this);
+    _disposed = true;
+  }
+
+  @override
+  bool get disposed => _disposed;
+}
+
+abstract class CallocFinalizable<T extends NativeType>
+    implements FinalizableBase<T> {
+  @override
+  @internal
+  final Pointer<T> ptr;
+
+  bool _disposed = false;
+
+  CallocFinalizable(this.ptr) {
+    callocFinalizer.attach(this, ptr.cast(), detach: this);
+  }
+
+  @override
+  @mustCallSuper
+  void free() {
+    if (_disposed) {
+      throw StateError('FfiWrapper already disposed.');
+    }
+    calloc.free(ptr);
+    callocFinalizer.detach(this);
+    _disposed = true;
+  }
+
+  @override
+  bool get disposed => _disposed;
 }

@@ -1,3 +1,5 @@
+library libwebp.anim_encoder;
+
 import 'dart:ffi';
 import 'dart:typed_data';
 
@@ -10,6 +12,8 @@ import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+
+part 'mux.dart';
 
 typedef WebPEncoderFinalizable = ({
   Arena arena,
@@ -85,7 +89,7 @@ class WebPAnimEncoder implements Finalizable {
 
     final info = image.info;
 
-    log('Adding image with ${info.frame_count} frames');
+    log('Adding image with ${info.frameCount} frames');
 
     final frameBase = _frame;
 
@@ -110,8 +114,8 @@ class WebPAnimEncoder implements Finalizable {
           'Failed to init WebPPicture.',
         );
         pic.ref.use_argb = 1;
-        pic.ref.width = info.canvas_width;
-        pic.ref.height = info.canvas_height;
+        pic.ref.width = info.canvasWidth;
+        pic.ref.height = info.canvasHeight;
 
         check(
           libwebp.WebPPictureAlloc(pic),
@@ -122,7 +126,7 @@ class WebPAnimEncoder implements Finalizable {
           libwebp.WebPPictureImportRGBA(
             pic,
             frame.data,
-            info.canvas_width * 4,
+            info.canvasWidth * 4,
           ),
           'Failed to import RGBA data.',
         );
@@ -196,6 +200,7 @@ class WebPAnimEncoder implements Finalizable {
 final class WebPData implements Finalizable {
   bool _disposed = false;
   final bool freeInnerBuffer;
+  final bool freeData;
 
   final Pointer<bindings.WebPData> ptr;
 
@@ -255,14 +260,19 @@ final class WebPData implements Finalizable {
     return wrapper;
   }
 
-  WebPData._(this.ptr, {required this.freeInnerBuffer});
+  WebPData._(this.ptr, {required this.freeInnerBuffer}) : freeData = true;
+  WebPData.view(this.ptr)
+      : freeData = false,
+        freeInnerBuffer = false;
 
   void free() {
     if (_disposed) {
       throw StateError('WebPData has been disposed.');
     }
-    calloc.free(ptr);
-    callocFinalizer.detach(this);
+    if (freeData) {
+      calloc.free(ptr);
+      callocFinalizer.detach(this);
+    }
 
     if (freeInnerBuffer) {
       libwebp.WebPFree(ptr.ref.bytes.cast());
