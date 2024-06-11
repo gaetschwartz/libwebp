@@ -1,0 +1,8 @@
+name: webp_root
+
+ide:
+  intellij:
+    enabled: false
+
+packages:
+  - packages/**

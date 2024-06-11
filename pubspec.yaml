@@ -1,21 +1,7 @@
-name: libwebp
-description: "A Dart wrapper for libwebp"
-version: 0.0.1
+name: webp_root
 
 environment:
-  sdk: ">=3.3.1 <4.0.0"
-
-dependencies:
-  collection: ^1.18.0
-  ffi: ^2.1.2
-  logging: ^1.2.0
-  meta: ^1.11.0
+  sdk: ">=3.4.0 <4.0.0"
 
 dev_dependencies:
-  all_lint_rules_community: ^0.0.40
-  ffigen: ^11.0.0
-  matcher: ^0.12.16+1
-  test: ^1.24.9
-
-libwebp:
-  version: 1.3.2
+  melos: ^6.0.0
