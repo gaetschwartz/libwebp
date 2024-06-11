@@ -1,5 +1,3 @@
-library libwebp.anim_encoder;
-
 import 'dart:ffi';
 import 'dart:typed_data';
 
@@ -12,8 +10,6 @@ import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-
-part 'mux.dart';
 
 typedef WebPEncoderFinalizable = ({
   Arena arena,

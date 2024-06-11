@@ -72,21 +72,19 @@ int check(
   Pointer<bindings.WebPPicture>? pic,
   Pointer<bindings.WebPAnimEncoder>? encoder,
 }) {
-  if (res == 0) {
+  if (res != 1) {
     final picErrorCode =
         pic != null ? Vp8StatusCodeException.of(pic, message) : null;
+    if (picErrorCode != null) {
+      throw picErrorCode;
+    }
     final encoderErrorCode =
         encoder != null ? WebPAnimEncoderException.of(encoder, message) : null;
-    switch ((picErrorCode, encoderErrorCode)) {
-      case (final picError?, null):
-        throw picError;
-      case (null, final encoderError?):
-        throw encoderError;
-      case (final picError?, final encoderError?):
-        throw MultiLibWebPException([picError, encoderError]);
-      case (null, null):
-        throw LibWebPException(message ?? 'Unknown error');
+    if (encoderErrorCode != null) {
+      throw encoderErrorCode;
     }
+
+    throw LibWebPException(message ?? 'Unknown error');
   }
   return res;
 }
@@ -96,6 +94,12 @@ Pointer<T> checkAlloc<T extends NativeType>(Pointer<T> ptr, [String? message]) {
     throw LibWebPAllocException(T.toString(), message);
   }
   return ptr;
+}
+
+void checkVp8(int code, [String context = '']) {
+  if (code != 0) {
+    throw Vp8StatusCodeException.fromInt(code, context);
+  }
 }
 
 abstract class LibWebPException implements Exception {
@@ -211,7 +215,7 @@ class Vp8StatusCodeException implements LibWebPException {
 
   @override
   String toString() {
-    return 'Vp8StatusCodeException: $code: $context';
+    return 'Vp8StatusCodeException: $code while $context';
   }
 }
 
