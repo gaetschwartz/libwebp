@@ -20,6 +20,17 @@ typedef WebPEncoderFinalizable = ({
   Pointer<bindings.WebPAnimEncoder> encoder
 });
 
+enum ResizeMode {
+  /// Resize the image to fit within the specified dimensions while maintaining
+  /// the original aspect ratio. The image may be shorter or narrower than
+  /// specified.
+  fit,
+
+  /// Resize the image to fit within the specified dimensions while maintaining
+  /// the original aspect ratio. The image may be larger than specified.
+  stretch,
+}
+
 class WebPAnimEncoder implements Finalizable {
   static final _logger = Logger('WebPAnimEncoder');
   static final webPAnimEncoderDeletePtr =
@@ -32,6 +43,7 @@ class WebPAnimEncoder implements Finalizable {
   final int width;
   final int height;
   final WebPAnimEncoderOptions options;
+  final ResizeMode resizeMode;
   bool _disposed = false;
 
   factory WebPAnimEncoder({
@@ -39,6 +51,7 @@ class WebPAnimEncoder implements Finalizable {
     required int height,
     WebPConfig? config,
     WebPAnimEncoderOptions? options,
+    ResizeMode resizeMode = ResizeMode.stretch,
   }) {
     final opts = options ?? WebPAnimEncoderOptions();
 
@@ -55,6 +68,7 @@ class WebPAnimEncoder implements Finalizable {
       width: width,
       height: height,
       options: opts,
+      resizeMode: resizeMode,
     );
     encoderFinalizer.attach(
       wrapper,
@@ -70,6 +84,7 @@ class WebPAnimEncoder implements Finalizable {
     required this.width,
     required this.height,
     required this.options,
+    required this.resizeMode,
   })  : _encoder = encoder,
         _timestamp = 0;
 
@@ -92,35 +107,41 @@ class WebPAnimEncoder implements Finalizable {
     log('Adding image with ${info.frameCount} frames');
 
     final frameBase = _frame;
+    using((a) {
+      final pic = a<bindings.WebPPicture>();
+      check(
+        libwebp.WebPPictureInitInternal(
+          pic,
+          bindings.WEBP_ENCODER_ABI_VERSION,
+        ),
+        'Failed to init WebPPicture.',
+      );
+      pic.ref.use_argb = 1;
+      pic.ref.width = info.canvasWidth;
+      pic.ref.height = info.canvasHeight;
 
-    for (final frame in image.frames) {
-      final duration = timings.frames.elementAt(_frame - frameBase);
+      check(
+        libwebp.WebPPictureAlloc(pic),
+        'Failed to allocate WebPPicture.',
+      );
 
-      if (duration == Duration.zero) {
-        log('  Skipping frame $_frame');
-        _frame++;
-        continue;
-      }
+      final (int, int) wh = switch (resizeMode) {
+        ResizeMode.fit => width > height
+            ? (width, (height * info.canvasHeight) ~/ info.canvasWidth)
+            : ((width * info.canvasWidth) ~/ info.canvasHeight, height),
+        ResizeMode.stretch => (width, height),
+      };
 
-      log('  Adding frame $_frame at $_timestamp ms');
+      for (final frame in image.frames) {
+        final duration = timings.frames.elementAt(_frame - frameBase);
 
-      using((a) {
-        final pic = a<bindings.WebPPicture>();
-        check(
-          libwebp.WebPPictureInitInternal(
-            pic,
-            bindings.WEBP_ENCODER_ABI_VERSION,
-          ),
-          'Failed to init WebPPicture.',
-        );
-        pic.ref.use_argb = 1;
-        pic.ref.width = info.canvasWidth;
-        pic.ref.height = info.canvasHeight;
+        if (duration == Duration.zero) {
+          log('  Skipping frame $_frame');
+          _frame++;
+          continue;
+        }
 
-        check(
-          libwebp.WebPPictureAlloc(pic),
-          'Failed to allocate WebPPicture.',
-        );
+        log('  Adding frame $_frame at $_timestamp ms');
 
         check(
           libwebp.WebPPictureImportRGBA(
@@ -131,17 +152,25 @@ class WebPAnimEncoder implements Finalizable {
           'Failed to import RGBA data.',
         );
 
+        // WebPPictureRescale:
+        //   Rescale a picture to new dimension width x height. If either 'width' or 'height' (but not both) is 0 the corresponding dimension will be calculated preserving the aspect ratio. No gamma correction is applied. Returns false in case of error (invalid parameter or insufficient memory).
+
         check(
           libwebp.WebPPictureRescale(
             pic,
-            width,
-            height,
+            wh.$1,
+            wh.$2,
           ),
           'Failed to rescale WebPPicture.',
         );
 
         check(
-          libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
+          libwebp.WebPAnimEncoderAdd(
+            _encoder,
+            pic,
+            _timestamp,
+            config.ptr,
+          ),
           'Failed to add frame $_frame to encoder.',
           pic: pic,
           encoder: _encoder,
@@ -151,8 +180,8 @@ class WebPAnimEncoder implements Finalizable {
         _frame++;
 
         libwebp.WebPPictureFree(pic);
-      });
-    }
+      }
+    });
   }
 
   Duration get duration => Duration(milliseconds: _timestamp);
