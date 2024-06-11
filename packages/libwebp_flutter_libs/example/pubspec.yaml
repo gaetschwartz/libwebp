@@ -10,9 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   libwebp:
-    path: ../
+    path: ../../libwebp/
   libwebp_flutter_libs:
-    path: ../libwebp_flutter_libs/
+    path: ../
   image: ^4.1.7
   path: ^1.9.0
   logging: ^1.2.0
