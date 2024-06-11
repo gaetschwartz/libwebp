@@ -2,11 +2,7 @@ export def "read index" [] {
   let l = http get --raw "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html"
   let pre = $l | parse "{before}<pre>{pre}</pre>{after}" | get pre.0
   let index = $pre | parse --regex '<a href="(?<url>[^"]+)">libwebp-(?<version>\d+\.\d+\.\d+(?:-rc\d+)?)(?:-(?<platform>[^"]+))?\.(?<extension>zip|tar.gz)</a>\s+(?<date>[^ ]+)\s+(?<size>\d+(?:\.\d+)?\w+)\s+'
-  $index | update date { |r| $r.date | into datetime } | update size { |r| $r.size | into filesize } | update url { |r| $"https:($r.url)" } 
-}
-
-export def "list platforms" [] {
-  read index | uniq-by platform | get platform
+  $index | update date { |r| $r.date | into datetime } | update size { |r| $r.size | into filesize } | update url { |r| $"https:($r.url)" } | sort-by date
 }
 
 export def "install" [platform: string, --version: string = "latest"] {
@@ -52,14 +48,22 @@ export def "install" [platform: string, --version: string = "latest"] {
   print "Done!"
 }
 
-export def "version" [] {
+export def "current version" []: any -> string {
   open pubspec.yaml | get libwebp.version | str trim
 }
 
-export def "install version" [version: string] {
-  let url = $"https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-($version).tar.gz"
-  let temp = "temp"
+export def "install version" [version: string, --temp: string = "temp"]: any -> string {
+  # read the manifest file
+  let manifest_path = [$temp manifest.yaml] | path join
+  let manifest = if ($manifest_path | path exists) { open $manifest_path } else { {} }
+  let installed_version = $manifest | get -i version 
+  let installed_path = $manifest | get -i path
+  if ($installed_version != null and $installed_version == $version and $installed_path != null) {
+    print $"libwebp ($version) is already installed at ($installed_path)"
+    return $temp | path join $installed_path
+  }
   mkdir $temp
+  let url = $"https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-($version).tar.gz"
   let tar_path = [$temp "libwebp.tar.gz"] | path join
   print $"Downloading libwebp ($version) from ($url) to ($tar_path)..."
   http get --raw $url | save $tar_path -f
@@ -69,6 +73,9 @@ export def "install version" [version: string] {
   let libwebp = [$temp "libwebp"] | path join
   rm -rf $libwebp
   mv -vf $extracted $libwebp
+  # remove the tar file
+  rm -f $tar_path
+  {version: ($version), path: $libwebp} | save $manifest_path -f
   return $libwebp
 }
 
@@ -77,7 +84,7 @@ export def "build windows" [--all] {
   print $"Using ($dev_cmd_path) to build libwebp..."
   let curr = $env.PWD
   
-  let target_version = version
+  let target_version = current version
   let libwebp = install version $target_version
   let output = [$curr libwebp_flutter_libs windows] | path join | path expand
   mkdir $output
@@ -98,6 +105,9 @@ export def "build windows" [--all] {
 }
 
 export def "gen" [] {
-  let installed = install version (version)
-  dart run ffigen --config ffigen.yaml
+  let installed = install version (current version)
+  do {
+    cd packages/libwebp/
+    dart run ffigen --config ffigen.yaml
+  }
 }
