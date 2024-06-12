@@ -112,7 +112,7 @@ class WebPAnimEncoder implements Finalizable {
         ),
         'Failed to init WebPPicture.',
       );
-      pic.ref.use_argb = 1;
+      pic.ref.use_argb = 0;
       pic.ref.width = info.canvasWidth;
       pic.ref.height = info.canvasHeight;
 
