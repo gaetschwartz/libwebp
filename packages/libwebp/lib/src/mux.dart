@@ -13,7 +13,7 @@ class WebPMuxer implements Finalizable {
   bool _disposed = false;
 
   factory WebPMuxer() {
-    final mux = libwebp.WebPNewInternal(bindings.WEBP_MUX_ABI_VERSION);
+    final Pointer<bindings.WebPMux> mux = libwebp.WebPNewInternal(bindings.WEBP_MUX_ABI_VERSION);
     if (mux == nullptr) {
       throw LibWebPException('Failed to create WebPMux.');
     }
@@ -46,10 +46,9 @@ class WebPMuxer implements Finalizable {
       throw StateError('WebPMuxer already disposed.');
     }
     final params = WebPMuxAnimParams();
-    final result = libwebp.WebPMuxGetAnimationParams(_mux, params.ptr);
+    final int result = libwebp.WebPMuxGetAnimationParams(_mux, params.ptr);
     if (result != bindings.WebPMuxError.WEBP_MUX_OK) {
-      throw LibWebPException(
-          'Failed to get animation params from WebPMux: $result');
+      throw LibWebPException('Failed to get animation params from WebPMux: $result');
     }
     return params;
   }
@@ -58,10 +57,9 @@ class WebPMuxer implements Finalizable {
     if (_disposed) {
       throw StateError('WebPMuxer already disposed.');
     }
-    final result = libwebp.WebPMuxSetAnimationParams(_mux, params.ptr);
+    final int result = libwebp.WebPMuxSetAnimationParams(_mux, params.ptr);
     if (result != bindings.WebPMuxError.WEBP_MUX_OK) {
-      throw LibWebPException(
-          'Failed to set animation params to WebPMux: $result');
+      throw LibWebPException('Failed to set animation params to WebPMux: $result');
     }
   }
 
@@ -69,7 +67,7 @@ class WebPMuxer implements Finalizable {
     if (_disposed) {
       throw StateError('WebPMuxer already disposed.');
     }
-    final result = libwebp.WebPMuxDeleteFrame(_mux, index);
+    final int result = libwebp.WebPMuxDeleteFrame(_mux, index);
     if (result != bindings.WebPMuxError.WEBP_MUX_OK) {
       throw LibWebPException('Failed to remove frame from WebPMux: $result');
     }
@@ -80,15 +78,15 @@ class WebPMuxer implements Finalizable {
       throw StateError('WebPMuxer already disposed.');
     }
     using((a) {
-      final nativeUtf8 = chunk.chunkType.toNativeUtf8(allocator: a);
-      final data = chunk.data;
-      final bytes = a.allocate<Uint8>(data.length);
+      final Pointer<Utf8> nativeUtf8 = chunk.chunkType.toNativeUtf8(allocator: a);
+      final List<int> data = chunk.data;
+      final Pointer<Uint8> bytes = a.allocate<Uint8>(data.length);
       bytes.asTypedList(data.length).setAll(0, data);
-      final webpdata = a<bindings.WebPData>()
+      final Pointer<bindings.WebPData> webpdata = a<bindings.WebPData>()
         ..ref.bytes = bytes
         ..ref.size = data.length;
 
-      final result = libwebp.WebPMuxSetChunk(
+      final int result = libwebp.WebPMuxSetChunk(
         _mux,
         nativeUtf8.cast(),
         webpdata,
@@ -105,7 +103,7 @@ class WebPMuxer implements Finalizable {
       throw StateError('WebPMuxer already disposed.');
     }
     final webp = WebPData(freeInnerBuffer: true);
-    final result = libwebp.WebPMuxAssemble(_mux, webp.ptr);
+    final int result = libwebp.WebPMuxAssemble(_mux, webp.ptr);
 
     if (result != bindings.WebPMuxError.WEBP_MUX_OK) {
       throw LibWebPException('Failed to assemble WebP: $result');
@@ -161,8 +159,7 @@ final class WebPMuxFrameInfo implements Finalizable {
   }
 
   /// dispose of the frame.
-  WebPMuxAnimDispose get dispose =>
-      WebPMuxAnimDispose.fromInt(ptr.ref.dispose_method);
+  WebPMuxAnimDispose get dispose => WebPMuxAnimDispose.fromInt(ptr.ref.dispose_method);
 
   /// dispose of the frame.
   set dispose(WebPMuxAnimDispose value) {
@@ -209,8 +206,7 @@ enum WebPMuxAnimDispose {
 
   const WebPMuxAnimDispose(this.value);
 
-  factory WebPMuxAnimDispose.fromInt(int value) =>
-      WebPMuxAnimDispose.values.firstWhere(
+  factory WebPMuxAnimDispose.fromInt(int value) => WebPMuxAnimDispose.values.firstWhere(
         (e) => e.value == value,
         orElse: () => throw ArgumentError.value(
           value,
@@ -232,8 +228,7 @@ enum WebPMuxAnimBlend {
 
   const WebPMuxAnimBlend(this.value);
 
-  factory WebPMuxAnimBlend.fromInt(int value) =>
-      WebPMuxAnimBlend.values.firstWhere(
+  factory WebPMuxAnimBlend.fromInt(int value) => WebPMuxAnimBlend.values.firstWhere(
         (e) => e.value == value,
         orElse: () => throw ArgumentError.value(
           value,
@@ -248,14 +243,12 @@ extension type const WebPChunkType._(int _value) {
   static const iccp = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_ICCP);
   static const anim = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_ANIM);
   static const anmf = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_ANMF);
-  static const deprecated =
-      WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_DEPRECATED);
+  static const deprecated = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_DEPRECATED);
   static const alpha = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_ALPHA);
   static const image = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_IMAGE);
   static const exif = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_EXIF);
   static const xmp = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_XMP);
-  static const unknown =
-      WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_UNKNOWN);
+  static const unknown = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_UNKNOWN);
   static const nil = WebPChunkType._(bindings.WebPChunkId.WEBP_CHUNK_NIL);
 
   static const values = [
@@ -273,8 +266,7 @@ extension type const WebPChunkType._(int _value) {
   ];
 }
 
-final class WebPMuxAnimParams
-    extends CallocFinalizable<bindings.WebPMuxAnimParams> {
+final class WebPMuxAnimParams extends CallocFinalizable<bindings.WebPMuxAnimParams> {
   /// Background color of the canvas stored (in MSB order) as:
   /// Bits 00 to 07: Alpha.
   /// Bits 08 to 15: Red.
@@ -319,11 +311,11 @@ sealed class WebpChunk {
 
   (Pointer<bindings.WebPData>, Pointer<Uint8>) toNative(Allocator a) {
     assert(chunkType.length == 4, 'Chunk type must be 4 characters long.');
-    final nativeUtf8 = chunkType.toNativeUtf8(allocator: a);
-    final data = this.data;
-    final bytes = a.allocate<Uint8>(data.length);
+    final Pointer<Utf8> nativeUtf8 = chunkType.toNativeUtf8(allocator: a);
+    final List<int> data = this.data;
+    final Pointer<Uint8> bytes = a.allocate<Uint8>(data.length);
     bytes.asTypedList(data.length).setAll(0, data);
-    final webpdata = a<bindings.WebPData>()
+    final Pointer<bindings.WebPData> webpdata = a<bindings.WebPData>()
       ..ref.bytes = bytes
       ..ref.size = data.length;
     return (webpdata, nativeUtf8.cast());

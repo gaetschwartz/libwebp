@@ -16,7 +16,7 @@ class FfiByteData implements Finalizable {
   bool _disposed = false;
 
   factory FfiByteData(int size) {
-    final ptr = calloc<Uint8>(size);
+    final Pointer<Uint8> ptr = calloc<Uint8>(size);
 
     final wrapper = FfiByteData._(
       ptr: ptr,
@@ -73,12 +73,11 @@ int check(
   Pointer<bindings.WebPAnimEncoder>? encoder,
 }) {
   if (res != 1) {
-    final picErrorCode =
-        pic != null ? Vp8StatusCodeException.of(pic, message) : null;
+    final Vp8StatusCodeException? picErrorCode = pic != null ? Vp8StatusCodeException.of(pic, message) : null;
     if (picErrorCode != null) {
       throw picErrorCode;
     }
-    final encoderErrorCode =
+    final WebPAnimEncoderException? encoderErrorCode =
         encoder != null ? WebPAnimEncoderException.of(encoder, message) : null;
     if (encoderErrorCode != null) {
       throw encoderErrorCode;
@@ -147,9 +146,7 @@ class WebPAnimEncoderException implements LibWebPException {
   WebPAnimEncoderException.of(
     Pointer<bindings.WebPAnimEncoder> encoder, [
     this.context,
-  ]) : error = libwebp.WebPAnimEncoderGetError(encoder)
-            .cast<Utf8>()
-            .toDartString();
+  ]) : error = libwebp.WebPAnimEncoderGetError(encoder).cast<Utf8>().toDartString();
 
   @override
   String toString() => 'LibWebpAnimEncoderException: $error: $context';
@@ -157,21 +154,14 @@ class WebPAnimEncoderException implements LibWebPException {
 
 class Vp8StatusCode {
   static const ok = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_OK, 'ok');
-  static const outOfMemory = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_OUT_OF_MEMORY, 'outOfMemory');
-  static const invalidParam = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_INVALID_PARAM, 'invalidParam');
-  static const bitstreamError = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_BITSTREAM_ERROR, 'bitstreamError');
-  static const unsupportedFeature = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_UNSUPPORTED_FEATURE,
-      'unsupportedFeature');
-  static const suspended =
-      Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_SUSPENDED, 'suspended');
-  static const userAbort = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_USER_ABORT, 'userAbort');
-  static const notEnoughData = Vp8StatusCode._(
-      bindings.VP8StatusCode.VP8_STATUS_NOT_ENOUGH_DATA, 'notEnoughData');
+  static const outOfMemory = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_OUT_OF_MEMORY, 'outOfMemory');
+  static const invalidParam = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_INVALID_PARAM, 'invalidParam');
+  static const bitstreamError = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_BITSTREAM_ERROR, 'bitstreamError');
+  static const unsupportedFeature =
+      Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_UNSUPPORTED_FEATURE, 'unsupportedFeature');
+  static const suspended = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_SUSPENDED, 'suspended');
+  static const userAbort = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_USER_ABORT, 'userAbort');
+  static const notEnoughData = Vp8StatusCode._(bindings.VP8StatusCode.VP8_STATUS_NOT_ENOUGH_DATA, 'notEnoughData');
 
   final int value;
   final String name;
@@ -207,8 +197,7 @@ class Vp8StatusCodeException implements LibWebPException {
 
   Vp8StatusCodeException(this.code, this.context);
 
-  Vp8StatusCodeException.fromInt(int code, [this.context])
-      : code = Vp8StatusCode.fromInt(code);
+  Vp8StatusCodeException.fromInt(int code, [this.context]) : code = Vp8StatusCode.fromInt(code);
 
   Vp8StatusCodeException.of(Pointer<bindings.WebPPicture> pic, [this.context])
       : code = Vp8StatusCode.fromInt(pic.ref.error_code);
@@ -231,7 +220,7 @@ class FinalizableAlloc implements Allocator {
 
   @override
   Pointer<T> allocate<T extends NativeType>(int byteCount, {int? alignment}) {
-    final pointer = _allocator.allocate<T>(byteCount, alignment: alignment);
+    final Pointer<T> pointer = _allocator.allocate<T>(byteCount, alignment: alignment);
     _allocations.add(pointer);
     return pointer;
   }
@@ -245,7 +234,7 @@ class FinalizableAlloc implements Allocator {
   static final _callocFinalizer = NativeFinalizer(calloc.nativeFree);
 
   void attachFinalizer<F extends Finalizable>(F instance) {
-    for (final e in _allocations) {
+    for (final Pointer<NativeType> e in _allocations) {
       _callocFinalizer.attach(instance, e.cast(), detach: instance);
     }
   }
@@ -269,8 +258,7 @@ abstract class FinalizableBase<T extends NativeType> implements Finalizable {
   bool get disposed;
 }
 
-abstract class CustomFinalizable<T extends NativeType>
-    implements FinalizableBase<T> {
+abstract class CustomFinalizable<T extends NativeType> implements FinalizableBase<T> {
   @override
   @internal
   final Pointer<T> ptr;
@@ -278,8 +266,7 @@ abstract class CustomFinalizable<T extends NativeType>
   final Pointer<NativeFunction<Void Function(Pointer<Void>)>> finalizerFn;
   bool _disposed = false;
 
-  CustomFinalizable(this.ptr, this.finalizer,
-      Pointer<NativeFunction<Void Function(Pointer<T>)>> finalizerFn)
+  CustomFinalizable(this.ptr, this.finalizer, Pointer<NativeFunction<Void Function(Pointer<T>)>> finalizerFn)
       : finalizerFn = finalizerFn.cast() {
     finalizer.attach(this, ptr.cast(), detach: this);
   }
@@ -299,8 +286,7 @@ abstract class CustomFinalizable<T extends NativeType>
   bool get disposed => _disposed;
 }
 
-abstract class CallocFinalizable<T extends NativeType>
-    implements FinalizableBase<T> {
+abstract class CallocFinalizable<T extends NativeType> implements FinalizableBase<T> {
   @override
   @internal
   final Pointer<T> ptr;

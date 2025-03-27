@@ -25,6 +25,9 @@
 #
 include: package:all_lint_rules_community/all.yaml
 
+formatter:
+  page_width: 120
+
 analyzer:
   # For more information see:
   # https://dart.dev/guides/language/analysis-options#enabling-additional-type-checks

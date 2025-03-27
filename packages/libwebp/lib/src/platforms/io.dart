@@ -4,9 +4,9 @@ import 'package:libwebp/src/utils.dart';
 
 extension ReadFileIntoFfiByteDataExtension on File {
   FfiByteData readIntoFfiByteData() {
-    final size = lengthSync();
+    final int size = lengthSync();
     final data = FfiByteData(size);
-    final file = openSync();
+    final RandomAccessFile file = openSync();
     try {
       file.readIntoSync(data.asList);
     } finally {

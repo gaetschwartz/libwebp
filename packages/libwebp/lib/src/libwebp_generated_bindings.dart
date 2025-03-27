@@ -9,17 +9,13 @@ import 'dart:ffi' as ffi;
 /// WebP image format library
 class LibwebpFlutterLibsBindings {
   /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  LibwebpFlutterLibsBindings(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+  LibwebpFlutterLibsBindings(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
-  LibwebpFlutterLibsBindings.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
+  LibwebpFlutterLibsBindings.fromLookup(ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup)
       : _lookup = lookup;
 
   /// 7.8.2.1
@@ -31,8 +27,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _imaxabsPtr =
-      _lookup<ffi.NativeFunction<intmax_t Function(intmax_t)>>('imaxabs');
+  late final _imaxabsPtr = _lookup<ffi.NativeFunction<intmax_t Function(intmax_t)>>('imaxabs');
   late final _imaxabs = _imaxabsPtr.asFunction<int Function(int)>();
 
   imaxdiv_t imaxdiv(
@@ -45,9 +40,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _imaxdivPtr =
-      _lookup<ffi.NativeFunction<imaxdiv_t Function(intmax_t, intmax_t)>>(
-          'imaxdiv');
+  late final _imaxdivPtr = _lookup<ffi.NativeFunction<imaxdiv_t Function(intmax_t, intmax_t)>>('imaxdiv');
   late final _imaxdiv = _imaxdivPtr.asFunction<imaxdiv_t Function(int, int)>();
 
   /// 7.8.2.3
@@ -64,12 +57,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _strtoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoimax');
-  late final _strtoimax = _strtoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+          ffi.NativeFunction<intmax_t Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>(
+      'strtoimax');
+  late final _strtoimax =
+      _strtoimaxPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
 
   int strtoumax(
     ffi.Pointer<ffi.Char> __nptr,
@@ -84,12 +75,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _strtoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoumax');
-  late final _strtoumax = _strtoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+          ffi.NativeFunction<uintmax_t Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>(
+      'strtoumax');
+  late final _strtoumax =
+      _strtoumaxPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
 
   /// 7.8.2.4
   int wcstoimax(
@@ -105,12 +94,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _wcstoimaxPtr = _lookup<
-      ffi.NativeFunction<
-          intmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoimax');
-  late final _wcstoimax = _wcstoimaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
+          ffi.NativeFunction<intmax_t Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>(
+      'wcstoimax');
+  late final _wcstoimax =
+      _wcstoimaxPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
 
   int wcstoumax(
     ffi.Pointer<ffi.WChar> __nptr,
@@ -125,12 +112,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _wcstoumaxPtr = _lookup<
-      ffi.NativeFunction<
-          uintmax_t Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>('wcstoumax');
-  late final _wcstoumax = _wcstoumaxPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
+          ffi.NativeFunction<uintmax_t Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Int)>>(
+      'wcstoumax');
+  late final _wcstoumax =
+      _wcstoumaxPtr.asFunction<int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Pointer<ffi.WChar>>, int)>();
 
   /// Allocates 'size' bytes of memory. Returns NULL upon error. Memory
   /// must be deallocated by calling WebPFree(). This function is made available
@@ -143,11 +128,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMallocPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
-          'WebPMalloc');
-  late final _WebPMalloc =
-      _WebPMallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
+  late final _WebPMallocPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>('WebPMalloc');
+  late final _WebPMalloc = _WebPMallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
 
   /// Releases memory returned by the WebPDecode*() functions (from decode.h).
   void WebPFree(
@@ -158,8 +140,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPFreePtr =
-      _lookup<ffi.NativeFunction<NativeWebPFree>>('WebPFree');
+  late final _WebPFreePtr = _lookup<ffi.NativeFunction<NativeWebPFree>>('WebPFree');
   late final _WebPFree = _WebPFreePtr.asFunction<DartWebPFree>();
 
   /// Return the decoder's version number, packed in hexadecimal using 8bits for
@@ -168,10 +149,8 @@ class LibwebpFlutterLibsBindings {
     return _WebPGetDecoderVersion();
   }
 
-  late final _WebPGetDecoderVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDecoderVersion');
-  late final _WebPGetDecoderVersion =
-      _WebPGetDecoderVersionPtr.asFunction<int Function()>();
+  late final _WebPGetDecoderVersionPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDecoderVersion');
+  late final _WebPGetDecoderVersion = _WebPGetDecoderVersionPtr.asFunction<int Function()>();
 
   /// Retrieve basic header information: width, height.
   /// This function will also validate the header, returning true on success,
@@ -199,11 +178,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPGetInfoPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPGetInfo');
+          ffi.Int Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPGetInfo');
   late final _WebPGetInfo = _WebPGetInfoPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Decodes WebP images pointed to by 'data' and returns RGBA samples, along
   /// with the dimensions in *width and *height. The ordering of samples in
@@ -226,11 +204,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeRGBAPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGBA');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGBA');
   late final _WebPDecodeRGBA = _WebPDecodeRGBAPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Same as WebPDecodeRGBA, but returning A, R, G, B, A, R, G, B... ordered data.
   ffi.Pointer<ffi.Uint8> WebPDecodeARGB(
@@ -249,11 +226,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeARGBPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeARGB');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeARGB');
   late final _WebPDecodeARGB = _WebPDecodeARGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Same as WebPDecodeRGBA, but returning B, G, R, A, B, G, R, A... ordered data.
   ffi.Pointer<ffi.Uint8> WebPDecodeBGRA(
@@ -272,11 +248,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeBGRAPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGRA');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGRA');
   late final _WebPDecodeBGRA = _WebPDecodeBGRAPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Same as WebPDecodeRGBA, but returning R, G, B, R, G, B... ordered data.
   /// If the bitstream contains transparency, it is ignored.
@@ -296,11 +271,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeRGBPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGB');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeRGB');
   late final _WebPDecodeRGB = _WebPDecodeRGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Same as WebPDecodeRGB, but returning B, G, R, B, G, R... ordered data.
   ffi.Pointer<ffi.Uint8> WebPDecodeBGR(
@@ -319,11 +293,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeBGRPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGR');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPDecodeBGR');
   late final _WebPDecodeBGR = _WebPDecodeBGRPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Decode WebP images pointed to by 'data' to Y'UV format(*). The pointer
   /// returned is the Y samples buffer. Upon return, *u and *v will point to
@@ -406,14 +379,9 @@ class LibwebpFlutterLibsBindings {
   late final _WebPDecodeRGBAIntoPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeRGBAInto');
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeRGBAInto');
   late final _WebPDecodeRGBAInto = _WebPDecodeRGBAIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   ffi.Pointer<ffi.Uint8> WebPDecodeARGBInto(
     ffi.Pointer<ffi.Uint8> data,
@@ -434,14 +402,9 @@ class LibwebpFlutterLibsBindings {
   late final _WebPDecodeARGBIntoPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeARGBInto');
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeARGBInto');
   late final _WebPDecodeARGBInto = _WebPDecodeARGBIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   ffi.Pointer<ffi.Uint8> WebPDecodeBGRAInto(
     ffi.Pointer<ffi.Uint8> data,
@@ -462,14 +425,9 @@ class LibwebpFlutterLibsBindings {
   late final _WebPDecodeBGRAIntoPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPDecodeBGRAInto');
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeBGRAInto');
   late final _WebPDecodeBGRAInto = _WebPDecodeBGRAIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// RGB and BGR variants. Here too the transparency information, if present,
   /// will be dropped and ignored.
@@ -491,11 +449,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeRGBIntoPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeRGBInto');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeRGBInto');
   late final _WebPDecodeRGBInto = _WebPDecodeRGBIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   ffi.Pointer<ffi.Uint8> WebPDecodeBGRInto(
     ffi.Pointer<ffi.Uint8> data,
@@ -515,11 +472,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDecodeBGRIntoPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeBGRInto');
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPDecodeBGRInto');
   late final _WebPDecodeBGRInto = _WebPDecodeBGRIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// WebPDecodeYUVInto() is a variant of WebPDecodeYUV() that operates directly
   /// into pre-allocated luma/chroma plane buffers. This function requires the
@@ -571,18 +527,8 @@ class LibwebpFlutterLibsBindings {
               ffi.Size,
               ffi.Int)>>('WebPDecodeYUVInto');
   late final _WebPDecodeYUVInto = _WebPDecodeYUVIntoPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int,
+          ffi.Pointer<ffi.Uint8>, int, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// Internal, version-checked, entry point
   int WebPInitDecBufferInternal(
@@ -595,12 +541,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPInitDecBufferInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDecBuffer>,
-              ffi.Int)>>('WebPInitDecBufferInternal');
-  late final _WebPInitDecBufferInternal = _WebPInitDecBufferInternalPtr
-      .asFunction<int Function(ffi.Pointer<WebPDecBuffer>, int)>();
+  late final _WebPInitDecBufferInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPDecBuffer>, ffi.Int)>>('WebPInitDecBufferInternal');
+  late final _WebPInitDecBufferInternal =
+      _WebPInitDecBufferInternalPtr.asFunction<int Function(ffi.Pointer<WebPDecBuffer>, int)>();
 
   /// Free any memory associated with the buffer. Must always be called last.
   /// Note: doesn't free the 'buffer' structure itself.
@@ -612,11 +556,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPFreeDecBufferPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDecBuffer>)>>(
-      'WebPFreeDecBuffer');
-  late final _WebPFreeDecBuffer = _WebPFreeDecBufferPtr.asFunction<
-      void Function(ffi.Pointer<WebPDecBuffer>)>();
+  late final _WebPFreeDecBufferPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDecBuffer>)>>('WebPFreeDecBuffer');
+  late final _WebPFreeDecBuffer = _WebPFreeDecBufferPtr.asFunction<void Function(ffi.Pointer<WebPDecBuffer>)>();
 
   /// Creates a new incremental decoder with the supplied buffer parameter.
   /// This output_buffer can be passed NULL, in which case a default output buffer
@@ -638,12 +580,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPINewDecoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(
-              ffi.Pointer<WebPDecBuffer>)>>('WebPINewDecoder');
-  late final _WebPINewDecoder = _WebPINewDecoderPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<WebPDecBuffer>)>();
+  late final _WebPINewDecoderPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<WebPDecBuffer>)>>('WebPINewDecoder');
+  late final _WebPINewDecoder =
+      _WebPINewDecoderPtr.asFunction<ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<WebPDecBuffer>)>();
 
   /// This function allocates and initializes an incremental-decoder object, which
   /// will output the RGB/A samples specified by 'csp' into a preallocated
@@ -670,12 +610,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPINewRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(ffi.Int32, ffi.Pointer<ffi.Uint8>,
-              ffi.Size, ffi.Int)>>('WebPINewRGB');
-  late final _WebPINewRGB = _WebPINewRGBPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          int, ffi.Pointer<ffi.Uint8>, int, int)>();
+          ffi.NativeFunction<ffi.Pointer<WebPIDecoder> Function(ffi.Int32, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>(
+      'WebPINewRGB');
+  late final _WebPINewRGB =
+      _WebPINewRGBPtr.asFunction<ffi.Pointer<WebPIDecoder> Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// This function allocates and initializes an incremental-decoder object, which
   /// will output the raw luma/chroma samples into a preallocated planes if
@@ -734,19 +672,8 @@ class LibwebpFlutterLibsBindings {
               ffi.Size,
               ffi.Int)>>('WebPINewYUVA');
   late final _WebPINewYUVA = _WebPINewYUVAPtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
+      ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, int, int, ffi.Pointer<ffi.Uint8>, int, int,
+          ffi.Pointer<ffi.Uint8>, int, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// Deprecated version of the above, without the alpha plane.
   /// Kept for backward compatibility.
@@ -776,27 +703,11 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPINewYUVPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int)>>('WebPINewYUV');
+          ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int, ffi.Pointer<ffi.Uint8>,
+              ffi.Size, ffi.Int, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int)>>('WebPINewYUV');
   late final _WebPINewYUV = _WebPINewYUVPtr.asFunction<
       ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int)>();
+          ffi.Pointer<ffi.Uint8>, int, int, ffi.Pointer<ffi.Uint8>, int, int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   /// Deletes the WebPIDecoder object and associated memory. Must always be called
   /// if WebPINewDecoder, WebPINewRGB or WebPINewYUV succeeded.
@@ -808,11 +719,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPIDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPIDecoder>)>>(
-          'WebPIDelete');
-  late final _WebPIDelete =
-      _WebPIDeletePtr.asFunction<void Function(ffi.Pointer<WebPIDecoder>)>();
+  late final _WebPIDeletePtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPIDecoder>)>>('WebPIDelete');
+  late final _WebPIDelete = _WebPIDeletePtr.asFunction<void Function(ffi.Pointer<WebPIDecoder>)>();
 
   /// Copies and decodes the next available data. Returns VP8_STATUS_OK when
   /// the image is successfully decoded. Returns VP8_STATUS_SUSPENDED when more
@@ -829,12 +737,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPIAppendPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
-              ffi.Size)>>('WebPIAppend');
-  late final _WebPIAppend = _WebPIAppendPtr.asFunction<
-      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPIAppendPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, ffi.Size)>>(
+          'WebPIAppend');
+  late final _WebPIAppend =
+      _WebPIAppendPtr.asFunction<int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// A variant of the above function to be used when data buffer contains
   /// partial data from the beginning. In this case data buffer is not copied
@@ -853,12 +760,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPIUpdatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>,
-              ffi.Size)>>('WebPIUpdate');
-  late final _WebPIUpdate = _WebPIUpdatePtr.asFunction<
-      int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPIUpdatePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, ffi.Size)>>(
+          'WebPIUpdate');
+  late final _WebPIUpdate =
+      _WebPIUpdatePtr.asFunction<int Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// Returns the RGB/A image decoded so far. Returns NULL if output params
   /// are not initialized yet. The RGB/A output type corresponds to the colorspace
@@ -885,19 +791,11 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPIDecGetRGBPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<WebPIDecoder>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPIDecGetRGB');
+          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPIDecGetRGB');
   late final _WebPIDecGetRGB = _WebPIDecGetRGBPtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<WebPIDecoder>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Same as above function to get a YUVA image. Returns pointer to the luma
   /// plane or NULL in case of error. If there is no alpha information
@@ -978,19 +876,11 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPIDecodedAreaPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<WebPDecBuffer> Function(
-              ffi.Pointer<WebPIDecoder>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPIDecodedArea');
+          ffi.Pointer<WebPDecBuffer> Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('WebPIDecodedArea');
   late final _WebPIDecodedArea = _WebPIDecodedAreaPtr.asFunction<
-      ffi.Pointer<WebPDecBuffer> Function(
-          ffi.Pointer<WebPIDecoder>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>)>();
+      ffi.Pointer<WebPDecBuffer> Function(ffi.Pointer<WebPIDecoder>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Internal, version-checked, entry point
   int WebPGetFeaturesInternal(
@@ -1009,14 +899,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPGetFeaturesInternalPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<WebPBitstreamFeatures>,
+          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<WebPBitstreamFeatures>,
               ffi.Int)>>('WebPGetFeaturesInternal');
   late final _WebPGetFeaturesInternal = _WebPGetFeaturesInternalPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int,
-          ffi.Pointer<WebPBitstreamFeatures>, int)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPBitstreamFeatures>, int)>();
 
   /// Internal, version-checked, entry point
   int WebPInitDecoderConfigInternal(
@@ -1029,12 +915,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPInitDecoderConfigInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDecoderConfig>,
-              ffi.Int)>>('WebPInitDecoderConfigInternal');
-  late final _WebPInitDecoderConfigInternal = _WebPInitDecoderConfigInternalPtr
-      .asFunction<int Function(ffi.Pointer<WebPDecoderConfig>, int)>();
+  late final _WebPInitDecoderConfigInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPDecoderConfig>, ffi.Int)>>(
+          'WebPInitDecoderConfigInternal');
+  late final _WebPInitDecoderConfigInternal =
+      _WebPInitDecoderConfigInternalPtr.asFunction<int Function(ffi.Pointer<WebPDecoderConfig>, int)>();
 
   /// Instantiate a new incremental decoder object with the requested
   /// configuration. The bitstream can be passed using 'data' and 'data_size'
@@ -1061,11 +946,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPIDecodePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPDecoderConfig>)>>('WebPIDecode');
+          ffi.Pointer<WebPIDecoder> Function(
+              ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<WebPDecoderConfig>)>>('WebPIDecode');
   late final _WebPIDecode = _WebPIDecodePtr.asFunction<
-      ffi.Pointer<WebPIDecoder> Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
+      ffi.Pointer<WebPIDecoder> Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
 
   /// Non-incremental version. This version decodes the full data at once, taking
   /// 'config' into account. Returns decoding status (which should be VP8_STATUS_OK
@@ -1082,13 +966,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDecodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Size,
-              ffi.Pointer<WebPDecoderConfig>)>>('WebPDecode');
-  late final _WebPDecode = _WebPDecodePtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
+  late final _WebPDecodePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<WebPDecoderConfig>)>>(
+          'WebPDecode');
+  late final _WebPDecode =
+      _WebPDecodePtr.asFunction<int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<WebPDecoderConfig>)>();
 
   /// ANSI-C
   ffi.Pointer<ffi.Void> memchr(
@@ -1103,12 +985,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memchr');
-  late final _memchr = _memchrPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
+  late final _memchrPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memchr');
+  late final _memchr = _memchrPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
 
   int memcmp(
     ffi.Pointer<ffi.Void> __s1,
@@ -1122,12 +1001,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memcmp');
-  late final _memcmp = _memcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _memcmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>('memcmp');
+  late final _memcmp = _memcmpPtr.asFunction<int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Void> memcpy(
     ffi.Pointer<ffi.Void> __dst,
@@ -1142,12 +1018,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _memcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memcpy');
-  late final _memcpy = _memcpyPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+      'memcpy');
+  late final _memcpy =
+      _memcpyPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Void> memmove(
     ffi.Pointer<ffi.Void> __dst,
@@ -1162,12 +1036,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _memmovePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memmove');
-  late final _memmove = _memmovePtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+      'memmove');
+  late final _memmove =
+      _memmovePtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Void> memset(
     ffi.Pointer<ffi.Void> __b,
@@ -1181,12 +1053,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memsetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memset');
-  late final _memset = _memsetPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
+  late final _memsetPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memset');
+  late final _memset = _memsetPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
 
   ffi.Pointer<ffi.Char> strcat(
     ffi.Pointer<ffi.Char> __s1,
@@ -1198,13 +1067,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcat');
-  late final _strcat = _strcatPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcatPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strcat');
+  late final _strcat =
+      _strcatPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strchr(
     ffi.Pointer<ffi.Char> __s,
@@ -1216,12 +1083,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('strchr');
-  late final _strchr = _strchrPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _strchrPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Int)>>('strchr');
+  late final _strchr = _strchrPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
 
   int strcmp(
     ffi.Pointer<ffi.Char> __s1,
@@ -1233,12 +1097,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcmp');
-  late final _strcmp = _strcmpPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcmp');
+  late final _strcmp = _strcmpPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   int strcoll(
     ffi.Pointer<ffi.Char> __s1,
@@ -1250,12 +1111,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcollPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcoll');
-  late final _strcoll = _strcollPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcollPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcoll');
+  late final _strcoll = _strcollPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strcpy(
     ffi.Pointer<ffi.Char> __dst,
@@ -1267,13 +1125,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcpy');
-  late final _strcpy = _strcpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcpyPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strcpy');
+  late final _strcpy =
+      _strcpyPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   int strcspn(
     ffi.Pointer<ffi.Char> __s,
@@ -1285,12 +1141,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcspnPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcspn');
-  late final _strcspn = _strcspnPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcspnPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcspn');
+  late final _strcspn = _strcspnPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strerror(
     int __errnum,
@@ -1300,11 +1153,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strerrorPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
-          'strerror');
-  late final _strerror =
-      _strerrorPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+  late final _strerrorPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>('strerror');
+  late final _strerror = _strerrorPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
 
   int strlen(
     ffi.Pointer<ffi.Char> __s,
@@ -1314,11 +1164,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strlenPtr = _lookup<
-          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>)>>(
-      'strlen');
-  late final _strlen =
-      _strlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+  late final _strlenPtr = _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>)>>('strlen');
+  late final _strlen = _strlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strncat(
     ffi.Pointer<ffi.Char> __s1,
@@ -1333,12 +1180,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _strncatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncat');
-  late final _strncat = _strncatPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+      'strncat');
+  late final _strncat =
+      _strncatPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   int strncmp(
     ffi.Pointer<ffi.Char> __s1,
@@ -1352,12 +1197,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strncmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('strncmp');
-  late final _strncmp = _strncmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _strncmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>('strncmp');
+  late final _strncmp = _strncmpPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strncpy(
     ffi.Pointer<ffi.Char> __dst,
@@ -1372,12 +1214,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _strncpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strncpy');
-  late final _strncpy = _strncpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+      'strncpy');
+  late final _strncpy =
+      _strncpyPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strpbrk(
     ffi.Pointer<ffi.Char> __s,
@@ -1389,13 +1229,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strpbrkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strpbrk');
-  late final _strpbrk = _strpbrkPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strpbrkPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strpbrk');
+  late final _strpbrk =
+      _strpbrkPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strrchr(
     ffi.Pointer<ffi.Char> __s,
@@ -1407,12 +1245,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strrchrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('strrchr');
-  late final _strrchr = _strrchrPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _strrchrPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Int)>>('strrchr');
+  late final _strrchr = _strrchrPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
 
   int strspn(
     ffi.Pointer<ffi.Char> __s,
@@ -1424,12 +1259,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strspnPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strspn');
-  late final _strspn = _strspnPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strspnPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strspn');
+  late final _strspn = _strspnPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strstr(
     ffi.Pointer<ffi.Char> __big,
@@ -1441,13 +1273,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strstrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strstr');
-  late final _strstr = _strstrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strstrPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strstr');
+  late final _strstr =
+      _strstrPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strtok(
     ffi.Pointer<ffi.Char> __str,
@@ -1459,13 +1289,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strtokPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strtok');
-  late final _strtok = _strtokPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strtokPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strtok');
+  late final _strtok =
+      _strtokPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   int strxfrm(
     ffi.Pointer<ffi.Char> __s1,
@@ -1479,12 +1307,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strxfrmPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strxfrm');
-  late final _strxfrm = _strxfrmPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _strxfrmPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+          'strxfrm');
+  late final _strxfrm = _strxfrmPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strtok_r(
     ffi.Pointer<ffi.Char> __str,
@@ -1501,12 +1327,10 @@ class LibwebpFlutterLibsBindings {
   late final _strtok_rPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtok_r');
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtok_r');
   late final _strtok_r = _strtok_rPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
 
   int strerror_r(
     int __errnum,
@@ -1520,12 +1344,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strerror_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strerror_r');
-  late final _strerror_r = _strerror_rPtr
-      .asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
+  late final _strerror_rPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strerror_r');
+  late final _strerror_r = _strerror_rPtr.asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strdup(
     ffi.Pointer<ffi.Char> __s1,
@@ -1535,11 +1356,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strdupPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strdup');
-  late final _strdup = _strdupPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+  late final _strdupPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('strdup');
+  late final _strdup = _strdupPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Void> memccpy(
     ffi.Pointer<ffi.Void> __dst,
@@ -1557,11 +1375,9 @@ class LibwebpFlutterLibsBindings {
 
   late final _memccpyPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memccpy');
-  late final _memccpy = _memccpyPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Int, ffi.Size)>>('memccpy');
+  late final _memccpy =
+      _memccpyPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int)>();
 
   ffi.Pointer<ffi.Char> stpcpy(
     ffi.Pointer<ffi.Char> __dst,
@@ -1573,13 +1389,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _stpcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('stpcpy');
-  late final _stpcpy = _stpcpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _stpcpyPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'stpcpy');
+  late final _stpcpy =
+      _stpcpyPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> stpncpy(
     ffi.Pointer<ffi.Char> __dst,
@@ -1594,12 +1408,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _stpncpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('stpncpy');
-  late final _stpncpy = _stpncpyPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+      'stpncpy');
+  late final _stpncpy =
+      _stpncpyPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strndup(
     ffi.Pointer<ffi.Char> __s1,
@@ -1611,12 +1423,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strndupPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strndup');
-  late final _strndup = _strndupPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _strndupPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('strndup');
+  late final _strndup = _strndupPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
 
   int strnlen(
     ffi.Pointer<ffi.Char> __s1,
@@ -1628,11 +1437,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strnlenPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('strnlen');
-  late final _strnlen =
-      _strnlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _strnlenPtr = _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('strnlen');
+  late final _strnlen = _strnlenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> strsignal(
     int __sig,
@@ -1642,11 +1448,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strsignalPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
-          'strsignal');
-  late final _strsignal =
-      _strsignalPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+  late final _strsignalPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>('strsignal');
+  late final _strsignal = _strsignalPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
 
   int memset_s(
     ffi.Pointer<ffi.Void> __s,
@@ -1662,12 +1465,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memset_sPtr = _lookup<
-      ffi.NativeFunction<
-          errno_t Function(
-              ffi.Pointer<ffi.Void>, rsize_t, ffi.Int, rsize_t)>>('memset_s');
-  late final _memset_s = _memset_sPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Void>, int, int, int)>();
+  late final _memset_sPtr =
+      _lookup<ffi.NativeFunction<errno_t Function(ffi.Pointer<ffi.Void>, rsize_t, ffi.Int, rsize_t)>>('memset_s');
+  late final _memset_s = _memset_sPtr.asFunction<int Function(ffi.Pointer<ffi.Void>, int, int, int)>();
 
   ffi.Pointer<ffi.Void> memmem(
     ffi.Pointer<ffi.Void> __big,
@@ -1685,11 +1485,9 @@ class LibwebpFlutterLibsBindings {
 
   late final _memmemPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size,
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('memmem');
-  late final _memmem = _memmemPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Void>, int)>();
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Pointer<ffi.Void>, ffi.Size)>>('memmem');
+  late final _memmem =
+      _memmemPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Void>, int)>();
 
   void memset_pattern4(
     ffi.Pointer<ffi.Void> __b,
@@ -1703,12 +1501,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memset_pattern4Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern4');
-  late final _memset_pattern4 = _memset_pattern4Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _memset_pattern4Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+          'memset_pattern4');
+  late final _memset_pattern4 =
+      _memset_pattern4Ptr.asFunction<void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   void memset_pattern8(
     ffi.Pointer<ffi.Void> __b,
@@ -1722,12 +1519,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memset_pattern8Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern8');
-  late final _memset_pattern8 = _memset_pattern8Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _memset_pattern8Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+          'memset_pattern8');
+  late final _memset_pattern8 =
+      _memset_pattern8Ptr.asFunction<void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   void memset_pattern16(
     ffi.Pointer<ffi.Void> __b,
@@ -1741,12 +1537,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _memset_pattern16Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('memset_pattern16');
-  late final _memset_pattern16 = _memset_pattern16Ptr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _memset_pattern16Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+          'memset_pattern16');
+  late final _memset_pattern16 =
+      _memset_pattern16Ptr.asFunction<void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Char> strcasestr(
     ffi.Pointer<ffi.Char> __big,
@@ -1758,13 +1553,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcasestrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcasestr');
-  late final _strcasestr = _strcasestrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcasestrPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+          'strcasestr');
+  late final _strcasestr =
+      _strcasestrPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strnstr(
     ffi.Pointer<ffi.Char> __big,
@@ -1779,12 +1572,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _strnstrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strnstr');
-  late final _strnstr = _strnstrPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+      'strnstr');
+  late final _strnstr =
+      _strnstrPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   int strlcat(
     ffi.Pointer<ffi.Char> __dst,
@@ -1798,12 +1589,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strlcatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strlcat');
-  late final _strlcat = _strlcatPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _strlcatPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+          'strlcat');
+  late final _strlcat = _strlcatPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   int strlcpy(
     ffi.Pointer<ffi.Char> __dst,
@@ -1817,12 +1606,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strlcpyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Size)>>('strlcpy');
-  late final _strlcpy = _strlcpyPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _strlcpyPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+          'strlcpy');
+  late final _strlcpy = _strlcpyPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   void strmode(
     int __mode,
@@ -1834,11 +1621,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strmodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>('strmode');
-  late final _strmode =
-      _strmodePtr.asFunction<void Function(int, ffi.Pointer<ffi.Char>)>();
+  late final _strmodePtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>('strmode');
+  late final _strmode = _strmodePtr.asFunction<void Function(int, ffi.Pointer<ffi.Char>)>();
 
   ffi.Pointer<ffi.Char> strsep(
     ffi.Pointer<ffi.Pointer<ffi.Char>> __stringp,
@@ -1852,11 +1636,9 @@ class LibwebpFlutterLibsBindings {
 
   late final _strsepPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Char>)>>('strsep');
-  late final _strsep = _strsepPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)>();
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)>>('strsep');
+  late final _strsep = _strsepPtr
+      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)>();
 
   /// SUS places swab() in unistd.h.  It is listed here for source compatibility
   void swab(
@@ -1871,12 +1653,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _swabPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ssize_t)>>('swab');
-  late final _swab = _swabPtr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _swabPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ssize_t)>>('swab');
+  late final _swab = _swabPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   int timingsafe_bcmp(
     ffi.Pointer<ffi.Void> __b1,
@@ -1890,12 +1669,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _timingsafe_bcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('timingsafe_bcmp');
-  late final _timingsafe_bcmp = _timingsafe_bcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _timingsafe_bcmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>(
+          'timingsafe_bcmp');
+  late final _timingsafe_bcmp =
+      _timingsafe_bcmpPtr.asFunction<int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   int strsignal_r(
     int __sig,
@@ -1909,12 +1687,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strsignal_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strsignal_r');
-  late final _strsignal_r = _strsignal_rPtr
-      .asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
+  late final _strsignal_rPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('strsignal_r');
+  late final _strsignal_r = _strsignal_rPtr.asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
 
   int bcmp(
     ffi.Pointer<ffi.Void> arg0,
@@ -1928,12 +1703,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _bcmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>('bcmp');
-  late final _bcmp = _bcmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _bcmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>('bcmp');
+  late final _bcmp = _bcmpPtr.asFunction<int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   void bcopy(
     ffi.Pointer<ffi.Void> arg0,
@@ -1947,12 +1719,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _bcopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-              ffi.Size)>>('bcopy');
-  late final _bcopy = _bcopyPtr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
+  late final _bcopyPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, ffi.Size)>>('bcopy');
+  late final _bcopy = _bcopyPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int)>();
 
   void bzero(
     ffi.Pointer<ffi.Void> arg0,
@@ -1964,11 +1733,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _bzeroPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Size)>>('bzero');
-  late final _bzero =
-      _bzeroPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
+  late final _bzeroPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Size)>>('bzero');
+  late final _bzero = _bzeroPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Char> index(
     ffi.Pointer<ffi.Char> arg0,
@@ -1980,12 +1746,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _indexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('index');
-  late final _index = _indexPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _indexPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Int)>>('index');
+  late final _index = _indexPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
 
   ffi.Pointer<ffi.Char> rindex(
     ffi.Pointer<ffi.Char> arg0,
@@ -1997,12 +1760,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _rindexPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('rindex');
-  late final _rindex = _rindexPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
+  late final _rindexPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Int)>>('rindex');
+  late final _rindex = _rindexPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int)>();
 
   int ffs(
     int arg0,
@@ -2012,8 +1772,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _ffsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('ffs');
+  late final _ffsPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('ffs');
   late final _ffs = _ffsPtr.asFunction<int Function(int)>();
 
   int strcasecmp(
@@ -2026,12 +1785,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strcasecmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcasecmp');
-  late final _strcasecmp = _strcasecmpPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+  late final _strcasecmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('strcasecmp');
+  late final _strcasecmp = _strcasecmpPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   int strncasecmp(
     ffi.Pointer<ffi.Char> arg0,
@@ -2045,12 +1801,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _strncasecmpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('strncasecmp');
-  late final _strncasecmp = _strncasecmpPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _strncasecmpPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Size)>>(
+          'strncasecmp');
+  late final _strncasecmp =
+      _strncasecmpPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
 
   int ffsl(
     int arg0,
@@ -2060,8 +1815,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _ffslPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('ffsl');
+  late final _ffslPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('ffsl');
   late final _ffsl = _ffslPtr.asFunction<int Function(int)>();
 
   int ffsll(
@@ -2072,8 +1826,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _ffsllPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('ffsll');
+  late final _ffsllPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('ffsll');
   late final _ffsll = _ffsllPtr.asFunction<int Function(int)>();
 
   int fls(
@@ -2084,8 +1837,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _flsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('fls');
+  late final _flsPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('fls');
   late final _fls = _flsPtr.asFunction<int Function(int)>();
 
   int flsl(
@@ -2096,8 +1848,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _flslPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('flsl');
+  late final _flslPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Long)>>('flsl');
   late final _flsl = _flslPtr.asFunction<int Function(int)>();
 
   int flsll(
@@ -2108,8 +1859,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _flsllPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('flsll');
+  late final _flsllPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.LongLong)>>('flsll');
   late final _flsll = _flsllPtr.asFunction<int Function(int)>();
 
   /// Returns the version number of the demux library, packed in hexadecimal using
@@ -2118,10 +1868,8 @@ class LibwebpFlutterLibsBindings {
     return _WebPGetDemuxVersion();
   }
 
-  late final _WebPGetDemuxVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDemuxVersion');
-  late final _WebPGetDemuxVersion =
-      _WebPGetDemuxVersionPtr.asFunction<int Function()>();
+  late final _WebPGetDemuxVersionPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetDemuxVersion');
+  late final _WebPGetDemuxVersion = _WebPGetDemuxVersionPtr.asFunction<int Function()>();
 
   /// Internal, version-checked, entry point
   ffi.Pointer<WebPDemuxer> WebPDemuxInternal(
@@ -2140,11 +1888,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDemuxInternalPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<WebPDemuxer> Function(ffi.Pointer<WebPData>, ffi.Int,
-              ffi.Pointer<ffi.Int32>, ffi.Int)>>('WebPDemuxInternal');
+          ffi.Pointer<WebPDemuxer> Function(
+              ffi.Pointer<WebPData>, ffi.Int, ffi.Pointer<ffi.Int32>, ffi.Int)>>('WebPDemuxInternal');
   late final _WebPDemuxInternal = _WebPDemuxInternalPtr.asFunction<
-      ffi.Pointer<WebPDemuxer> Function(
-          ffi.Pointer<WebPData>, int, ffi.Pointer<ffi.Int32>, int)>();
+      ffi.Pointer<WebPDemuxer> Function(ffi.Pointer<WebPData>, int, ffi.Pointer<ffi.Int32>, int)>();
 
   /// Frees memory associated with 'dmux'.
   void WebPDemuxDelete(
@@ -2156,10 +1903,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPDemuxDeletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDemuxer>)>>(
-          'WebPDemuxDelete');
-  late final _WebPDemuxDelete =
-      _WebPDemuxDeletePtr.asFunction<void Function(ffi.Pointer<WebPDemuxer>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPDemuxer>)>>('WebPDemuxDelete');
+  late final _WebPDemuxDelete = _WebPDemuxDeletePtr.asFunction<void Function(ffi.Pointer<WebPDemuxer>)>();
 
   /// Get the 'feature' value from the 'dmux'.
   /// NOTE: values are only valid if WebPDemux() was used or WebPDemuxPartial()
@@ -2178,12 +1923,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDemuxGetIPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Uint32 Function(
-              ffi.Pointer<WebPDemuxer>, ffi.Int32)>>('WebPDemuxGetI');
-  late final _WebPDemuxGetI = _WebPDemuxGetIPtr.asFunction<
-      int Function(ffi.Pointer<WebPDemuxer>, int)>();
+  late final _WebPDemuxGetIPtr =
+      _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<WebPDemuxer>, ffi.Int32)>>('WebPDemuxGetI');
+  late final _WebPDemuxGetI = _WebPDemuxGetIPtr.asFunction<int Function(ffi.Pointer<WebPDemuxer>, int)>();
 
   /// Retrieves frame 'frame_number' from 'dmux'.
   /// 'iter->fragment' points to the frame on return from this function.
@@ -2203,12 +1945,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDemuxGetFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDemuxer>, ffi.Int,
-              ffi.Pointer<WebPIterator>)>>('WebPDemuxGetFrame');
-  late final _WebPDemuxGetFrame = _WebPDemuxGetFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPDemuxer>, int, ffi.Pointer<WebPIterator>)>();
+  late final _WebPDemuxGetFramePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPDemuxer>, ffi.Int, ffi.Pointer<WebPIterator>)>>(
+          'WebPDemuxGetFrame');
+  late final _WebPDemuxGetFrame =
+      _WebPDemuxGetFramePtr.asFunction<int Function(ffi.Pointer<WebPDemuxer>, int, ffi.Pointer<WebPIterator>)>();
 
   /// Sets 'iter->fragment' to point to the next ('iter->frame_num' + 1) or
   /// previous ('iter->frame_num' - 1) frame. These functions do not loop.
@@ -2222,10 +1963,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPDemuxNextFramePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPIterator>)>>(
-          'WebPDemuxNextFrame');
-  late final _WebPDemuxNextFrame = _WebPDemuxNextFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPIterator>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPIterator>)>>('WebPDemuxNextFrame');
+  late final _WebPDemuxNextFrame = _WebPDemuxNextFramePtr.asFunction<int Function(ffi.Pointer<WebPIterator>)>();
 
   int WebPDemuxPrevFrame(
     ffi.Pointer<WebPIterator> iter,
@@ -2236,10 +1975,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPDemuxPrevFramePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPIterator>)>>(
-          'WebPDemuxPrevFrame');
-  late final _WebPDemuxPrevFrame = _WebPDemuxPrevFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPIterator>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPIterator>)>>('WebPDemuxPrevFrame');
+  late final _WebPDemuxPrevFrame = _WebPDemuxPrevFramePtr.asFunction<int Function(ffi.Pointer<WebPIterator>)>();
 
   /// Releases any memory associated with 'iter'.
   /// Must be called before any subsequent calls to WebPDemuxGetChunk() on the same
@@ -2254,10 +1991,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPDemuxReleaseIteratorPtr =
-      _lookup<ffi.NativeFunction<NativeWebPDemuxReleaseIterator>>(
-          'WebPDemuxReleaseIterator');
-  late final _WebPDemuxReleaseIterator =
-      _WebPDemuxReleaseIteratorPtr.asFunction<DartWebPDemuxReleaseIterator>();
+      _lookup<ffi.NativeFunction<NativeWebPDemuxReleaseIterator>>('WebPDemuxReleaseIterator');
+  late final _WebPDemuxReleaseIterator = _WebPDemuxReleaseIteratorPtr.asFunction<DartWebPDemuxReleaseIterator>();
 
   /// Retrieves the 'chunk_number' instance of the chunk with id 'fourcc' from
   /// 'dmux'.
@@ -2284,11 +2019,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPDemuxGetChunkPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPDemuxer>, ffi.Pointer<ffi.Char>,
-              ffi.Int, ffi.Pointer<WebPChunkIterator>)>>('WebPDemuxGetChunk');
+          ffi.Int Function(ffi.Pointer<WebPDemuxer>, ffi.Pointer<ffi.Char>, ffi.Int,
+              ffi.Pointer<WebPChunkIterator>)>>('WebPDemuxGetChunk');
   late final _WebPDemuxGetChunk = _WebPDemuxGetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPDemuxer>, ffi.Pointer<ffi.Char>, int,
-          ffi.Pointer<WebPChunkIterator>)>();
+      int Function(ffi.Pointer<WebPDemuxer>, ffi.Pointer<ffi.Char>, int, ffi.Pointer<WebPChunkIterator>)>();
 
   /// Sets 'iter->chunk' to point to the next ('iter->chunk_num' + 1) or previous
   /// ('iter->chunk_num' - 1) chunk. These functions do not loop.
@@ -2301,11 +2035,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDemuxNextChunkPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPChunkIterator>)>>(
-      'WebPDemuxNextChunk');
-  late final _WebPDemuxNextChunk = _WebPDemuxNextChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPChunkIterator>)>();
+  late final _WebPDemuxNextChunkPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPChunkIterator>)>>('WebPDemuxNextChunk');
+  late final _WebPDemuxNextChunk = _WebPDemuxNextChunkPtr.asFunction<int Function(ffi.Pointer<WebPChunkIterator>)>();
 
   int WebPDemuxPrevChunk(
     ffi.Pointer<WebPChunkIterator> iter,
@@ -2315,11 +2047,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDemuxPrevChunkPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPChunkIterator>)>>(
-      'WebPDemuxPrevChunk');
-  late final _WebPDemuxPrevChunk = _WebPDemuxPrevChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPChunkIterator>)>();
+  late final _WebPDemuxPrevChunkPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPChunkIterator>)>>('WebPDemuxPrevChunk');
+  late final _WebPDemuxPrevChunk = _WebPDemuxPrevChunkPtr.asFunction<int Function(ffi.Pointer<WebPChunkIterator>)>();
 
   /// Releases any memory associated with 'iter'.
   /// Must be called before destroying the associated WebPDemuxer with
@@ -2332,12 +2062,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPDemuxReleaseChunkIteratorPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<WebPChunkIterator>)>>(
-      'WebPDemuxReleaseChunkIterator');
-  late final _WebPDemuxReleaseChunkIterator = _WebPDemuxReleaseChunkIteratorPtr
-      .asFunction<void Function(ffi.Pointer<WebPChunkIterator>)>();
+  late final _WebPDemuxReleaseChunkIteratorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPChunkIterator>)>>('WebPDemuxReleaseChunkIterator');
+  late final _WebPDemuxReleaseChunkIterator =
+      _WebPDemuxReleaseChunkIteratorPtr.asFunction<void Function(ffi.Pointer<WebPChunkIterator>)>();
 
   /// Internal, version-checked, entry point.
   int WebPAnimDecoderOptionsInitInternal(
@@ -2350,13 +2078,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimDecoderOptionsInitInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimDecoderOptions>,
-              ffi.Int)>>('WebPAnimDecoderOptionsInitInternal');
+  late final _WebPAnimDecoderOptionsInitInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimDecoderOptions>, ffi.Int)>>(
+          'WebPAnimDecoderOptionsInitInternal');
   late final _WebPAnimDecoderOptionsInitInternal =
-      _WebPAnimDecoderOptionsInitInternalPtr.asFunction<
-          int Function(ffi.Pointer<WebPAnimDecoderOptions>, int)>();
+      _WebPAnimDecoderOptionsInitInternalPtr.asFunction<int Function(ffi.Pointer<WebPAnimDecoderOptions>, int)>();
 
   /// Internal, version-checked, entry point.
   ffi.Pointer<WebPAnimDecoder> WebPAnimDecoderNewInternal(
@@ -2374,13 +2100,9 @@ class LibwebpFlutterLibsBindings {
   late final _WebPAnimDecoderNewInternalPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<WebPAnimDecoder> Function(
-              ffi.Pointer<WebPData>,
-              ffi.Pointer<WebPAnimDecoderOptions>,
-              ffi.Int)>>('WebPAnimDecoderNewInternal');
-  late final _WebPAnimDecoderNewInternal =
-      _WebPAnimDecoderNewInternalPtr.asFunction<
-          ffi.Pointer<WebPAnimDecoder> Function(ffi.Pointer<WebPData>,
-              ffi.Pointer<WebPAnimDecoderOptions>, int)>();
+              ffi.Pointer<WebPData>, ffi.Pointer<WebPAnimDecoderOptions>, ffi.Int)>>('WebPAnimDecoderNewInternal');
+  late final _WebPAnimDecoderNewInternal = _WebPAnimDecoderNewInternalPtr.asFunction<
+      ffi.Pointer<WebPAnimDecoder> Function(ffi.Pointer<WebPData>, ffi.Pointer<WebPAnimDecoderOptions>, int)>();
 
   /// Get global information about the animation.
   /// Parameters:
@@ -2398,12 +2120,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimDecoderGetInfoPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimDecoder>,
-              ffi.Pointer<WebPAnimInfo>)>>('WebPAnimDecoderGetInfo');
-  late final _WebPAnimDecoderGetInfo = _WebPAnimDecoderGetInfoPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimDecoder>, ffi.Pointer<WebPAnimInfo>)>();
+  late final _WebPAnimDecoderGetInfoPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimDecoder>, ffi.Pointer<WebPAnimInfo>)>>(
+          'WebPAnimDecoderGetInfo');
+  late final _WebPAnimDecoderGetInfo =
+      _WebPAnimDecoderGetInfoPtr.asFunction<int Function(ffi.Pointer<WebPAnimDecoder>, ffi.Pointer<WebPAnimInfo>)>();
 
   /// Fetch the next frame from 'dec' based on options supplied to
   /// WebPAnimDecoderNew(). This will be a fully reconstructed canvas of size
@@ -2431,13 +2152,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPAnimDecoderGetNextPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<WebPAnimDecoder>,
-              ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
+          ffi.Int Function(ffi.Pointer<WebPAnimDecoder>, ffi.Pointer<ffi.Pointer<ffi.Uint8>>,
               ffi.Pointer<ffi.Int>)>>('WebPAnimDecoderGetNext');
   late final _WebPAnimDecoderGetNext = _WebPAnimDecoderGetNextPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimDecoder>,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>, ffi.Pointer<ffi.Int>)>();
+      int Function(ffi.Pointer<WebPAnimDecoder>, ffi.Pointer<ffi.Pointer<ffi.Uint8>>, ffi.Pointer<ffi.Int>)>();
 
   /// Check if there are more frames left to decode.
   /// Parameters:
@@ -2453,11 +2171,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimDecoderHasMoreFramesPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimDecoder>)>>(
-      'WebPAnimDecoderHasMoreFrames');
-  late final _WebPAnimDecoderHasMoreFrames = _WebPAnimDecoderHasMoreFramesPtr
-      .asFunction<int Function(ffi.Pointer<WebPAnimDecoder>)>();
+  late final _WebPAnimDecoderHasMoreFramesPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimDecoder>)>>('WebPAnimDecoderHasMoreFrames');
+  late final _WebPAnimDecoderHasMoreFrames =
+      _WebPAnimDecoderHasMoreFramesPtr.asFunction<int Function(ffi.Pointer<WebPAnimDecoder>)>();
 
   /// Resets the WebPAnimDecoder object, so that next call to
   /// WebPAnimDecoderGetNext() will restart decoding from 1st frame. This would be
@@ -2473,11 +2190,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimDecoderResetPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPAnimDecoder>)>>(
-      'WebPAnimDecoderReset');
-  late final _WebPAnimDecoderReset = _WebPAnimDecoderResetPtr.asFunction<
-      void Function(ffi.Pointer<WebPAnimDecoder>)>();
+  late final _WebPAnimDecoderResetPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPAnimDecoder>)>>('WebPAnimDecoderReset');
+  late final _WebPAnimDecoderReset = _WebPAnimDecoderResetPtr.asFunction<void Function(ffi.Pointer<WebPAnimDecoder>)>();
 
   /// Grab the internal demuxer object.
   /// Getting the demuxer object can be useful if one wants to use operations only
@@ -2495,13 +2210,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimDecoderGetDemuxerPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPDemuxer> Function(
-              ffi.Pointer<WebPAnimDecoder>)>>('WebPAnimDecoderGetDemuxer');
+  late final _WebPAnimDecoderGetDemuxerPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<WebPDemuxer> Function(ffi.Pointer<WebPAnimDecoder>)>>(
+          'WebPAnimDecoderGetDemuxer');
   late final _WebPAnimDecoderGetDemuxer =
-      _WebPAnimDecoderGetDemuxerPtr.asFunction<
-          ffi.Pointer<WebPDemuxer> Function(ffi.Pointer<WebPAnimDecoder>)>();
+      _WebPAnimDecoderGetDemuxerPtr.asFunction<ffi.Pointer<WebPDemuxer> Function(ffi.Pointer<WebPAnimDecoder>)>();
 
   /// Deletes the WebPAnimDecoder object.
   /// Parameters:
@@ -2515,10 +2228,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPAnimDecoderDeletePtr =
-      _lookup<ffi.NativeFunction<NativeWebPAnimDecoderDelete>>(
-          'WebPAnimDecoderDelete');
-  late final _WebPAnimDecoderDelete =
-      _WebPAnimDecoderDeletePtr.asFunction<DartWebPAnimDecoderDelete>();
+      _lookup<ffi.NativeFunction<NativeWebPAnimDecoderDelete>>('WebPAnimDecoderDelete');
+  late final _WebPAnimDecoderDelete = _WebPAnimDecoderDeletePtr.asFunction<DartWebPAnimDecoderDelete>();
 
   /// Return the encoder's version number, packed in hexadecimal using 8bits for
   /// each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -2526,10 +2237,8 @@ class LibwebpFlutterLibsBindings {
     return _WebPGetEncoderVersion();
   }
 
-  late final _WebPGetEncoderVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetEncoderVersion');
-  late final _WebPGetEncoderVersion =
-      _WebPGetEncoderVersionPtr.asFunction<int Function()>();
+  late final _WebPGetEncoderVersionPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetEncoderVersion');
+  late final _WebPGetEncoderVersion = _WebPGetEncoderVersionPtr.asFunction<int Function()>();
 
   /// Returns the size of the compressed data (pointed to by *output), or 0 if
   /// an error occurred. The compressed data must be released by the caller
@@ -2557,16 +2266,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPEncodeRGBPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int, ffi.Float,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGB');
   late final _WebPEncodeRGB = _WebPEncodeRGBPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeBGR(
     ffi.Pointer<ffi.Uint8> bgr,
@@ -2588,16 +2291,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPEncodeBGRPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int, ffi.Float,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGR');
   late final _WebPEncodeBGR = _WebPEncodeBGRPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeRGBA(
     ffi.Pointer<ffi.Uint8> rgba,
@@ -2619,16 +2316,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPEncodeRGBAPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int, ffi.Float,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeRGBA');
   late final _WebPEncodeRGBA = _WebPEncodeRGBAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeBGRA(
     ffi.Pointer<ffi.Uint8> bgra,
@@ -2650,16 +2341,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPEncodeBGRAPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Size Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Float,
+          ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int, ffi.Float,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeBGRA');
   late final _WebPEncodeBGRA = _WebPEncodeBGRAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, double, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   /// These functions are the equivalent of the above, but compressing in a
   /// lossless manner. Files are usually larger than lossy format, but will
@@ -2689,8 +2374,7 @@ class LibwebpFlutterLibsBindings {
           ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGB');
   late final _WebPEncodeLosslessRGB = _WebPEncodeLosslessRGBPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeLosslessBGR(
     ffi.Pointer<ffi.Uint8> bgr,
@@ -2713,8 +2397,7 @@ class LibwebpFlutterLibsBindings {
           ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGR');
   late final _WebPEncodeLosslessBGR = _WebPEncodeLosslessBGRPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeLosslessRGBA(
     ffi.Pointer<ffi.Uint8> rgba,
@@ -2737,8 +2420,7 @@ class LibwebpFlutterLibsBindings {
           ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessRGBA');
   late final _WebPEncodeLosslessRGBA = _WebPEncodeLosslessRGBAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   int WebPEncodeLosslessBGRA(
     ffi.Pointer<ffi.Uint8> bgra,
@@ -2761,8 +2443,7 @@ class LibwebpFlutterLibsBindings {
           ffi.Size Function(ffi.Pointer<ffi.Uint8>, ffi.Int, ffi.Int, ffi.Int,
               ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>>('WebPEncodeLosslessBGRA');
   late final _WebPEncodeLosslessBGRA = _WebPEncodeLosslessBGRAPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, int, int, ffi.Pointer<ffi.Pointer<ffi.Uint8>>)>();
 
   /// Internal, version-checked, entry point
   int WebPConfigInitInternal(
@@ -2779,12 +2460,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPConfigInitInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int32, ffi.Float,
-              ffi.Int)>>('WebPConfigInitInternal');
-  late final _WebPConfigInitInternal = _WebPConfigInitInternalPtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>, int, double, int)>();
+  late final _WebPConfigInitInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int32, ffi.Float, ffi.Int)>>(
+          'WebPConfigInitInternal');
+  late final _WebPConfigInitInternal =
+      _WebPConfigInitInternalPtr.asFunction<int Function(ffi.Pointer<WebPConfig>, int, double, int)>();
 
   /// Activate the lossless compression mode with the desired efficiency level
   /// between 0 (fastest, lowest compression) and 9 (slower, best compression).
@@ -2802,12 +2482,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPConfigLosslessPresetPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int)>>(
-      'WebPConfigLosslessPreset');
-  late final _WebPConfigLosslessPreset = _WebPConfigLosslessPresetPtr
-      .asFunction<int Function(ffi.Pointer<WebPConfig>, int)>();
+  late final _WebPConfigLosslessPresetPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Int)>>('WebPConfigLosslessPreset');
+  late final _WebPConfigLosslessPreset =
+      _WebPConfigLosslessPresetPtr.asFunction<int Function(ffi.Pointer<WebPConfig>, int)>();
 
   /// Returns true if 'config' is non-NULL and all configuration parameters are
   /// within their valid ranges.
@@ -2820,10 +2498,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPValidateConfigPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>)>>(
-          'WebPValidateConfig');
-  late final _WebPValidateConfig = _WebPValidateConfigPtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>)>>('WebPValidateConfig');
+  late final _WebPValidateConfig = _WebPValidateConfigPtr.asFunction<int Function(ffi.Pointer<WebPConfig>)>();
 
   /// The following must be called first before any use.
   void WebPMemoryWriterInit(
@@ -2834,11 +2510,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMemoryWriterInitPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
-      'WebPMemoryWriterInit');
-  late final _WebPMemoryWriterInit = _WebPMemoryWriterInitPtr.asFunction<
-      void Function(ffi.Pointer<WebPMemoryWriter>)>();
+  late final _WebPMemoryWriterInitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>('WebPMemoryWriterInit');
+  late final _WebPMemoryWriterInit =
+      _WebPMemoryWriterInitPtr.asFunction<void Function(ffi.Pointer<WebPMemoryWriter>)>();
 
   /// The following must be called to deallocate writer->mem memory. The 'writer'
   /// object itself is not deallocated.
@@ -2850,11 +2525,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMemoryWriterClearPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>(
-      'WebPMemoryWriterClear');
-  late final _WebPMemoryWriterClear = _WebPMemoryWriterClearPtr.asFunction<
-      void Function(ffi.Pointer<WebPMemoryWriter>)>();
+  late final _WebPMemoryWriterClearPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPMemoryWriter>)>>('WebPMemoryWriterClear');
+  late final _WebPMemoryWriterClear =
+      _WebPMemoryWriterClearPtr.asFunction<void Function(ffi.Pointer<WebPMemoryWriter>)>();
 
   /// The custom writer to be used with WebPMemoryWriter as custom_ptr. Upon
   /// completion, writer.mem and writer.size will hold the coded data.
@@ -2871,10 +2545,8 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMemoryWritePtr =
-      _lookup<ffi.NativeFunction<NativeWebPMemoryWrite>>('WebPMemoryWrite');
-  late final _WebPMemoryWrite =
-      _WebPMemoryWritePtr.asFunction<DartWebPMemoryWrite>();
+  late final _WebPMemoryWritePtr = _lookup<ffi.NativeFunction<NativeWebPMemoryWrite>>('WebPMemoryWrite');
+  late final _WebPMemoryWrite = _WebPMemoryWritePtr.asFunction<DartWebPMemoryWrite>();
 
   /// Internal, version-checked, entry point
   int WebPPictureInitInternal(
@@ -2887,12 +2559,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureInitInternalPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int)>>(
-      'WebPPictureInitInternal');
-  late final _WebPPictureInitInternal = _WebPPictureInitInternalPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int)>();
+  late final _WebPPictureInitInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int)>>('WebPPictureInitInternal');
+  late final _WebPPictureInitInternal =
+      _WebPPictureInitInternalPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, int)>();
 
   /// Convenience allocation / deallocation based on picture->width/height:
   /// Allocate y/u/v buffers as per colorspace/width/height specification.
@@ -2907,10 +2577,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureAllocPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureAlloc');
-  late final _WebPPictureAlloc =
-      _WebPPictureAllocPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureAlloc');
+  late final _WebPPictureAlloc = _WebPPictureAllocPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// Release the memory allocated by WebPPictureAlloc() or WebPPictureImport*().
   /// Note that this function does _not_ free the memory used by the 'picture'
@@ -2926,10 +2594,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureFreePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureFree');
-  late final _WebPPictureFree =
-      _WebPPictureFreePtr.asFunction<void Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>('WebPPictureFree');
+  late final _WebPPictureFree = _WebPPictureFreePtr.asFunction<void Function(ffi.Pointer<WebPPicture>)>();
 
   /// Copy the pixels of *src into *dst, using WebPPictureAlloc. Upon return, *dst
   /// will fully own the copied pixels (this is not a view). The 'dst' picture need
@@ -2945,12 +2611,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureCopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>,
-              ffi.Pointer<WebPPicture>)>>('WebPPictureCopy');
-  late final _WebPPictureCopy = _WebPPictureCopyPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>)>();
+  late final _WebPPictureCopyPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>)>>(
+          'WebPPictureCopy');
+  late final _WebPPictureCopy =
+      _WebPPictureCopyPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>)>();
 
   /// Compute the single distortion for packed planes of samples.
   /// 'src' will be compared to 'ref', and the raw distortion stored into
@@ -2987,28 +2652,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPPlaneDistortionPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Int,
-              ffi.Size,
-              ffi.Int,
-              ffi.Pointer<ffi.Float>,
-              ffi.Pointer<ffi.Float>)>>('WebPPlaneDistortion');
+          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Pointer<ffi.Uint8>, ffi.Size, ffi.Int, ffi.Int,
+              ffi.Size, ffi.Int, ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>>('WebPPlaneDistortion');
   late final _WebPPlaneDistortion = _WebPPlaneDistortionPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          int,
-          int,
-          int,
-          ffi.Pointer<ffi.Float>,
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int, int, int, int, int, ffi.Pointer<ffi.Float>,
           ffi.Pointer<ffi.Float>)>();
 
   /// Compute PSNR, SSIM or LSIM distortion metric between two pictures. Results
@@ -3032,11 +2679,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPPictureDistortionPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>,
-              ffi.Int, ffi.Pointer<ffi.Float>)>>('WebPPictureDistortion');
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>, ffi.Int,
+              ffi.Pointer<ffi.Float>)>>('WebPPictureDistortion');
   late final _WebPPictureDistortion = _WebPPictureDistortionPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>, int,
-          ffi.Pointer<ffi.Float>)>();
+      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<WebPPicture>, int, ffi.Pointer<ffi.Float>)>();
 
   /// self-crops a picture to the rectangle defined by top/left/width/height.
   /// Returns false in case of memory allocation error, or if the rectangle is
@@ -3062,12 +2708,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureCropPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Int)>>('WebPPictureCrop');
-  late final _WebPPictureCrop = _WebPPictureCropPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int, int, int)>();
+  late final _WebPPictureCropPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int, ffi.Int)>>(
+          'WebPPictureCrop');
+  late final _WebPPictureCrop =
+      _WebPPictureCropPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, int, int, int, int)>();
 
   /// Extracts a view from 'src' picture into 'dst'. The rectangle for the view
   /// is defined by the top-left corner pixel coordinates (left, top) as well
@@ -3100,11 +2745,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPPictureViewPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int,
-              ffi.Int, ffi.Pointer<WebPPicture>)>>('WebPPictureView');
+          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Pointer<WebPPicture>)>>('WebPPictureView');
   late final _WebPPictureView = _WebPPictureViewPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int, int, int,
-          ffi.Pointer<WebPPicture>)>();
+      int Function(ffi.Pointer<WebPPicture>, int, int, int, int, ffi.Pointer<WebPPicture>)>();
 
   /// Returns true if the 'picture' is actually a view and therefore does
   /// not own the memory for pixels.
@@ -3117,10 +2761,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureIsViewPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureIsView');
-  late final _WebPPictureIsView = _WebPPictureIsViewPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureIsView');
+  late final _WebPPictureIsView = _WebPPictureIsViewPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// Rescale a picture to new dimension width x height.
   /// If either 'width' or 'height' (but not both) is 0 the corresponding
@@ -3139,12 +2781,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureRescalePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int,
-              ffi.Int)>>('WebPPictureRescale');
-  late final _WebPPictureRescale = _WebPPictureRescalePtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int, int)>();
+  late final _WebPPictureRescalePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int, ffi.Int)>>('WebPPictureRescale');
+  late final _WebPPictureRescale =
+      _WebPPictureRescalePtr.asFunction<int Function(ffi.Pointer<WebPPicture>, int, int)>();
 
   /// Colorspace conversion function to import RGB samples.
   /// Previous buffer will be free'd, if any.
@@ -3162,12 +2802,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportRGBPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGB');
-  late final _WebPPictureImportRGB = _WebPPictureImportRGBPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportRGBPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportRGB');
+  late final _WebPPictureImportRGB =
+      _WebPPictureImportRGBPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// Same, but for RGBA buffer.
   int WebPPictureImportRGBA(
@@ -3182,12 +2821,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportRGBAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGBA');
-  late final _WebPPictureImportRGBA = _WebPPictureImportRGBAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportRGBAPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportRGBA');
+  late final _WebPPictureImportRGBA =
+      _WebPPictureImportRGBAPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// Same, but for RGBA buffer. Imports the RGB direct from the 32-bit format
   /// input buffer ignoring the alpha channel. Avoids needing to copy the data
@@ -3204,12 +2842,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportRGBXPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportRGBX');
-  late final _WebPPictureImportRGBX = _WebPPictureImportRGBXPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportRGBXPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportRGBX');
+  late final _WebPPictureImportRGBX =
+      _WebPPictureImportRGBXPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// Variants of the above, but taking BGR(A|X) input.
   int WebPPictureImportBGR(
@@ -3224,12 +2861,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportBGRPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGR');
-  late final _WebPPictureImportBGR = _WebPPictureImportBGRPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportBGRPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportBGR');
+  late final _WebPPictureImportBGR =
+      _WebPPictureImportBGRPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   int WebPPictureImportBGRA(
     ffi.Pointer<WebPPicture> picture,
@@ -3243,12 +2879,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportBGRAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGRA');
-  late final _WebPPictureImportBGRA = _WebPPictureImportBGRAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportBGRAPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportBGRA');
+  late final _WebPPictureImportBGRA =
+      _WebPPictureImportBGRAPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   int WebPPictureImportBGRX(
     ffi.Pointer<WebPPicture> picture,
@@ -3262,12 +2897,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureImportBGRXPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>,
-              ffi.Int)>>('WebPPictureImportBGRX');
-  late final _WebPPictureImportBGRX = _WebPPictureImportBGRXPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
+  late final _WebPPictureImportBGRXPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, ffi.Int)>>(
+          'WebPPictureImportBGRX');
+  late final _WebPPictureImportBGRX =
+      _WebPPictureImportBGRXPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// Converts picture->argb data to the YUV420A format. The 'colorspace'
   /// parameter is deprecated and should be equal to WEBP_YUV420.
@@ -3285,12 +2919,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureARGBToYUVAPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<WebPPicture>, ffi.Int32)>>('WebPPictureARGBToYUVA');
-  late final _WebPPictureARGBToYUVA = _WebPPictureARGBToYUVAPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>, int)>();
+  late final _WebPPictureARGBToYUVAPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int32)>>('WebPPictureARGBToYUVA');
+  late final _WebPPictureARGBToYUVA =
+      _WebPPictureARGBToYUVAPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, int)>();
 
   /// Same as WebPPictureARGBToYUVA(), but the conversion is done using
   /// pseudo-random dithering with a strength 'dithering' between
@@ -3308,12 +2940,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPPictureARGBToYUVADitheredPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int32,
-              ffi.Float)>>('WebPPictureARGBToYUVADithered');
-  late final _WebPPictureARGBToYUVADithered = _WebPPictureARGBToYUVADitheredPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>, int, double)>();
+  late final _WebPPictureARGBToYUVADitheredPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>, ffi.Int32, ffi.Float)>>(
+          'WebPPictureARGBToYUVADithered');
+  late final _WebPPictureARGBToYUVADithered =
+      _WebPPictureARGBToYUVADitheredPtr.asFunction<int Function(ffi.Pointer<WebPPicture>, int, double)>();
 
   /// Performs 'sharp' RGBA->YUVA420 downsampling and colorspace conversion.
   /// Downsampling is handled with extra care in case of color clipping. This
@@ -3329,10 +2960,9 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureSharpARGBToYUVAPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureSharpARGBToYUVA');
-  late final _WebPPictureSharpARGBToYUVA = _WebPPictureSharpARGBToYUVAPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureSharpARGBToYUVA');
+  late final _WebPPictureSharpARGBToYUVA =
+      _WebPPictureSharpARGBToYUVAPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// kept for backward compatibility:
   int WebPPictureSmartARGBToYUVA(
@@ -3344,10 +2974,9 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureSmartARGBToYUVAPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureSmartARGBToYUVA');
-  late final _WebPPictureSmartARGBToYUVA = _WebPPictureSmartARGBToYUVAPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureSmartARGBToYUVA');
+  late final _WebPPictureSmartARGBToYUVA =
+      _WebPPictureSmartARGBToYUVAPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// Converts picture->yuv to picture->argb and sets picture->use_argb to true.
   /// The input format must be YUV_420 or YUV_420A. The conversion from YUV420 to
@@ -3364,10 +2993,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureYUVAToARGBPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureYUVAToARGB');
-  late final _WebPPictureYUVAToARGB = _WebPPictureYUVAToARGBPtr.asFunction<
-      int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureYUVAToARGB');
+  late final _WebPPictureYUVAToARGB = _WebPPictureYUVAToARGBPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// Helper function: given a width x height plane of RGBA or YUV(A) samples
   /// clean-up or smoothen the YUV or RGB samples under fully transparent area,
@@ -3381,10 +3008,9 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPCleanupTransparentAreaPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPCleanupTransparentArea');
-  late final _WebPCleanupTransparentArea = _WebPCleanupTransparentAreaPtr
-      .asFunction<void Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>)>>('WebPCleanupTransparentArea');
+  late final _WebPCleanupTransparentArea =
+      _WebPCleanupTransparentAreaPtr.asFunction<void Function(ffi.Pointer<WebPPicture>)>();
 
   /// Scan the picture 'picture' for the presence of non fully opaque alpha values.
   /// Returns true in such case. Otherwise returns false (indicating that the
@@ -3398,10 +3024,9 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPPictureHasTransparencyPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>(
-          'WebPPictureHasTransparency');
-  late final _WebPPictureHasTransparency = _WebPPictureHasTransparencyPtr
-      .asFunction<int Function(ffi.Pointer<WebPPicture>)>();
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPPicture>)>>('WebPPictureHasTransparency');
+  late final _WebPPictureHasTransparency =
+      _WebPPictureHasTransparencyPtr.asFunction<int Function(ffi.Pointer<WebPPicture>)>();
 
   /// Remove the transparency information (if present) by blending the color with
   /// the background color 'background_rgb' (specified as 24bit RGB triplet).
@@ -3416,12 +3041,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPBlendAlphaPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<WebPPicture>, ffi.Uint32)>>('WebPBlendAlpha');
-  late final _WebPBlendAlpha = _WebPBlendAlphaPtr.asFunction<
-      void Function(ffi.Pointer<WebPPicture>, int)>();
+  late final _WebPBlendAlphaPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<WebPPicture>, ffi.Uint32)>>('WebPBlendAlpha');
+  late final _WebPBlendAlpha = _WebPBlendAlphaPtr.asFunction<void Function(ffi.Pointer<WebPPicture>, int)>();
 
   /// Main encoding call, after config and picture have been initialized.
   /// 'picture' must be less than 16384x16384 in dimension (cf WEBP_MAX_DIMENSION),
@@ -3443,12 +3065,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPEncodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPConfig>,
-              ffi.Pointer<WebPPicture>)>>('WebPEncode');
-  late final _WebPEncode = _WebPEncodePtr.asFunction<
-      int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>();
+  late final _WebPEncodePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>>('WebPEncode');
+  late final _WebPEncode = _WebPEncodePtr.asFunction<int Function(ffi.Pointer<WebPConfig>, ffi.Pointer<WebPPicture>)>();
 
   /// Returns the version number of the mux library, packed in hexadecimal using
   /// 8bits for each of major/minor/revision. E.g: v2.5.7 is 0x020507.
@@ -3456,10 +3075,8 @@ class LibwebpFlutterLibsBindings {
     return _WebPGetMuxVersion();
   }
 
-  late final _WebPGetMuxVersionPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetMuxVersion');
-  late final _WebPGetMuxVersion =
-      _WebPGetMuxVersionPtr.asFunction<int Function()>();
+  late final _WebPGetMuxVersionPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>('WebPGetMuxVersion');
+  late final _WebPGetMuxVersion = _WebPGetMuxVersionPtr.asFunction<int Function()>();
 
   /// Internal, version-checked, entry point
   ffi.Pointer<WebPMux> WebPNewInternal(
@@ -3471,10 +3088,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPNewInternalPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<WebPMux> Function(ffi.Int)>>(
-          'WebPNewInternal');
-  late final _WebPNewInternal =
-      _WebPNewInternalPtr.asFunction<ffi.Pointer<WebPMux> Function(int)>();
+      _lookup<ffi.NativeFunction<ffi.Pointer<WebPMux> Function(ffi.Int)>>('WebPNewInternal');
+  late final _WebPNewInternal = _WebPNewInternalPtr.asFunction<ffi.Pointer<WebPMux> Function(int)>();
 
   /// Deletes the mux object.
   /// Parameters:
@@ -3487,8 +3102,7 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxDeletePtr =
-      _lookup<ffi.NativeFunction<NativeWebPMuxDelete>>('WebPMuxDelete');
+  late final _WebPMuxDeletePtr = _lookup<ffi.NativeFunction<NativeWebPMuxDelete>>('WebPMuxDelete');
   late final _WebPMuxDelete = _WebPMuxDeletePtr.asFunction<DartWebPMuxDelete>();
 
   /// Internal, version-checked, entry point
@@ -3504,12 +3118,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxCreateInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, ffi.Int,
-              ffi.Int)>>('WebPMuxCreateInternal');
-  late final _WebPMuxCreateInternal = _WebPMuxCreateInternalPtr.asFunction<
-      ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, int, int)>();
+  late final _WebPMuxCreateInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, ffi.Int, ffi.Int)>>(
+          'WebPMuxCreateInternal');
+  late final _WebPMuxCreateInternal =
+      _WebPMuxCreateInternalPtr.asFunction<ffi.Pointer<WebPMux> Function(ffi.Pointer<WebPData>, int, int)>();
 
   /// Adds a chunk with id 'fourcc' and data 'chunk_data' in the mux object.
   /// Any existing chunk(s) with the same id will be removed.
@@ -3541,11 +3154,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPMuxSetChunkPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>, ffi.Int)>>('WebPMuxSetChunk');
+          ffi.Int32 Function(
+              ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>, ffi.Pointer<WebPData>, ffi.Int)>>('WebPMuxSetChunk');
   late final _WebPMuxSetChunk = _WebPMuxSetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>, int)>();
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>, ffi.Pointer<WebPData>, int)>();
 
   /// Gets a reference to the data of the chunk with id 'fourcc' in the mux object.
   /// The caller should NOT free the returned data.
@@ -3572,12 +3184,10 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPMuxGetChunkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<WebPData>)>>('WebPMuxGetChunk');
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>, ffi.Pointer<WebPData>)>>(
+      'WebPMuxGetChunk');
   late final _WebPMuxGetChunk = _WebPMuxGetChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<WebPData>)>();
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>, ffi.Pointer<WebPData>)>();
 
   /// Deletes the chunk with the given 'fourcc' from the mux object.
   /// Parameters:
@@ -3599,12 +3209,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxDeleteChunkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<ffi.Char>)>>('WebPMuxDeleteChunk');
-  late final _WebPMuxDeleteChunk = _WebPMuxDeleteChunkPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>)>();
+  late final _WebPMuxDeleteChunkPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>)>>(
+          'WebPMuxDeleteChunk');
+  late final _WebPMuxDeleteChunk =
+      _WebPMuxDeleteChunkPtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Char>)>();
 
   /// Sets the (non-animated) image in the mux object.
   /// Note: Any existing images (including frames) will be removed.
@@ -3630,12 +3239,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxSetImagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>,
-              ffi.Int)>>('WebPMuxSetImage');
-  late final _WebPMuxSetImage = _WebPMuxSetImagePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>, int)>();
+  late final _WebPMuxSetImagePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>, ffi.Int)>>(
+          'WebPMuxSetImage');
+  late final _WebPMuxSetImage =
+      _WebPMuxSetImagePtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>, int)>();
 
   /// Adds a frame at the end of the mux object.
   /// Notes: (1) frame.id should be WEBP_CHUNK_ANMF
@@ -3665,12 +3273,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxPushFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxFrameInfo>, ffi.Int)>>('WebPMuxPushFrame');
-  late final _WebPMuxPushFrame = _WebPMuxPushFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxFrameInfo>, int)>();
+  late final _WebPMuxPushFramePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxFrameInfo>, ffi.Int)>>(
+          'WebPMuxPushFrame');
+  late final _WebPMuxPushFrame =
+      _WebPMuxPushFramePtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxFrameInfo>, int)>();
 
   /// Gets the nth frame from the mux object.
   /// The content of 'frame->bitstream' is allocated using WebPMalloc(), and NOT
@@ -3699,12 +3306,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxGetFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Uint32,
-              ffi.Pointer<WebPMuxFrameInfo>)>>('WebPMuxGetFrame');
-  late final _WebPMuxGetFrame = _WebPMuxGetFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<WebPMuxFrameInfo>)>();
+  late final _WebPMuxGetFramePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Uint32, ffi.Pointer<WebPMuxFrameInfo>)>>(
+          'WebPMuxGetFrame');
+  late final _WebPMuxGetFrame =
+      _WebPMuxGetFramePtr.asFunction<int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<WebPMuxFrameInfo>)>();
 
   /// Deletes a frame from the mux object.
   /// nth=0 has a special meaning - last position.
@@ -3726,12 +3332,9 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxDeleteFramePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Uint32)>>('WebPMuxDeleteFrame');
-  late final _WebPMuxDeleteFrame = _WebPMuxDeleteFramePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int)>();
+  late final _WebPMuxDeleteFramePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Uint32)>>('WebPMuxDeleteFrame');
+  late final _WebPMuxDeleteFrame = _WebPMuxDeleteFramePtr.asFunction<int Function(ffi.Pointer<WebPMux>, int)>();
 
   /// Sets the animation parameters in the mux object. Any existing ANIM chunks
   /// will be removed.
@@ -3752,13 +3355,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxSetAnimationParamsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxSetAnimationParams');
+  late final _WebPMuxSetAnimationParamsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>>(
+          'WebPMuxSetAnimationParams');
   late final _WebPMuxSetAnimationParams =
-      _WebPMuxSetAnimationParamsPtr.asFunction<
-          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
+      _WebPMuxSetAnimationParamsPtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
 
   /// Gets the animation parameters from the mux object.
   /// Parameters:
@@ -3778,13 +3379,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxGetAnimationParamsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<WebPMuxAnimParams>)>>('WebPMuxGetAnimationParams');
+  late final _WebPMuxGetAnimationParamsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>>(
+          'WebPMuxGetAnimationParams');
   late final _WebPMuxGetAnimationParams =
-      _WebPMuxGetAnimationParamsPtr.asFunction<
-          int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
+      _WebPMuxGetAnimationParamsPtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPMuxAnimParams>)>();
 
   /// Sets the canvas size for the mux object. The width and height can be
   /// specified explicitly or left as zero (0, 0).
@@ -3813,12 +3412,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxSetCanvasSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Int, ffi.Int)>>('WebPMuxSetCanvasSize');
-  late final _WebPMuxSetCanvasSize = _WebPMuxSetCanvasSizePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, int)>();
+  late final _WebPMuxSetCanvasSizePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Int, ffi.Int)>>('WebPMuxSetCanvasSize');
+  late final _WebPMuxSetCanvasSize =
+      _WebPMuxSetCanvasSizePtr.asFunction<int Function(ffi.Pointer<WebPMux>, int, int)>();
 
   /// Gets the canvas size from the mux object.
   /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
@@ -3844,13 +3441,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxGetCanvasSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>)>>('WebPMuxGetCanvasSize');
+  late final _WebPMuxGetCanvasSizePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>(
+          'WebPMuxGetCanvasSize');
   late final _WebPMuxGetCanvasSize = _WebPMuxGetCanvasSizePtr.asFunction<
-      int Function(
-          ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
 
   /// Gets the feature flags from the mux object.
   /// Note: This method assumes that the VP8X chunk, if present, is up-to-date.
@@ -3875,12 +3470,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxGetFeaturesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>,
-              ffi.Pointer<ffi.Uint32>)>>('WebPMuxGetFeatures');
-  late final _WebPMuxGetFeatures = _WebPMuxGetFeaturesPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Uint32>)>();
+  late final _WebPMuxGetFeaturesPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Uint32>)>>(
+          'WebPMuxGetFeatures');
+  late final _WebPMuxGetFeatures =
+      _WebPMuxGetFeaturesPtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<ffi.Uint32>)>();
 
   /// Gets number of chunks with the given 'id' in the mux object.
   /// Parameters:
@@ -3902,12 +3496,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxNumChunksPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Int32,
-              ffi.Pointer<ffi.Int>)>>('WebPMuxNumChunks');
-  late final _WebPMuxNumChunks = _WebPMuxNumChunksPtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<ffi.Int>)>();
+  late final _WebPMuxNumChunksPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Int32, ffi.Pointer<ffi.Int>)>>(
+          'WebPMuxNumChunks');
+  late final _WebPMuxNumChunks =
+      _WebPMuxNumChunksPtr.asFunction<int Function(ffi.Pointer<WebPMux>, int, ffi.Pointer<ffi.Int>)>();
 
   /// Assembles all chunks in WebP RIFF format and returns in 'assembled_data'.
   /// This function also validates the mux object.
@@ -3934,12 +3527,10 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPMuxAssemblePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>>('WebPMuxAssemble');
-  late final _WebPMuxAssemble = _WebPMuxAssemblePtr.asFunction<
-      int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>();
+  late final _WebPMuxAssemblePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>>('WebPMuxAssemble');
+  late final _WebPMuxAssemble =
+      _WebPMuxAssemblePtr.asFunction<int Function(ffi.Pointer<WebPMux>, ffi.Pointer<WebPData>)>();
 
   /// Internal, version-checked, entry point.
   int WebPAnimEncoderOptionsInitInternal(
@@ -3952,13 +3543,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimEncoderOptionsInitInternalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimEncoderOptions>,
-              ffi.Int)>>('WebPAnimEncoderOptionsInitInternal');
+  late final _WebPAnimEncoderOptionsInitInternalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimEncoderOptions>, ffi.Int)>>(
+          'WebPAnimEncoderOptionsInitInternal');
   late final _WebPAnimEncoderOptionsInitInternal =
-      _WebPAnimEncoderOptionsInitInternalPtr.asFunction<
-          int Function(ffi.Pointer<WebPAnimEncoderOptions>, int)>();
+      _WebPAnimEncoderOptionsInitInternalPtr.asFunction<int Function(ffi.Pointer<WebPAnimEncoderOptions>, int)>();
 
   /// Internal, version-checked, entry point.
   ffi.Pointer<WebPAnimEncoder> WebPAnimEncoderNewInternal(
@@ -3978,14 +3567,9 @@ class LibwebpFlutterLibsBindings {
   late final _WebPAnimEncoderNewInternalPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<WebPAnimEncoder> Function(
-              ffi.Int,
-              ffi.Int,
-              ffi.Pointer<WebPAnimEncoderOptions>,
-              ffi.Int)>>('WebPAnimEncoderNewInternal');
-  late final _WebPAnimEncoderNewInternal =
-      _WebPAnimEncoderNewInternalPtr.asFunction<
-          ffi.Pointer<WebPAnimEncoder> Function(
-              int, int, ffi.Pointer<WebPAnimEncoderOptions>, int)>();
+              ffi.Int, ffi.Int, ffi.Pointer<WebPAnimEncoderOptions>, ffi.Int)>>('WebPAnimEncoderNewInternal');
+  late final _WebPAnimEncoderNewInternal = _WebPAnimEncoderNewInternalPtr.asFunction<
+      ffi.Pointer<WebPAnimEncoder> Function(int, int, ffi.Pointer<WebPAnimEncoderOptions>, int)>();
 
   /// Optimize the given frame for WebP, encode it and add it to the
   /// WebPAnimEncoder object.
@@ -4021,14 +3605,10 @@ class LibwebpFlutterLibsBindings {
 
   late final _WebPAnimEncoderAddPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<WebPPicture>,
-              ffi.Int,
+          ffi.Int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPPicture>, ffi.Int,
               ffi.Pointer<WebPConfig>)>>('WebPAnimEncoderAdd');
   late final _WebPAnimEncoderAdd = _WebPAnimEncoderAddPtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPPicture>, int,
-          ffi.Pointer<WebPConfig>)>();
+      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPPicture>, int, ffi.Pointer<WebPConfig>)>();
 
   /// Assemble all frames added so far into a WebP bitstream.
   /// This call should be preceded by  a call to 'WebPAnimEncoderAdd' with
@@ -4049,12 +3629,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimEncoderAssemblePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<WebPAnimEncoder>,
-              ffi.Pointer<WebPData>)>>('WebPAnimEncoderAssemble');
-  late final _WebPAnimEncoderAssemble = _WebPAnimEncoderAssemblePtr.asFunction<
-      int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPData>)>();
+  late final _WebPAnimEncoderAssemblePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPData>)>>(
+          'WebPAnimEncoderAssemble');
+  late final _WebPAnimEncoderAssemble =
+      _WebPAnimEncoderAssemblePtr.asFunction<int Function(ffi.Pointer<WebPAnimEncoder>, ffi.Pointer<WebPData>)>();
 
   /// Get error string corresponding to the most recent call using 'enc'. The
   /// returned string is owned by 'enc' and is valid only until the next call to
@@ -4072,12 +3651,11 @@ class LibwebpFlutterLibsBindings {
     );
   }
 
-  late final _WebPAnimEncoderGetErrorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<WebPAnimEncoder>)>>('WebPAnimEncoderGetError');
-  late final _WebPAnimEncoderGetError = _WebPAnimEncoderGetErrorPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<WebPAnimEncoder>)>();
+  late final _WebPAnimEncoderGetErrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<WebPAnimEncoder>)>>(
+          'WebPAnimEncoderGetError');
+  late final _WebPAnimEncoderGetError =
+      _WebPAnimEncoderGetErrorPtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<WebPAnimEncoder>)>();
 
   /// Deletes the WebPAnimEncoder object.
   /// Parameters:
@@ -4091,10 +3669,8 @@ class LibwebpFlutterLibsBindings {
   }
 
   late final _WebPAnimEncoderDeletePtr =
-      _lookup<ffi.NativeFunction<NativeWebPAnimEncoderDelete>>(
-          'WebPAnimEncoderDelete');
-  late final _WebPAnimEncoderDelete =
-      _WebPAnimEncoderDeletePtr.asFunction<DartWebPAnimEncoderDelete>();
+      _lookup<ffi.NativeFunction<NativeWebPAnimEncoderDelete>>('WebPAnimEncoderDelete');
+  late final _WebPAnimEncoderDelete = _WebPAnimEncoderDeletePtr.asFunction<DartWebPAnimEncoderDelete>();
 }
 
 /// mbstate_t is an opaque object to keep conversion state, during multibyte
@@ -4110,9 +3686,7 @@ final class __mbstate_t extends ffi.Union {
 
 final class __darwin_pthread_handler_rec extends ffi.Struct {
   /// Routine to call
-  external ffi
-      .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-      __routine;
+  external ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>> __routine;
 
   /// Argument to pass
   external ffi.Pointer<ffi.Void> __arg;
@@ -4659,17 +4233,13 @@ abstract class WebPFormatFeature {
   static const int WEBP_FF_FRAME_COUNT = 5;
 }
 
-typedef NativeWebPDemuxReleaseIterator = ffi.Void Function(
-    ffi.Pointer<WebPIterator> iter);
-typedef DartWebPDemuxReleaseIterator = void Function(
-    ffi.Pointer<WebPIterator> iter);
+typedef NativeWebPDemuxReleaseIterator = ffi.Void Function(ffi.Pointer<WebPIterator> iter);
+typedef DartWebPDemuxReleaseIterator = void Function(ffi.Pointer<WebPIterator> iter);
 
 final class WebPAnimDecoder extends ffi.Opaque {}
 
-typedef NativeWebPAnimDecoderDelete = ffi.Void Function(
-    ffi.Pointer<WebPAnimDecoder> dec);
-typedef DartWebPAnimDecoderDelete = void Function(
-    ffi.Pointer<WebPAnimDecoder> dec);
+typedef NativeWebPAnimDecoderDelete = ffi.Void Function(ffi.Pointer<WebPAnimDecoder> dec);
+typedef DartWebPAnimDecoderDelete = void Function(ffi.Pointer<WebPAnimDecoder> dec);
 
 /// Compression parameters.
 final class WebPConfig extends ffi.Struct {
@@ -4968,16 +4538,11 @@ abstract class WebPEncCSP {
 /// Signature for output function. Should return true if writing was successful.
 /// data/data_size is the segment of data to write, and 'picture' is for
 /// reference (and so one can make use of picture->custom_ptr).
-typedef WebPWriterFunction
-    = ffi.Pointer<ffi.NativeFunction<WebPWriterFunctionFunction>>;
+typedef WebPWriterFunction = ffi.Pointer<ffi.NativeFunction<WebPWriterFunctionFunction>>;
 typedef WebPWriterFunctionFunction = ffi.Int Function(
-    ffi.Pointer<ffi.Uint8> data,
-    ffi.Size data_size,
-    ffi.Pointer<WebPPicture> picture);
+    ffi.Pointer<ffi.Uint8> data, ffi.Size data_size, ffi.Pointer<WebPPicture> picture);
 typedef DartWebPWriterFunctionFunction = int Function(
-    ffi.Pointer<ffi.Uint8> data,
-    int data_size,
-    ffi.Pointer<WebPPicture> picture);
+    ffi.Pointer<ffi.Uint8> data, int data_size, ffi.Pointer<WebPPicture> picture);
 
 /// ------------------------------------------------------------------------------
 /// Input / Output
@@ -5104,12 +4669,9 @@ abstract class WebPEncodingError {
 /// Progress hook, called from time to time to report progress. It can return
 /// false to request an abort of the encoding process, or true otherwise if
 /// everything is OK.
-typedef WebPProgressHook
-    = ffi.Pointer<ffi.NativeFunction<WebPProgressHookFunction>>;
-typedef WebPProgressHookFunction = ffi.Int Function(
-    ffi.Int percent, ffi.Pointer<WebPPicture> picture);
-typedef DartWebPProgressHookFunction = int Function(
-    int percent, ffi.Pointer<WebPPicture> picture);
+typedef WebPProgressHook = ffi.Pointer<ffi.NativeFunction<WebPProgressHookFunction>>;
+typedef WebPProgressHookFunction = ffi.Int Function(ffi.Int percent, ffi.Pointer<WebPPicture> picture);
+typedef DartWebPProgressHookFunction = int Function(int percent, ffi.Pointer<WebPPicture> picture);
 
 /// WebPMemoryWrite: a special WebPWriterFunction that writes to memory using
 /// the following WebPMemoryWriter object (to be set as a custom_ptr).
@@ -5152,10 +4714,10 @@ abstract class WebPPreset {
   static const int WEBP_PRESET_TEXT = 5;
 }
 
-typedef NativeWebPMemoryWrite = ffi.Int Function(ffi.Pointer<ffi.Uint8> data,
-    ffi.Size data_size, ffi.Pointer<WebPPicture> picture);
-typedef DartWebPMemoryWrite = int Function(ffi.Pointer<ffi.Uint8> data,
-    int data_size, ffi.Pointer<WebPPicture> picture);
+typedef NativeWebPMemoryWrite = ffi.Int Function(
+    ffi.Pointer<ffi.Uint8> data, ffi.Size data_size, ffi.Pointer<WebPPicture> picture);
+typedef DartWebPMemoryWrite = int Function(
+    ffi.Pointer<ffi.Uint8> data, int data_size, ffi.Pointer<WebPPicture> picture);
 
 final class WebPMux extends ffi.Opaque {}
 
@@ -5297,10 +4859,8 @@ typedef DartWebPMuxDelete = void Function(ffi.Pointer<WebPMux> mux);
 
 final class WebPAnimEncoder extends ffi.Opaque {}
 
-typedef NativeWebPAnimEncoderDelete = ffi.Void Function(
-    ffi.Pointer<WebPAnimEncoder> enc);
-typedef DartWebPAnimEncoderDelete = void Function(
-    ffi.Pointer<WebPAnimEncoder> enc);
+typedef NativeWebPAnimEncoderDelete = ffi.Void Function(ffi.Pointer<WebPAnimEncoder> enc);
+typedef DartWebPAnimEncoderDelete = void Function(ffi.Pointer<WebPAnimEncoder> enc);
 
 const int __has_safe_buffers = 1;
 

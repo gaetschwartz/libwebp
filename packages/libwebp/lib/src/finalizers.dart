@@ -38,28 +38,23 @@ final iteratorFinalizer = TypedFinalizer<bindings.WebPIterator>(
   debugName: 'WebPIteratorFinalizer',
 );
 
-final _webPAnimDecoderDeletePtr =
-    rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimDecoderDelete>>(
+final _webPAnimDecoderDeletePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimDecoderDelete>>(
   'WebPAnimDecoderDelete',
 );
 
-final _webPAnimEncoderDeletePtr =
-    rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
+final _webPAnimEncoderDeletePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
   'WebPAnimEncoderDelete',
 );
 
-final _webpFreePtr =
-    rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>(
+final _webpFreePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPFree>>(
   'WebPFree',
 );
 
-final _muxDeletePtr =
-    rawBindings.lookup<NativeFunction<bindings.NativeWebPMuxDelete>>(
+final _muxDeletePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPMuxDelete>>(
   'WebPMuxDelete',
 );
 
-final _iteratorReleasePtr =
-    rawBindings.lookup<NativeFunction<bindings.NativeWebPDemuxReleaseIterator>>(
+final _iteratorReleasePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPDemuxReleaseIterator>>(
   'WebPDemuxReleaseIterator',
 );
 

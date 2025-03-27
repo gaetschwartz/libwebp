@@ -5,7 +5,7 @@ void main() {
   const originalFps = 25.0;
   group('timings $originalFps fps', () {
     const framDur = Duration(milliseconds: 1000 ~/ originalFps);
-    final list = List.filled(1000, framDur);
+    final List<Duration> list = List.filled(1000, framDur);
     final timings = ListWebPAnimationTiming(list);
 
     test('fps', () {
@@ -14,7 +14,7 @@ void main() {
 
     for (var i = 1; i < 10; i++) {
       test('reduceFps by $i', () {
-        final reduced = timings.reduceFps(i);
+        final WebPAnimationTiming reduced = timings.reduceFps(i);
         expect(reduced.frames.length, list.length);
         expect(reduced.frames.nonZero.length, (list.length / i).ceil());
         expect(reduced.fps, closeTo(originalFps / i, 0.1));

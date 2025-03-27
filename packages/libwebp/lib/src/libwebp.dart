@@ -22,7 +22,7 @@ enum OperatingSystem {
   ;
 
   static OperatingSystem get current {
-    final os = Platform.operatingSystem;
+    final String os = Platform.operatingSystem;
     return switch (os) {
       'android' => OperatingSystem.android,
       'fuchsia' => OperatingSystem.fuchsia,
@@ -69,8 +69,7 @@ DynamicLibrary _openLib() {
 
 final rawBindings = _openLib();
 
-final webPMemoryWritePtr = rawBindings
-    .lookup<NativeFunction<bindings.NativeWebPMemoryWrite>>('WebPMemoryWrite');
+final webPMemoryWritePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPMemoryWrite>>('WebPMemoryWrite');
 
 /// The bindings to the native WebP library.
 final libwebp = bindings.LibwebpFlutterLibsBindings(rawBindings);
@@ -102,8 +101,7 @@ class LibWebPVersions {
     return 'LibWebPVersions(decoder: $decoder, encoder: $encoder, mux: $mux, demux: $demux)';
   }
 
-  static LibWebPFrameworkInfo _getVersion(
-      int Function() f, String frameworkName) {
+  static LibWebPFrameworkInfo _getVersion(int Function() f, String frameworkName) {
     try {
       return LibWebPFrameworkVersion(Version.fromInt(f()));
       // ignore: avoid_catching_errors
@@ -145,8 +143,7 @@ class LibWebPFrameworkVersion extends LibWebPFrameworkInfo {
   String toString() => version.toString();
 }
 
-class LibWebPFrameworkMissing extends LibWebPFrameworkInfo
-    implements Exception {
+class LibWebPFrameworkMissing extends LibWebPFrameworkInfo implements Exception {
   final String frameworkName;
   final ArgumentError error;
 
@@ -160,9 +157,8 @@ class LibWebPFrameworkMissing extends LibWebPFrameworkInfo
 
 ({int width, int height}) getWebpDimensions(FfiByteData data) {
   return using((a) {
-    final curr = (width: a<Int>(), height: a<Int>());
-    final res =
-        libwebp.WebPGetInfo(data.ptr, data.size, curr.width, curr.height);
+    final ({Pointer<Int> height, Pointer<Int> width}) curr = (width: a<Int>(), height: a<Int>());
+    final int res = libwebp.WebPGetInfo(data.ptr, data.size, curr.width, curr.height);
     if (res == 0) {
       throw LibWebPException('Failed to get WebP info.');
     }
@@ -182,7 +178,7 @@ Uint8List resizeWebp(
 }) =>
     using((alloc) {
       final data = FfiByteData.fromTypedList(input);
-      final curr = getWebpDimensions(data);
+      final ({int height, int width}) curr = getWebpDimensions(data);
 
       final Uint8List outData = _resizeWebp(
         alloc,
@@ -203,14 +199,14 @@ Uint8List _resizeWebp(
   BoxFit fit = BoxFit.fill,
 }) {
   final log = Logger('resizeWebp');
-  final encoder = libwebp.WebPAnimEncoderNewInternal(
+  final Pointer<bindings.WebPAnimEncoder> encoder = libwebp.WebPAnimEncoderNewInternal(
     targetDimensions.width,
     targetDimensions.height,
     nullptr,
     bindings.WEBP_MUX_ABI_VERSION,
   );
 
-  final cfg = alloc<bindings.WebPConfig>();
+  final Pointer<bindings.WebPConfig> cfg = alloc<bindings.WebPConfig>();
   check(
     libwebp.WebPConfigInitInternal(
       cfg,
@@ -222,10 +218,9 @@ Uint8List _resizeWebp(
   );
   cfg.ref.thread_level = 1;
 
-  final animDecoder = _animDecoder(alloc, data);
-  final info = alloc<bindings.WebPAnimInfo>();
-  check(
-      libwebp.WebPAnimDecoderGetInfo(animDecoder, info), 'Failed to get info.');
+  final Pointer<bindings.WebPAnimDecoder> animDecoder = _animDecoder(alloc, data);
+  final Pointer<bindings.WebPAnimInfo> info = alloc<bindings.WebPAnimInfo>();
+  check(libwebp.WebPAnimDecoderGetInfo(animDecoder, info), 'Failed to get info.');
   log.fine('''
 Rescaling WebP:
     canvas_width: ${info.ref.canvas_width}
@@ -235,16 +230,16 @@ Rescaling WebP:
     frame_count: ${info.ref.frame_count}
   ''');
 
-  final timestamp = alloc<Int>();
-  final buf = alloc<Pointer<Uint8>>();
-  for (int i = 0; i < info.ref.frame_count; i++) {
+  final Pointer<Int> timestamp = alloc<Int>();
+  final Pointer<Pointer<Uint8>> buf = alloc<Pointer<Uint8>>();
+  for (var i = 0; i < info.ref.frame_count; i++) {
     // print('frame $i');
     check(
       libwebp.WebPAnimDecoderGetNext(animDecoder, buf, timestamp),
       'Failed to get next frame.',
     );
 
-    final frame = alloc<bindings.WebPPicture>();
+    final Pointer<bindings.WebPPicture> frame = alloc<bindings.WebPPicture>();
     check(
       libwebp.WebPPictureInitInternal(frame, bindings.WEBP_ENCODER_ABI_VERSION),
       'Failed to init WebPPicture.',
@@ -270,7 +265,7 @@ Rescaling WebP:
       'Failed to rescale frame $i.',
     );
 
-    final added = libwebp.WebPAnimEncoderAdd(
+    final int added = libwebp.WebPAnimEncoderAdd(
       encoder,
       frame,
       timestamp.value,
@@ -284,14 +279,13 @@ Rescaling WebP:
 
     libwebp.WebPPictureFree(frame);
   }
-  final added =
-      libwebp.WebPAnimEncoderAdd(encoder, nullptr, timestamp.value, nullptr);
+  final int added = libwebp.WebPAnimEncoderAdd(encoder, nullptr, timestamp.value, nullptr);
   if (added == 0) {
     throw LibWebPException('Failed to add frame null frame to encoder.');
   }
 
-  final out = alloc<bindings.WebPData>();
-  final size = libwebp.WebPAnimEncoderAssemble(encoder, out);
+  final Pointer<bindings.WebPData> out = alloc<bindings.WebPData>();
+  final int size = libwebp.WebPAnimEncoderAssemble(encoder, out);
   if (size == 0) {
     throw LibWebPException('Failed to assemble WebP.');
   }
@@ -305,16 +299,15 @@ Rescaling WebP:
 }
 
 Pointer<bindings.WebPAnimDecoder> _animDecoder(Allocator a, FfiByteData data) {
-  final webpData = a<bindings.WebPData>();
+  final Pointer<bindings.WebPData> webpData = a<bindings.WebPData>();
   webpData.ref.bytes = data.ptr;
   webpData.ref.size = data.size;
 
-  final opt = a<bindings.WebPAnimDecoderOptions>();
-  libwebp.WebPAnimDecoderOptionsInitInternal(
-      opt, bindings.WEBP_DEMUX_ABI_VERSION);
+  final Pointer<bindings.WebPAnimDecoderOptions> opt = a<bindings.WebPAnimDecoderOptions>();
+  libwebp.WebPAnimDecoderOptionsInitInternal(opt, bindings.WEBP_DEMUX_ABI_VERSION);
   opt.ref.color_mode = bindings.WEBP_CSP_MODE.MODE_RGBA;
 
-  final decoder = checkAlloc(libwebp.WebPAnimDecoderNewInternal(
+  final Pointer<bindings.WebPAnimDecoder> decoder = checkAlloc(libwebp.WebPAnimDecoderNewInternal(
     webpData,
     opt,
     bindings.WEBP_DEMUX_ABI_VERSION,

@@ -10,8 +10,7 @@ void main() {
     expect(
       () => checkAlloc<WebPAnimDecoder>(nullptr, 'Failed to allocate.'),
       throwsA(
-        isA<LibWebPAllocException>()
-            .having((e) => e.objectName, 'objectName', 'WebPAnimDecoder'),
+        isA<LibWebPAllocException>().having((e) => e.objectName, 'objectName', 'WebPAnimDecoder'),
       ),
     );
   });

@@ -11,10 +11,7 @@ import 'package:libwebp/src/utils.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
-typedef WebPEncoderFinalizable = ({
-  Arena arena,
-  Pointer<bindings.WebPAnimEncoder> encoder
-});
+typedef WebPEncoderFinalizable = ({Arena arena, Pointer<bindings.WebPAnimEncoder> encoder});
 
 enum ResizeMode {
   /// Resize the image to fit within the specified dimensions while maintaining
@@ -29,8 +26,7 @@ enum ResizeMode {
 
 class WebPAnimEncoder implements Finalizable {
   static final _logger = Logger('WebPAnimEncoder');
-  static final webPAnimEncoderDeletePtr =
-      rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
+  static final webPAnimEncoderDeletePtr = rawBindings.lookup<NativeFunction<bindings.NativeWebPAnimEncoderDelete>>(
     'WebPAnimEncoderDelete',
   );
 
@@ -49,9 +45,9 @@ class WebPAnimEncoder implements Finalizable {
     WebPAnimEncoderOptions? options,
     ResizeMode resizeMode = ResizeMode.stretch,
   }) {
-    final opts = options ?? WebPAnimEncoderOptions();
+    final WebPAnimEncoderOptions opts = options ?? WebPAnimEncoderOptions();
 
-    final encoder = checkAlloc(libwebp.WebPAnimEncoderNewInternal(
+    final Pointer<bindings.WebPAnimEncoder> encoder = checkAlloc(libwebp.WebPAnimEncoderNewInternal(
       width,
       height,
       opts._ffi,
@@ -98,13 +94,13 @@ class WebPAnimEncoder implements Finalizable {
       throw StateError('WebPAnimEncoder has been disposed.');
     }
 
-    final info = image.info;
+    final WebPAnimInfo info = image.info;
 
     log('Adding image with ${info.frameCount} frames');
 
-    final frameBase = _frame;
+    final int frameBase = _frame;
     using((a) {
-      final pic = a<bindings.WebPPicture>();
+      final Pointer<bindings.WebPPicture> pic = a<bindings.WebPPicture>();
       check(
         libwebp.WebPPictureInitInternal(
           pic,
@@ -128,8 +124,8 @@ class WebPAnimEncoder implements Finalizable {
         ResizeMode.stretch => (width, height),
       };
 
-      for (final frame in image.frames) {
-        final duration = timings.frames.elementAt(_frame - frameBase);
+      for (final WebPFrame frame in image.frames) {
+        final Duration duration = timings.frames.elementAt(_frame - frameBase);
 
         if (duration == Duration.zero) {
           log('  Skipping frame $_frame');
@@ -273,7 +269,7 @@ final class WebPData implements Finalizable {
   factory WebPData({
     bool freeInnerBuffer = false,
   }) {
-    final ptr = calloc<bindings.WebPData>();
+    final Pointer<bindings.WebPData> ptr = calloc<bindings.WebPData>();
 
     final wrapper = WebPData._(ptr, freeInnerBuffer: freeInnerBuffer);
 
@@ -385,7 +381,7 @@ final class WebPAnimEncoderOptions implements Finalizable {
     bool? allowMixed,
     bool? verbose,
   }) {
-    final opts = calloc<bindings.WebPAnimEncoderOptions>();
+    final Pointer<bindings.WebPAnimEncoderOptions> opts = calloc<bindings.WebPAnimEncoderOptions>();
 
     check(
       libwebp.WebPAnimEncoderOptionsInitInternal(
@@ -566,7 +562,7 @@ class WebPConfig implements _WebpConfigBase, Finalizable {
     WebPPreset preset = WebPPreset.default_,
     double quality = 75.0,
   }) {
-    final cfg = calloc<bindings.WebPConfig>();
+    final Pointer<bindings.WebPConfig> cfg = calloc<bindings.WebPConfig>();
     check(
       libwebp.WebPConfigInitInternal(
         cfg,
@@ -774,8 +770,7 @@ class ListWebPAnimationTiming extends WebPAnimationTiming {
   Iterable<Duration> get frames => value;
 
   @override
-  double get fps =>
-      1000 * value.length / value.map((e) => e.inMilliseconds).sum;
+  double get fps => 1000 * value.length / value.map((e) => e.inMilliseconds).sum;
 
   const ListWebPAnimationTiming(this.value);
 }
@@ -805,7 +800,7 @@ class MappedWebPAnimationTiming extends WebPAnimationTiming {
 
   @override
   double get fps {
-    final (:len, :sum) = frames.nonZero.fold<({int len, Duration sum})>(
+    final (:int len, :Duration sum) = frames.nonZero.fold<({int len, Duration sum})>(
       (len: 0, sum: Duration.zero),
       (acc, e) => (len: acc.len + 1, sum: acc.sum + e),
     );
