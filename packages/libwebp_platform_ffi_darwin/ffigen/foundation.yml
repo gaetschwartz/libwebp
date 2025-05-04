@@ -1,0 +1,127 @@
+name: FoundationBindings
+description: Bindings for Foundation.
+language: objc
+output:
+  bindings: "../lib/bindings/foundation.dart"
+headers:
+  entry-points:
+    - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h"
+
+exclude-all-by-default: true
+# only keep the necessary to use Data, DispatchSemaphore and DispatchGroup
+objc-interfaces:
+  include:
+    - "NS.*"
+    - "Data"
+    - "DispatchSemaphore"
+    - "DispatchGroup"
+  exclude:
+    - "NSURL.*"
+objc-protocols:
+  include:
+    - "NS.*"
+    - "Data"
+    - "DispatchSemaphore"
+    - "DispatchGroup"
+  exclude:
+    - "NSURL.*"
+objc-categories:
+  include:
+    - "NS.*"
+    - "Data"
+    - "DispatchSemaphore"
+    - "DispatchGroup"
+  exclude:
+    - "NSURL.*"
+  # ffigen:
+  #   name: ImageUtils
+  #   description: Bindings for CoreImage.
+  #   language: objc
+  #   output:
+  # bindings: "../lib/image_utils_bindings_generated.dart"
+  # objc-bindings: "ios/Classes/bindings/image_utils_bindings_generated.m"
+#   headers:
+#     entry-points:
+#       - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.h"
+#       - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h"
+#       - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGImage.h"
+#       - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.h"
+#       - "../../temp/libwebp/src/webp/decode.h"
+#       - "../../temp/libwebp/src/webp/demux.h"
+#       - "../../temp/libwebp/src/webp/encode.h"
+#       - "../../temp/libwebp/src/webp/mux.h"
+#       - "../../temp/libwebp/src/webp/types.h"
+#       - "../../temp/libwebp/src/webp/mux_types.h"
+#   exclude-all-by-default: true
+#   include-transitive-objc-interfaces: true
+#   include-transitive-objc-protocols: true
+#   functions:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   structs:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   enums:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   globals:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   objc-categories:
+#     include:
+#       - "CIImage.*"
+#       - "CIContext.*"
+#       - "CIFilter.*"
+#       - "MTLDevice.*"
+#       - "MTLCommandQueue.*"
+#       - "MTLCommandBuffer.*"
+#       - "MTLComputeCommandEncoder.*"
+#       - "MTLTexture.*"
+#       - "MTLBuffer.*"
+#       - "CGAffineTransform.*"
+#       - "CGSize.*"
+#       - "CGImage.*"
+#       - "CGRect.*"
+#   objc-protocols:
+#     include:
+#       - "CIImage.*"
+#       - "CIContext.*"
+#       - "CIFilter.*"
+#       - "MTLDevice.*"
+#       - "MTLCommandQueue.*"
+#       - "MTLCommandBuffer.*"
+#       - "MTLComputeCommandEncoder.*"
+#       - "MTLTexture.*"
+#       - "MTLBuffer.*"
+#       - "CGAffineTransform.*"
+#       - "CGSize.*"
+#       - "CGImage.*"
+#       - "CGRect.*"
+#   objc-interfaces:
+#     # rename:
+#     #   # Removes '_' prefix from interface names.
+#     #   "_(.*)": "$1"
+#     include:
+#       - "NS.*"
+#       - "CIImage"
+#       - "CIContext"
+#       - "CIFilter"
+#       - "MTLDevice"
+#       - "MTLCommandQueue"
+#       - "MTLCommandBuffer"
+#       - "MTLComputeCommandEncoder"
+#       - "MTLTexture"
+#       - "MTLBuffer"
+#       - "CGAffineTransform"
+#       - "CGSize"
+#       - "CGImage"
+#       - "CGRect"
+#       - "Data"
+#       - "DispatchSemaphore"
+#       - "DispatchGroup"
+#     exclude:
+#       - "NSURL.*"

@@ -20,7 +20,7 @@ A new Flutter FFI plugin project.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'libwebp', '~> 1.3.2'
+  s.dependency 'libwebp', '~> 1.5.0'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.

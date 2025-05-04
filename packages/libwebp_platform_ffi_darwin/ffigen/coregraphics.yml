@@ -1,0 +1,10 @@
+name: CoreGraphicsBindings
+description: Bindings for CoreImage.
+language: objc
+output:
+  bindings: "../lib/bindings/coregraphics.dart"
+headers:
+  entry-points:
+    - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h"
+    - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGImage.h"
+    - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGAffineTransform.h"

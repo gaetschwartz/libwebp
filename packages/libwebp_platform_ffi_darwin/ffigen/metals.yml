@@ -1,0 +1,83 @@
+name: MetalBindings
+description: Bindings for Metal.
+language: objc
+output:
+  bindings: "../lib/bindings/metal.dart"
+headers:
+  entry-points:
+    - "/System/Volumes/Data/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.h"
+exclude-all-by-default: true
+# only keep for MPSImageScale or MPSImageLanczosScale - Optimized scaling filters
+
+#   include-transitive-objc-interfaces: true
+#   include-transitive-objc-protocols: true
+#   functions:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   structs:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   enums:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   globals:
+#     include: # 'exclude' is also available.
+#       - "WEBP.*"
+#       - "WebP.*"
+#   objc-categories:
+#     include:
+#       - "CIImage.*"
+#       - "CIContext.*"
+#       - "CIFilter.*"
+#       - "MTLDevice.*"
+#       - "MTLCommandQueue.*"
+#       - "MTLCommandBuffer.*"
+#       - "MTLComputeCommandEncoder.*"
+#       - "MTLTexture.*"
+#       - "MTLBuffer.*"
+#       - "CGAffineTransform.*"
+#       - "CGSize.*"
+#       - "CGImage.*"
+#       - "CGRect.*"
+#   objc-protocols:
+#     include:
+#       - "CIImage.*"
+#       - "CIContext.*"
+#       - "CIFilter.*"
+#       - "MTLDevice.*"
+#       - "MTLCommandQueue.*"
+#       - "MTLCommandBuffer.*"
+#       - "MTLComputeCommandEncoder.*"
+#       - "MTLTexture.*"
+#       - "MTLBuffer.*"
+#       - "CGAffineTransform.*"
+#       - "CGSize.*"
+#       - "CGImage.*"
+#       - "CGRect.*"
+#   objc-interfaces:
+#     # rename:
+#     #   # Removes '_' prefix from interface names.
+#     #   "_(.*)": "$1"
+#     include:
+#       - "NS.*"
+#       - "CIImage"
+#       - "CIContext"
+#       - "CIFilter"
+#       - "MTLDevice"
+#       - "MTLCommandQueue"
+#       - "MTLCommandBuffer"
+#       - "MTLComputeCommandEncoder"
+#       - "MTLTexture"
+#       - "MTLBuffer"
+#       - "CGAffineTransform"
+#       - "CGSize"
+#       - "CGImage"
+#       - "CGRect"
+#       - "Data"
+#       - "DispatchSemaphore"
+#       - "DispatchGroup"
+#     exclude:
+#       - "NSURL.*"
