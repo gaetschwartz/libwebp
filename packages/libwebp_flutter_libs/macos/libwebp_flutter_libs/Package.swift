@@ -3,16 +3,12 @@
 //
 // Flutter FFI plugin Swift Package Manager manifest for libwebp_flutter_libs (macOS).
 //
-// Mirrors the iOS manifest — this is a STUB SPM target that does not bundle libwebp.
-// See ios/libwebp_flutter_libs/Package.swift for the full rationale; in short, SPM
-// cannot dedupe libwebp symbols when more than one package vendors it
-// (posthog-ios vendors libwebp as a private `phlibwebp` target), and Apple's
-// linker has no equivalent of `--allow-multiple-definition`.
-//
-// Dart FFI on macOS uses `DynamicLibrary.process()` (see libwebp.dart); libwebp
-// symbols must be provided by whichever SPM package in the app actually links
-// libwebp (posthog, a future first-class SPM port, etc.). Apps that don't have
-// such a package should stay on CocoaPods via the sibling podspec.
+// Mirrors the iOS manifest — see ios/libwebp_flutter_libs/Package.swift for the
+// full rationale. In short: the library product is declared `.dynamic` so that
+// libwebp's symbols land in their own framework rather than the static link
+// line of the Runner binary, avoiding ld64 duplicate-symbol collisions when
+// another SPM package in the app also vendors libwebp (e.g. posthog-ios's
+// private `phlibwebp` target).
 
 import PackageDescription
 
@@ -22,16 +18,18 @@ let package = Package(
         .macOS("10.14"),
     ],
     products: [
-        .library(name: "libwebp-flutter-libs", targets: ["libwebp_flutter_libs"]),
+        .library(name: "libwebp-flutter-libs", type: .dynamic, targets: ["libwebp_flutter_libs"]),
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
+        .package(url: "https://github.com/SDWebImage/libwebp-Xcode.git", from: "1.3.2"),
     ],
     targets: [
         .target(
             name: "libwebp_flutter_libs",
             dependencies: [
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
+                .product(name: "libwebp", package: "libwebp-Xcode"),
             ],
             publicHeadersPath: "include",
             cSettings: [
