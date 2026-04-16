@@ -54,7 +54,9 @@ DynamicLibrary _openLib() {
         );
       }
 
-      return DynamicLibrary.open('$libName.framework/$libName');
+      // Works for both CocoaPods (libwebp.framework loaded at startup into the
+      // process) and SPM (libwebp symbols statically linked into the Runner binary).
+      return DynamicLibrary.process();
     case OperatingSystem.windows:
       DynamicLibrary.open('libsharpyuv.dll');
       DynamicLibrary.open('libwebpdemux.dll');
