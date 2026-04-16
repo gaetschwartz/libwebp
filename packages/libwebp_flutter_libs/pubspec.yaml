@@ -6,6 +6,10 @@ environment:
   sdk: ">=3.3.1 <4.0.0"
   flutter: ">=3.3.0"
 
+  # Note: Swift Package Manager (iOS/macOS) requires Flutter 3.41+ for the
+  # FlutterFramework SPM package provided by Flutter's build system.
+  # CocoaPods remains supported for older Flutter versions.
+
 dependencies:
   flutter:
     sdk: flutter

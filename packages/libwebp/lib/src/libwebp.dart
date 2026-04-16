@@ -42,7 +42,9 @@ DynamicLibrary _openLib() {
     case OperatingSystem.linux:
       return DynamicLibrary.open('$_libName.so');
     case OperatingSystem.ios:
-      return DynamicLibrary.open('$_libName.framework/$_libName');
+      // Works for both CocoaPods (framework loaded at startup into the process)
+      // and SPM (libwebp symbols statically linked into the Runner binary).
+      return DynamicLibrary.process();
     case OperatingSystem.macos:
       const libName = 'libwebp';
 
