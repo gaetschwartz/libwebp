@@ -25,6 +25,61 @@ void main() {
       });
     }
   });
+
+  // Regression: `reduceFps` used `dur * divisor` per kept frame, which only
+  // preserves total animation time when every source frame has the same
+  // duration. For variable-FPS input the previous behaviour silently
+  // shortened the animation.
+  group('reduceFps preserves total duration for variable-FPS input', () {
+    test('divisor=2 over alternating 100ms/500ms', () {
+      final source = ListWebPAnimationTiming(const [
+        Duration(milliseconds: 100),
+        Duration(milliseconds: 500),
+        Duration(milliseconds: 100),
+        Duration(milliseconds: 500),
+      ]);
+      final reduced = source.reduceFps(2);
+
+      expect(reduced.totalDuration, source.totalDuration);
+      expect(reduced.frames.toList(), const [
+        Duration(milliseconds: 600), // 100 + 500
+        Duration.zero,
+        Duration(milliseconds: 600), // 100 + 500
+        Duration.zero,
+      ]);
+    });
+
+    test('divisor=3 over mixed durations with tail < divisor', () {
+      // 5 frames, divisor=3 — last kept index (i=3) only has 2 frames to absorb.
+      final source = ListWebPAnimationTiming(const [
+        Duration(milliseconds: 40),
+        Duration(milliseconds: 120),
+        Duration(milliseconds: 40),
+        Duration(milliseconds: 200),
+        Duration(milliseconds: 80),
+      ]);
+      final reduced = source.reduceFps(3);
+
+      expect(reduced.totalDuration, source.totalDuration);
+      expect(reduced.frames.toList(), const [
+        Duration(milliseconds: 200), // 40 + 120 + 40
+        Duration.zero,
+        Duration.zero,
+        Duration(milliseconds: 280), // 200 + 80 (tail, < divisor)
+        Duration.zero,
+      ]);
+    });
+
+    test('divisor=1 is a no-op', () {
+      final source = ListWebPAnimationTiming(const [
+        Duration(milliseconds: 33),
+        Duration(milliseconds: 67),
+      ]);
+      final reduced = source.reduceFps(1);
+
+      expect(identical(reduced, source), isTrue);
+    });
+  });
 }
 
 /// Returns a matcher which matches if the match argument is within [delta]

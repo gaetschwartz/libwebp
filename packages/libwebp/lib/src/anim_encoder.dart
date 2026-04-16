@@ -756,10 +756,23 @@ sealed class WebPAnimationTiming {
   Duration get totalDuration => frames.sum;
 
   WebPAnimationTiming reduceFps(int divisor) {
-    return MappedWebPAnimationTiming(
-      this,
-      (i, dur) => i % divisor == 0 ? (dur * divisor) : Duration.zero,
-    );
+    if (divisor <= 1) return this;
+    // Materialize so the transformer can sum a window of durations.
+    // The previous implementation used `dur * divisor` for each kept frame,
+    // which only preserves total animation time when every source frame has
+    // the same duration. For variable-FPS input (legal in animated WebP)
+    // it silently shortened the animation by up to a factor of `divisor`.
+    final source = frames.toList(growable: false);
+    final n = source.length;
+    return MappedWebPAnimationTiming(this, (i, _) {
+      if (i % divisor != 0) return Duration.zero;
+      var acc = Duration.zero;
+      final end = (i + divisor < n) ? i + divisor : n;
+      for (var j = i; j < end; j++) {
+        acc += source[j];
+      }
+      return acc;
+    });
   }
 }
 
