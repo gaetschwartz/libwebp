@@ -1,12 +1,18 @@
 // swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 //
-// Flutter FFI plugin Swift Package Manager manifest for libwebp_flutter_libs on macOS.
-// Mirrors the iOS SPM package — depends on FlutterFramework (provided by Flutter's
-// SPM integration) and on libwebp via SDWebImage/libwebp-Xcode.
+// Flutter FFI plugin Swift Package Manager manifest for libwebp_flutter_libs (macOS).
 //
-// The CocoaPods `libwebp_flutter_libs.podspec` under macos/ is kept for apps that
-// have not migrated to SPM. Both coexist.
+// Mirrors the iOS manifest — this is a STUB SPM target that does not bundle libwebp.
+// See ios/libwebp_flutter_libs/Package.swift for the full rationale; in short, SPM
+// cannot dedupe libwebp symbols when more than one package vendors it
+// (posthog-ios vendors libwebp as a private `phlibwebp` target), and Apple's
+// linker has no equivalent of `--allow-multiple-definition`.
+//
+// Dart FFI on macOS uses `DynamicLibrary.process()` (see libwebp.dart); libwebp
+// symbols must be provided by whichever SPM package in the app actually links
+// libwebp (posthog, a future first-class SPM port, etc.). Apps that don't have
+// such a package should stay on CocoaPods via the sibling podspec.
 
 import PackageDescription
 
@@ -20,14 +26,12 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
-        .package(url: "https://github.com/SDWebImage/libwebp-Xcode.git", from: "1.3.2"),
     ],
     targets: [
         .target(
             name: "libwebp_flutter_libs",
             dependencies: [
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
-                .product(name: "libwebp", package: "libwebp-Xcode"),
             ],
             publicHeadersPath: "include",
             cSettings: [
