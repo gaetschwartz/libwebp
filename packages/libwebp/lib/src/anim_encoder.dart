@@ -100,14 +100,8 @@ class WebPAnimEncoder implements Finalizable {
 
     final int frameBase = _frame;
 
-    // Decode all frames once into Dart-owned native memory. Subsequent
-    // `add` calls on the same `WebPImage` (e.g. multi-pass re-encoding)
-    // skip the per-frame VP8 decode entirely — each pass just memcpys
-    // pre-decoded RGBA into the WebPPicture buffer.
-    final List<CachedFrame> cached = image.decodedFrames;
-
-    // Materialize timings once so every `frames.elementAt(i)` inside
-    // the frame loop is an O(1) list index instead of re-running any
+    // Materialize timings once so every frame's duration lookup inside
+    // the hot loop is a plain list index instead of walking a
     // `MappedWebPAnimationTiming` transformer chain per frame.
     final List<Duration> timingsList = timings.frames.toList(growable: false);
 
@@ -136,8 +130,12 @@ class WebPAnimEncoder implements Finalizable {
         ResizeMode.stretch => (width, height),
       };
 
-      for (int i = 0; i < cached.length; i++) {
-        final CachedFrame frame = cached[i];
+      // `image.frames` decodes each frame on first iteration and hits
+      // its per-image cache on subsequent iterations; multi-pass
+      // re-encoding (e.g. a tiered quality ladder calling this `add`
+      // several times on the same image) pays the frame decode exactly
+      // once.
+      for (final WebPFrame frame in image.frames) {
         final Duration duration = timingsList[_frame - frameBase];
 
         if (duration == Duration.zero) {

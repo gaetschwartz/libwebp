@@ -7,13 +7,29 @@ import 'package:libwebp/src/finalizers.dart';
 import 'package:libwebp/src/libwebp.dart';
 import 'package:libwebp/src/libwebp_generated_bindings.dart' as bindings;
 import 'package:libwebp/src/utils.dart';
+import 'package:meta/meta.dart';
 
 typedef WebPDecoderFinalizable = ({Arena arena, Pointer<bindings.WebPAnimDecoder> decoder});
 
 class WebPImage implements Finalizable {
+  // Held to keep the source bytes alive while the decoder holds a
+  // pointer into them (WebPAnimDecoderNewInternal doesn't copy).
+  // ignore: unused_field
   final FfiByteData _data;
   final _WebPAnimDecoder _decoder;
-  List<CachedFrame>? _cachedFrames;
+
+  // --- decoded-frame cache (lazy, grows monotonically) ---
+  //
+  // Invariant: `_decoder`'s internal cursor is always at
+  // `_cachedRgba?.length ?? 0`. We only advance the decoder via
+  // `_decodeNextInto`, which appends exactly one slot. This means
+  // iterators can freely start/resume over `frames` without ever needing
+  // `WebPAnimDecoderReset` — cache hits skip the decoder entirely, and
+  // the first iteration that reaches frame N is the one that decodes it.
+  List<Pointer<Uint8>>? _cachedRgba;
+  Pointer<Uint8>? _cacheBuffer;
+  Pointer<Pointer<Uint8>>? _cacheFrameOut;
+  Pointer<Int>? _cacheTsOut;
 
   factory WebPImage(Uint8List data) {
     final d = FfiByteData.fromTypedList(data);
@@ -37,264 +53,110 @@ class WebPImage implements Finalizable {
 
   WebPAnimInfo get info => _decoder.info;
 
-  /// An iterable of frames in the WebP image. Frames data is only valid before
-  /// the next frame is decoded.
+  /// Cheap, demuxer-only per-frame metadata (durations, offsets, blend
+  /// modes, etc.). One-shot populated on first access.
+  ///
+  /// Reading durations or counting frames through this does NOT trigger
+  /// any VP8 pixel decoding — use [frames] for that.
+  late final List<WebPFrameMetadata> framesMetadata = _readFramesMetadata();
+
+  /// Sequential iterator over decoded frames.
+  ///
+  /// Each `moveNext` populates (or hits) a lazily-grown cache on this
+  /// image. Iterating once through N frames pays N decodes; a second
+  /// iteration on the same image pays zero — every `moveNext` returns a
+  /// `WebPFrame` whose [rgba] pointer is already in cache. Intended use:
+  /// multi-pass re-encoding ladders that replay the same source through
+  /// several encoders.
   Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
-  Iterable<WebPIteratorFrame> get framesV2 => WebPImageFramesIterableV2(this);
-
-  /// Decoded RGBA frames cached in one contiguous native buffer,
-  /// memoized on first access.
-  ///
-  /// The underlying `WebPAnimDecoderGetNext` returns a pointer into a
-  /// single internal buffer that gets overwritten on each call, so any
-  /// caller that wants to re-iterate frames (e.g. multi-pass re-encoding)
-  /// would otherwise have to redecode from scratch every time. This
-  /// getter runs the decoder once, memcpys each frame into its own slot,
-  /// and hands back stable `Pointer<Uint8>` views that live until the
-  /// `WebPImage` is GC'd. Two-or-more-pass encoding chains ([frames]
-  /// being iterated by `WebPAnimEncoder.add`) become free on passes 2+.
-  ///
-  /// `framesV2` (demuxer-iter, no decode) is still the right choice for
-  /// just reading per-frame metadata like durations.
-  List<CachedFrame> get decodedFrames {
-    final cached = _cachedFrames;
-    if (cached != null) return cached;
-
-    final int w = info.canvasWidth;
-    final int h = info.canvasHeight;
-    final int stride = w * h * 4;
-    final int frameCount = info.frameCount;
-
-    // Reset in case something (e.g. a V1 iterator) partially consumed
-    // the shared decoder already.
-    _decoder.reset();
-
-    final Pointer<Uint8> bigBuffer = calloc<Uint8>(stride * frameCount);
-    final Pointer<Pointer<Uint8>> frameOut = calloc<Pointer<Uint8>>();
-    final Pointer<Int> tsOut = calloc<Int>();
-
-    final List<CachedFrame> frames;
-    try {
-      frames = List<CachedFrame>.generate(frameCount, (int i) {
-        if (!_decoder.getNext(frameOut, tsOut)) {
-          throw StateError('WebPAnimDecoderGetNext returned false at frame $i/$frameCount');
-        }
-        final Pointer<Uint8> slot = Pointer<Uint8>.fromAddress(bigBuffer.address + i * stride);
-        slot.asTypedList(stride).setAll(0, frameOut.value.asTypedList(stride));
-        return CachedFrame._(
-          rgba: slot,
-          width: w,
-          height: h,
-          timestamp: tsOut.value,
-        );
-      }, growable: false);
-    } finally {
-      calloc.free(frameOut);
-      calloc.free(tsOut);
-    }
-
-    // The big buffer outlives this scope; tie its lifetime to the image.
-    callocFinalizer.attach(this, bigBuffer.cast(), detach: this);
-    _cachedFrames = frames;
-    return frames;
-  }
 
   late final timings = ListWebPAnimationTiming(
-    framesV2.map((e) => e.duration).toList(growable: false),
+    framesMetadata.map((m) => m.duration).toList(growable: false),
   );
 
   double get fps => 1000 * info.frameCount / timings.value.last.inMilliseconds;
 
   Duration get averageFrameDuration => timings.value.last ~/ timings.value.length;
-}
 
-/// A decoded RGBA frame living inside a `WebPImage`'s backing buffer.
-/// [rgba] is valid as long as the parent `WebPImage` is reachable.
-final class CachedFrame {
-  final Pointer<Uint8> rgba;
-  final int width;
-  final int height;
-
-  /// End timestamp of this frame, in milliseconds, as reported by the
-  /// underlying `WebPAnimDecoderGetNext`. The frame's duration is the
-  /// delta against the previous frame's timestamp (zero for frame 0).
-  final int timestamp;
-
-  const CachedFrame._({
-    required this.rgba,
-    required this.width,
-    required this.height,
-    required this.timestamp,
-  });
-}
-
-class WebPFrame {
-  final int timestamp;
-  final Duration duration;
-  final Pointer<Uint8> data;
-  final int width;
-  final int height;
-
-  WebPFrame({
-    required this.timestamp,
-    required this.duration,
-    required this.data,
-    required this.width,
-    required this.height,
-  });
-
-  Uint8List encode({
-    double quality = 100,
-    ({int width, int height})? targetDimensions,
-  }) {
-    if (targetDimensions case final dim?) {
-      return using((alloc) {
-        final Pointer<bindings.WebPPicture> pic = alloc<bindings.WebPPicture>();
-        check(
-          libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
-          'Failed to init WebPPicture.',
-        );
-        pic.ref.use_argb = 1; // use ARGB
-        pic.ref.width = width;
-        pic.ref.height = height;
-        check(
-          libwebp.WebPPictureAlloc(pic),
-          'Failed to allocate WebPPicture.',
-        );
-
-        check(
-          libwebp.WebPPictureImportRGBA(pic, data, width * 4),
-          'Failed to import frame to WebPPicture.',
-        );
-
-        check(
-          libwebp.WebPPictureRescale(pic, dim.width, dim.height),
-          'Failed to rescale frame.',
-        );
-
-        final Pointer<bindings.WebPConfig> cfg = alloc<bindings.WebPConfig>();
-        check(
-          libwebp.WebPConfigInitInternal(
-            cfg,
-            bindings.WebPPreset.WEBP_PRESET_DEFAULT,
-            quality,
-            bindings.WEBP_ENCODER_ABI_VERSION,
-          ),
-          'Failed to init WebPConfig.',
-        );
-        final Pointer<bindings.WebPMemoryWriter> writer = alloc<bindings.WebPMemoryWriter>();
-        writer.ref.mem = nullptr;
-        writer.ref.size = 0;
-        writer.ref.max_size = 0;
-        pic.ref.custom_ptr = writer.cast();
-        pic.ref.writer = webPMemoryWritePtr;
-
-        check(
-          libwebp.WebPEncode(cfg, pic),
-          'Failed to encode WebP.',
-        );
-        libwebp.WebPPictureFree(pic);
-
-        final out = Uint8List.fromList(writer.ref.mem.asTypedList(writer.ref.size));
-        libwebp.WebPMemoryWriterClear(writer);
-        return out;
-      });
-    } else {
-      return using((alloc) {
-        final Pointer<Pointer<Uint8>> out = alloc<Pointer<Uint8>>();
-        final int size = check(
-          libwebp.WebPEncodeRGBA(
-            data,
-            width,
-            height,
-            width * 4,
-            quality,
-            out,
-          ),
-          'Failed to encode WebP.',
-        );
-
-        return Uint8List.fromList(out.value.asTypedList(size));
-      });
-    }
-  }
-}
-
-class WebPImageFramesIterableV2 extends Iterable<WebPIteratorFrame> {
-  final WebPImage _image;
-
-  WebPImageFramesIterableV2(this._image);
-
-  @override
-  Iterator<WebPIteratorFrame> get iterator => WebPImageFramesIteratorV2(_image);
-}
-
-class WebPImageFramesIteratorV2 implements Iterator<WebPIteratorFrame>, Finalizable {
-  final Pointer<bindings.WebPIterator> _iter;
-  final bool _hasFrameOne;
-
-  factory WebPImageFramesIteratorV2(WebPImage image) {
+  List<WebPFrameMetadata> _readFramesMetadata() {
     final Pointer<bindings.WebPDemuxer> demuxer = checkAlloc(
-      libwebp.WebPAnimDecoderGetDemuxer(
-        image._decoder.ptr,
-      ),
-      'Failed to create WebPDemux.',
+      libwebp.WebPAnimDecoderGetDemuxer(_decoder.ptr),
+      'Failed to get WebPDemuxer.',
     );
     final Pointer<bindings.WebPIterator> iter = calloc<bindings.WebPIterator>();
-
-    final bool hasFrameOne = libwebp.WebPDemuxGetFrame(demuxer, 1, iter).asCBoolean;
-
-    final wrapper = WebPImageFramesIteratorV2._(iter, hasFrameOne);
-
-    iteratorFinalizer.attach(wrapper, iter, detach: wrapper);
-
-    return wrapper;
+    try {
+      if (!libwebp.WebPDemuxGetFrame(demuxer, 1, iter).asCBoolean) {
+        return const [];
+      }
+      final List<WebPFrameMetadata> list = [];
+      do {
+        list.add(
+          WebPFrameMetadata(
+            frameNum: iter.ref.frame_num,
+            numFrames: iter.ref.num_frames,
+            xOffset: iter.ref.x_offset,
+            yOffset: iter.ref.y_offset,
+            width: iter.ref.width,
+            height: iter.ref.height,
+            duration: Duration(milliseconds: iter.ref.duration),
+            dispose: WebPMuxAnimDispose.fromInt(iter.ref.dispose_method),
+            blend: WebPMuxAnimBlend.fromInt(iter.ref.blend_method),
+            hasAlpha: iter.ref.has_alpha != 0,
+            complete: iter.ref.complete != 0,
+          ),
+        );
+      } while (libwebp.WebPDemuxNextFrame(iter).asCBoolean);
+      return List<WebPFrameMetadata>.unmodifiable(list);
+    } finally {
+      libwebp.WebPDemuxReleaseIterator(iter);
+      calloc.free(iter);
+    }
   }
 
-  WebPImageFramesIteratorV2._(this._iter, this._hasFrameOne);
-
-  int _frameNum = 0;
-
-  @override
-  WebPIteratorFrame get current {
-    if (_frameNum < 1) {
-      throw StateError('No current frame.');
+  /// Returns the decoded RGBA pointer for frame at [index] (0-based).
+  /// Sequential-only: accessing index `i` requires the cache to already
+  /// hold 0..i-1 (the iterator enforces this).
+  @internal
+  Pointer<Uint8> ensureDecodedAt(int index) {
+    final cache = _cachedRgba ??= <Pointer<Uint8>>[];
+    if (index < cache.length) return cache[index];
+    if (index != cache.length) {
+      throw StateError(
+        'Non-sequential frame access: requested $index but cache holds ${cache.length}. '
+        'frames only supports forward iteration.',
+      );
     }
-    return WebPIteratorFrame(
-      frameNum: _iter.ref.frame_num,
-      duration: Duration(milliseconds: _iter.ref.duration),
-      numFrames: _iter.ref.num_frames,
-      xOffset: _iter.ref.x_offset,
-      yOffset: _iter.ref.y_offset,
-      dispose: WebPMuxAnimDispose.fromInt(_iter.ref.dispose_method),
-      complete: _iter.ref.complete != 0,
-      fragment: WebPData.view(Pointer.fromAddress(_iter.address)),
-      hasAlpha: _iter.ref.has_alpha != 0,
-      blend: WebPMuxAnimBlend.fromInt(_iter.ref.blend_method),
-      width: _iter.ref.width,
-      height: _iter.ref.height,
+
+    // Lazy-init the shared backing buffer on the first actual decode.
+    // (Avoids the allocation for callers that never touch `.rgba`.)
+    final int stride = info.canvasWidth * info.canvasHeight * 4;
+    if (_cacheBuffer == null) {
+      _cacheBuffer = calloc<Uint8>(stride * info.frameCount);
+      _cacheFrameOut = calloc<Pointer<Uint8>>();
+      _cacheTsOut = calloc<Int>();
+      callocFinalizer.attach(this, _cacheBuffer!.cast(), detach: this);
+      callocFinalizer.attach(this, _cacheFrameOut!.cast(), detach: this);
+      callocFinalizer.attach(this, _cacheTsOut!.cast(), detach: this);
+    }
+
+    if (!_decoder.getNext(_cacheFrameOut!, _cacheTsOut!)) {
+      throw StateError(
+        'WebPAnimDecoderGetNext returned false at frame $index/${info.frameCount}',
+      );
+    }
+    final Pointer<Uint8> slot = Pointer<Uint8>.fromAddress(
+      _cacheBuffer!.address + index * stride,
     );
-  }
-
-  @override
-  bool moveNext() {
-    if (!_hasFrameOne) {
-      return false;
-    }
-    if (_frameNum == 0) {
-      _frameNum++;
-      return true;
-    }
-    if (libwebp.WebPDemuxNextFrame(_iter).asCBoolean) {
-      _frameNum++;
-      return true;
-    } else {
-      return false;
-    }
+    slot.asTypedList(stride).setAll(0, _cacheFrameOut!.value.asTypedList(stride));
+    cache.add(slot);
+    return slot;
   }
 }
 
-final class WebPIteratorFrame {
+/// Pure demuxer-sourced metadata for a single frame. Cheap to produce
+/// and holds no references back to the WebPImage.
+final class WebPFrameMetadata {
+  /// 1-based frame index as reported by the demuxer.
   final int frameNum;
   final int numFrames;
   final int xOffset;
@@ -303,12 +165,11 @@ final class WebPIteratorFrame {
   final int height;
   final Duration duration;
   final WebPMuxAnimDispose dispose;
-  final bool complete;
-  final WebPData fragment;
-  final bool hasAlpha;
   final WebPMuxAnimBlend blend;
+  final bool hasAlpha;
+  final bool complete;
 
-  const WebPIteratorFrame({
+  const WebPFrameMetadata({
     required this.frameNum,
     required this.numFrames,
     required this.xOffset,
@@ -317,11 +178,89 @@ final class WebPIteratorFrame {
     required this.height,
     required this.duration,
     required this.dispose,
-    required this.complete,
-    required this.fragment,
-    required this.hasAlpha,
     required this.blend,
+    required this.hasAlpha,
+    required this.complete,
   });
+}
+
+/// A frame yielded by [WebPImage.frames]. Combines the demuxer metadata
+/// with a stable RGBA pointer owned by the parent [WebPImage]; [rgba] is
+/// valid as long as the image is reachable.
+final class WebPFrame {
+  final WebPImage _image;
+
+  /// Per-frame metadata. Shared structurally with [WebPImage.framesMetadata].
+  final WebPFrameMetadata metadata;
+
+  /// Decoded RGBA (canvas-sized, not per-frame subregion) lazily cached
+  /// on the parent [WebPImage]. Valid until the image is garbage collected.
+  final Pointer<Uint8> rgba;
+
+  int get width => _image.info.canvasWidth;
+  int get height => _image.info.canvasHeight;
+  int get frameNum => metadata.frameNum;
+  Duration get duration => metadata.duration;
+
+  const WebPFrame._({
+    required WebPImage image,
+    required this.metadata,
+    required this.rgba,
+  }) : _image = image;
+
+  /// Re-encode this single frame as a standalone (non-animated) WebP.
+  /// Useful for producing tray thumbnails.
+  Uint8List encode({
+    double quality = 100,
+    ({int width, int height})? targetDimensions,
+  }) {
+    return using((alloc) {
+      final Pointer<bindings.WebPPicture> pic = alloc<bindings.WebPPicture>();
+      check(
+        libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
+        'Failed to init WebPPicture.',
+      );
+      pic.ref.use_argb = 1;
+      pic.ref.width = width;
+      pic.ref.height = height;
+
+      check(
+        libwebp.WebPPictureImportRGBA(pic, rgba, width * 4),
+        'Failed to import frame to WebPPicture.',
+      );
+
+      if (targetDimensions case final dim?) {
+        check(
+          libwebp.WebPPictureRescale(pic, dim.width, dim.height),
+          'Failed to rescale frame.',
+        );
+      }
+
+      final Pointer<bindings.WebPConfig> cfg = alloc<bindings.WebPConfig>();
+      check(
+        libwebp.WebPConfigInitInternal(
+          cfg,
+          bindings.WebPPreset.WEBP_PRESET_DEFAULT,
+          quality,
+          bindings.WEBP_ENCODER_ABI_VERSION,
+        ),
+        'Failed to init WebPConfig.',
+      );
+      final Pointer<bindings.WebPMemoryWriter> writer = alloc<bindings.WebPMemoryWriter>();
+      writer.ref.mem = nullptr;
+      writer.ref.size = 0;
+      writer.ref.max_size = 0;
+      pic.ref.custom_ptr = writer.cast();
+      pic.ref.writer = webPMemoryWritePtr;
+
+      check(libwebp.WebPEncode(cfg, pic), 'Failed to encode WebP.');
+      libwebp.WebPPictureFree(pic);
+
+      final out = Uint8List.fromList(writer.ref.mem.asTypedList(writer.ref.size));
+      libwebp.WebPMemoryWriterClear(writer);
+      return out;
+    });
+  }
 }
 
 class WebPImageFramesIterable extends Iterable<WebPFrame> {
@@ -331,55 +270,35 @@ class WebPImageFramesIterable extends Iterable<WebPFrame> {
 
   @override
   Iterator<WebPFrame> get iterator => WebPImageFramesIterator(_image);
-}
-
-class WebPImageFramesIterator implements Iterator<WebPFrame>, Finalizable {
-  final _WebPAnimDecoder _decoder;
-  final Pointer<Pointer<Uint8>> _frame;
-  final Pointer<Int> _ts;
-
-  factory WebPImageFramesIterator(WebPImage image) {
-    final dec = _WebPAnimDecoder(image._data);
-
-    return WebPImageFramesIterator._(decoder: dec);
-  }
-
-  WebPImageFramesIterator._({
-    required _WebPAnimDecoder decoder,
-  })  : _decoder = decoder,
-        _frame = calloc<Pointer<Uint8>>(),
-        _ts = calloc<Int>() {
-    callocFinalizer.attach(this, _frame.cast(), detach: this);
-    callocFinalizer.attach(this, _ts.cast(), detach: this);
-  }
-
-  WebPFrame? _current;
 
   @override
-  WebPFrame get current {
-    if (_current == null) {
-      throw StateError('No current frame.');
-    }
-    return _current!;
-  }
+  int get length => _image.info.frameCount;
+}
 
-  late final _info = _decoder.info;
+class WebPImageFramesIterator implements Iterator<WebPFrame> {
+  final WebPImage _image;
+  int _index = -1;
+  WebPFrame? _current;
+
+  WebPImageFramesIterator(this._image);
+
+  @override
+  WebPFrame get current =>
+      _current ?? (throw StateError('moveNext not called / iteration ended.'));
 
   @override
   bool moveNext() {
-    if (!_decoder.getNext(_frame, _ts)) {
+    final int next = _index + 1;
+    if (next >= _image.info.frameCount) {
+      _current = null;
       return false;
     }
-    final Duration dur = switch (_current) {
-      final WebPFrame c? => Duration(milliseconds: _ts.value - c.timestamp),
-      null => Duration(milliseconds: _ts.value),
-    };
-    _current = WebPFrame(
-      timestamp: _ts.value,
-      duration: dur,
-      data: _frame.value,
-      width: _info.canvasWidth,
-      height: _info.canvasHeight,
+    _index = next;
+    final Pointer<Uint8> rgba = _image.ensureDecodedAt(next);
+    _current = WebPFrame._(
+      image: _image,
+      metadata: _image.framesMetadata[next],
+      rgba: rgba,
     );
     return true;
   }
