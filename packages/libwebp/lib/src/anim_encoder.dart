@@ -99,6 +99,25 @@ class WebPAnimEncoder implements Finalizable {
     log('Adding image with ${info.frameCount} frames');
 
     final int frameBase = _frame;
+
+    // Decode all frames once into Dart-owned native memory. Subsequent
+    // `add` calls on the same `WebPImage` (e.g. multi-pass re-encoding)
+    // skip the per-frame VP8 decode entirely — each pass just memcpys
+    // pre-decoded RGBA into the WebPPicture buffer.
+    final List<CachedFrame> cached = image.decodedFrames;
+
+    // Materialize timings once so every `frames.elementAt(i)` inside
+    // the frame loop is an O(1) list index instead of re-running any
+    // `MappedWebPAnimationTiming` transformer chain per frame.
+    final List<Duration> timingsList = timings.frames.toList(growable: false);
+
+    // Pick the right buffer layout up front: lossless/ARGB for lossless
+    // output, YUV for lossy. Previously hardcoded `use_argb = 0` forced
+    // libwebp to do an extra YUV→ARGB conversion inside
+    // `WebPAnimEncoderAdd` whenever we were writing a lossless frame
+    // (see src/mux/anim_encode.c), which also costs "small quality".
+    final int useArgb = (config?.lossless ?? 0) == 1 ? 1 : 0;
+
     using((a) {
       final Pointer<bindings.WebPPicture> pic = a<bindings.WebPPicture>();
       check(
@@ -108,14 +127,7 @@ class WebPAnimEncoder implements Finalizable {
         ),
         'Failed to init WebPPicture.',
       );
-      pic.ref.use_argb = 0;
-      pic.ref.width = info.canvasWidth;
-      pic.ref.height = info.canvasHeight;
-
-      check(
-        libwebp.WebPPictureAlloc(pic),
-        'Failed to allocate WebPPicture.',
-      );
+      pic.ref.use_argb = useArgb;
 
       final (int, int) wh = switch (resizeMode) {
         ResizeMode.fit => width > height
@@ -124,8 +136,9 @@ class WebPAnimEncoder implements Finalizable {
         ResizeMode.stretch => (width, height),
       };
 
-      for (final WebPFrame frame in image.frames) {
-        final Duration duration = timings.frames.elementAt(_frame - frameBase);
+      for (int i = 0; i < cached.length; i++) {
+        final CachedFrame frame = cached[i];
+        final Duration duration = timingsList[_frame - frameBase];
 
         if (duration == Duration.zero) {
           log('  Skipping frame $_frame');
@@ -133,26 +146,34 @@ class WebPAnimEncoder implements Finalizable {
           continue;
         }
 
+        // Reset the picture to the source canvas dimensions *before*
+        // each import. `WebPPictureRescale` from the previous iteration
+        // left `pic.width/height` at the target size, so without this
+        // reset the next call sees `pic.width * 4 > rgba_stride` and
+        // libwebp returns 0 ("Failed to import RGBA data"). Only
+        // observable when the source is smaller than the encoder target
+        // — e.g. a 128×128 animated emote resized up to 512×512.
+        //
+        // We deliberately DON'T call `WebPPictureAlloc` here. The
+        // importer (`WebPPictureImportRGBA` → `ImportYUVAFromRGBA` /
+        // the ARGB path inside `picture_csp_enc.c`) allocates its
+        // internal buffer itself, matching cwebp.c/gif2webp.c usage.
+        pic.ref.width = frame.width;
+        pic.ref.height = frame.height;
+
         log('  Adding frame $_frame at $_timestamp ms');
 
         check(
           libwebp.WebPPictureImportRGBA(
             pic,
-            frame.data,
-            info.canvasWidth * 4,
+            frame.rgba,
+            frame.width * 4,
           ),
           'Failed to import RGBA data.',
         );
 
-        // WebPPictureRescale:
-        //   Rescale a picture to new dimension width x height. If either 'width' or 'height' (but not both) is 0 the corresponding dimension will be calculated preserving the aspect ratio. No gamma correction is applied. Returns false in case of error (invalid parameter or insufficient memory).
-
         check(
-          libwebp.WebPPictureRescale(
-            pic,
-            wh.$1,
-            wh.$2,
-          ),
+          libwebp.WebPPictureRescale(pic, wh.$1, wh.$2),
           'Failed to rescale WebPPicture.',
         );
 
@@ -170,9 +191,11 @@ class WebPAnimEncoder implements Finalizable {
 
         _timestamp += duration.inMilliseconds;
         _frame++;
-
-        libwebp.WebPPictureFree(pic);
       }
+
+      // Free the importer's internal buffer from the last frame. The
+      // `using` arena only owns the WebPPicture struct itself.
+      libwebp.WebPPictureFree(pic);
     });
   }
 

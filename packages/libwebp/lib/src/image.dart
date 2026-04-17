@@ -13,6 +13,7 @@ typedef WebPDecoderFinalizable = ({Arena arena, Pointer<bindings.WebPAnimDecoder
 class WebPImage implements Finalizable {
   final FfiByteData _data;
   final _WebPAnimDecoder _decoder;
+  List<CachedFrame>? _cachedFrames;
 
   factory WebPImage(Uint8List data) {
     final d = FfiByteData.fromTypedList(data);
@@ -41,11 +42,90 @@ class WebPImage implements Finalizable {
   Iterable<WebPFrame> get frames => WebPImageFramesIterable(this);
   Iterable<WebPIteratorFrame> get framesV2 => WebPImageFramesIterableV2(this);
 
-  late final timings = ListWebPAnimationTiming(frames.map((e) => e.duration).toList());
+  /// Decoded RGBA frames cached in one contiguous native buffer,
+  /// memoized on first access.
+  ///
+  /// The underlying `WebPAnimDecoderGetNext` returns a pointer into a
+  /// single internal buffer that gets overwritten on each call, so any
+  /// caller that wants to re-iterate frames (e.g. multi-pass re-encoding)
+  /// would otherwise have to redecode from scratch every time. This
+  /// getter runs the decoder once, memcpys each frame into its own slot,
+  /// and hands back stable `Pointer<Uint8>` views that live until the
+  /// `WebPImage` is GC'd. Two-or-more-pass encoding chains ([frames]
+  /// being iterated by `WebPAnimEncoder.add`) become free on passes 2+.
+  ///
+  /// `framesV2` (demuxer-iter, no decode) is still the right choice for
+  /// just reading per-frame metadata like durations.
+  List<CachedFrame> get decodedFrames {
+    final cached = _cachedFrames;
+    if (cached != null) return cached;
+
+    final int w = info.canvasWidth;
+    final int h = info.canvasHeight;
+    final int stride = w * h * 4;
+    final int frameCount = info.frameCount;
+
+    // Reset in case something (e.g. a V1 iterator) partially consumed
+    // the shared decoder already.
+    _decoder.reset();
+
+    final Pointer<Uint8> bigBuffer = calloc<Uint8>(stride * frameCount);
+    final Pointer<Pointer<Uint8>> frameOut = calloc<Pointer<Uint8>>();
+    final Pointer<Int> tsOut = calloc<Int>();
+
+    final List<CachedFrame> frames;
+    try {
+      frames = List<CachedFrame>.generate(frameCount, (int i) {
+        if (!_decoder.getNext(frameOut, tsOut)) {
+          throw StateError('WebPAnimDecoderGetNext returned false at frame $i/$frameCount');
+        }
+        final Pointer<Uint8> slot = Pointer<Uint8>.fromAddress(bigBuffer.address + i * stride);
+        slot.asTypedList(stride).setAll(0, frameOut.value.asTypedList(stride));
+        return CachedFrame._(
+          rgba: slot,
+          width: w,
+          height: h,
+          timestamp: tsOut.value,
+        );
+      }, growable: false);
+    } finally {
+      calloc.free(frameOut);
+      calloc.free(tsOut);
+    }
+
+    // The big buffer outlives this scope; tie its lifetime to the image.
+    callocFinalizer.attach(this, bigBuffer.cast(), detach: this);
+    _cachedFrames = frames;
+    return frames;
+  }
+
+  late final timings = ListWebPAnimationTiming(
+    framesV2.map((e) => e.duration).toList(growable: false),
+  );
 
   double get fps => 1000 * info.frameCount / timings.value.last.inMilliseconds;
 
   Duration get averageFrameDuration => timings.value.last ~/ timings.value.length;
+}
+
+/// A decoded RGBA frame living inside a `WebPImage`'s backing buffer.
+/// [rgba] is valid as long as the parent `WebPImage` is reachable.
+final class CachedFrame {
+  final Pointer<Uint8> rgba;
+  final int width;
+  final int height;
+
+  /// End timestamp of this frame, in milliseconds, as reported by the
+  /// underlying `WebPAnimDecoderGetNext`. The frame's duration is the
+  /// delta against the previous frame's timestamp (zero for frame 0).
+  final int timestamp;
+
+  const CachedFrame._({
+    required this.rgba,
+    required this.width,
+    required this.height,
+    required this.timestamp,
+  });
 }
 
 class WebPFrame {
