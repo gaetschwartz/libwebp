@@ -2,3 +2,9 @@
 .idea/
 pubspec_overrides.yaml
 temp/
+# audit-full outputs — only final reports are committed
+.gaetan/outputs/audit-full/**
+!.gaetan/outputs/audit-full/*/run-*/FINAL-REPORT.md
+
+# sealed directory — never committed
+.gaetan/sealed/**
