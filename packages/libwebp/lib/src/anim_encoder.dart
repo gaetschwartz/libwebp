@@ -239,6 +239,78 @@ class WebPAnimEncoder implements Finalizable {
   }
 }
 
+/// Shape expected by [addFrames]. Each tuple carries one already-
+/// decoded RGBA frame + its intended duration. The caller owns the
+/// `rgba` pointer; the encoder copies the data via
+/// `WebPPictureImportRGBA`, so the pointer can be freed after each
+/// iteration completes.
+typedef WebPRawFrame = ({
+  Pointer<Uint8> rgba,
+  int w,
+  int h,
+  Duration duration,
+});
+
+extension WebPAnimEncoderAddFrames on WebPAnimEncoder {
+  /// Encode a sequence of in-memory RGBA frames. Same contract as
+  /// [add] but without a [WebPImage] source, so the caller can apply
+  /// arbitrary per-frame transforms in Dart before encoding.
+  void addFrames(Iterable<WebPRawFrame> frames) {
+    if (_disposed) {
+      throw StateError('WebPAnimEncoder has been disposed.');
+    }
+    final int useArgb = (config?.lossless ?? 0) == 1 ? 1 : 0;
+
+    using((a) {
+      final Pointer<bindings.WebPPicture> pic = a<bindings.WebPPicture>();
+      check(
+        libwebp.WebPPictureInitInternal(pic, bindings.WEBP_ENCODER_ABI_VERSION),
+        'Failed to init WebPPicture.',
+      );
+      pic.ref.use_argb = useArgb;
+
+      for (final WebPRawFrame frame in frames) {
+        if (frame.duration == Duration.zero) {
+          log('  Skipping frame $_frame');
+          _frame++;
+          continue;
+        }
+
+        pic.ref.width = frame.w;
+        pic.ref.height = frame.h;
+
+        check(
+          libwebp.WebPPictureImportRGBA(pic, frame.rgba, frame.w * 4),
+          'Failed to import RGBA data.',
+        );
+
+        final (int, int) wh = switch (resizeMode) {
+          ResizeMode.fit => width > height
+              ? (width, (height * frame.h) ~/ frame.w)
+              : ((width * frame.w) ~/ frame.h, height),
+          ResizeMode.stretch => (width, height),
+        };
+        check(
+          libwebp.WebPPictureRescale(pic, wh.$1, wh.$2),
+          'Failed to rescale WebPPicture.',
+        );
+
+        check(
+          libwebp.WebPAnimEncoderAdd(_encoder, pic, _timestamp, config.ptr),
+          'Failed to add frame $_frame to encoder.',
+          pic: pic,
+          encoder: _encoder,
+        );
+
+        _timestamp += frame.duration.inMilliseconds;
+        _frame++;
+      }
+
+      libwebp.WebPPictureFree(pic);
+    });
+  }
+}
+
 final class WebPData implements Finalizable {
   bool _disposed = false;
   final bool freeInnerBuffer;
