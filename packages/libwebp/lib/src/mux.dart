@@ -348,6 +348,41 @@ extension BoolToCBool on bool {
 /// - A `VP8L` chunk may embed alpha directly; we check the alpha-is-used bit
 ///   at byte offset 4 of the VP8L payload (bit 4), as documented in the
 ///   libwebp VP8L spec and `src/enc/vp8l_enc.c`.
+/// Bitstream-level chunks for a 1×1 fully-transparent placeholder frame,
+/// suitable for embedding inside an ANMF payload. Computed once per isolate
+/// at first use of [wrapSingleFrameAsAnimated].
+///
+/// Encoded as lossless VP8L so libwebp preserves the alpha channel exactly
+/// (lossy at quality 0 may round transparent pixels to opaque). The full
+/// returned chunk concatenation is ~30 bytes — much cheaper than duplicating
+/// the source frame to satisfy `frameCount > 1`.
+late final Uint8List _placeholderFrameChunks = _encodePlaceholderFrameChunks();
+
+Uint8List _encodePlaceholderFrameChunks() {
+  final config = WebPConfig(preset: WebPPreset.default_, quality: 100);
+  config.lossless = 1;
+  final encoder = WebPAnimEncoder(
+    width: 1,
+    height: 1,
+    config: config,
+    options: WebPAnimEncoderOptions(minimizeSize: false),
+  );
+  using((a) {
+    final ptr = a.allocate<Uint8>(4);
+    ptr.asTypedList(4).setAll(0, [0, 0, 0, 0]); // RGBA: fully transparent
+    encoder.addFrames([
+      (rgba: ptr, w: 1, h: 1, duration: const Duration(milliseconds: 8)),
+    ]);
+  });
+  final webp = encoder.assemble();
+  encoder.free();
+  try {
+    return _extractFrameChunks(webp.asTypedList).chunks;
+  } finally {
+    webp.free();
+  }
+}
+
 ({Uint8List chunks, bool hasAlpha}) _extractFrameChunks(Uint8List webp) {
   if (webp.length < 12 ||
       String.fromCharCodes(webp.sublist(0, 4)) != 'RIFF' ||
@@ -384,19 +419,33 @@ extension BoolToCBool on bool {
 }
 
 /// Mux a single-frame WebP (VP8/VP8L or complete single-image WebP) into a
-/// 1×ANMF animated container (VP8X + ANIM + ANMF). Useful when a downstream
-/// consumer demands every sticker in an "animated" pack to carry the
-/// animation chunks, even when semantically static.
+/// 2×ANMF animated container (VP8X + ANIM + ANMF + ANMF). Useful when a
+/// downstream consumer demands every sticker in an "animated" pack to be a
+/// real animation, even when semantically static.
 ///
-/// libwebp's `WebPMuxAssemble` intentionally collapses a single-frame
-/// animation back to a plain WebP. To avoid this, this helper manually
-/// constructs the RIFF container in Dart without re-encoding.
+/// WhatsApp's third-party sticker validator rejects any sticker in an
+/// animated pack with `frameCount <= 1` ("this pack is marked as animated
+/// sticker pack, all stickers should animate.") — so a single-ANMF wrap
+/// is silently discarded. This helper inserts a tiny 1×1 fully-transparent
+/// placeholder ANMF as the second frame, composited with alpha-blend on
+/// top of the first frame. Because the placeholder pixel has alpha=0,
+/// alpha-blend reduces to "canvas pixel unchanged" — the animation is
+/// visually a still image, but `frameCount` is 2.
+///
+/// libwebp's `WebPMuxAssemble` intentionally collapses single-frame
+/// animations back to a plain WebP. To avoid this and to give us full
+/// control over the ANIM/ANMF flag bytes (which WhatsApp also validates),
+/// this helper manually constructs the RIFF container in Dart without
+/// re-encoding the input bitstream.
+///
+/// [duration] is the duration of the visible (first) frame. The placeholder
+/// second frame uses the WhatsApp-minimum 8ms.
 ///
 /// Ownership: the caller is responsible for freeing [singleFrame] after this
 /// returns; the returned [WebPData] owns its buffer independently.
 WebPData wrapSingleFrameAsAnimated(
   WebPData singleFrame, {
-  Duration duration = const Duration(milliseconds: 100),
+  Duration duration = const Duration(milliseconds: 992),
   int loopCount = WebPMuxAnimParams.infiniteLoop,
 }) {
   // Parse the input to obtain canvas dimensions.
@@ -430,7 +479,7 @@ WebPData wrapSingleFrameAsAnimated(
   }
 
   // Build the RIFF container manually:
-  //   RIFF WEBP VP8X ANIM ANMF(<frame-data>)
+  //   RIFF WEBP VP8X ANIM ANMF(<frame-data>) ANMF(<placeholder>)
   //
   // Per the WebP container spec, ANMF frame data must contain only
   // bitstream-level chunks (ALPH?, ICCP?, VP8 or VP8L).  The outer
@@ -442,19 +491,26 @@ WebPData wrapSingleFrameAsAnimated(
   final bool hasAlpha = extracted.hasAlpha;
   final int durationMs = duration.inMilliseconds.clamp(0, 0xFFFFFF);
 
+  // 1×1 fully-transparent placeholder for ANMF #2 — see header doc.
+  final Uint8List placeholderChunks = _placeholderFrameChunks;
+  const int placeholderDurationMs = 8; // WhatsApp's documented minimum.
+
   // ANMF payload: 16-byte header + frame bitstream.
   //   x_offset/2 (3), y_offset/2 (3), width-1 (3), height-1 (3),
   //   duration (3), flags (1) = 16 bytes.
-  final int anmfPayloadSize = 16 + frameChunks.length;
-  final int anmfPadded = anmfPayloadSize + (anmfPayloadSize & 1); // RIFF 2-byte align
+  final int anmf1PayloadSize = 16 + frameChunks.length;
+  final int anmf1Padded = anmf1PayloadSize + (anmf1PayloadSize & 1);
+  final int anmf2PayloadSize = 16 + placeholderChunks.length;
+  final int anmf2Padded = anmf2PayloadSize + (anmf2PayloadSize & 1);
 
   // VP8X payload: flags (4) + canvas_width-1 (3) + canvas_height-1 (3) = 10 bytes.
   // ANIM payload: bgcolor (4) + loop_count (2) = 6 bytes.
   // Total RIFF data after "WEBP":
   //   VP8X: 8 (hdr) + 10 = 18
   //   ANIM: 8 (hdr) + 6  = 14
-  //   ANMF: 8 (hdr) + anmfPadded
-  final int riffPayloadSize = 4 + 18 + 14 + 8 + anmfPadded; // 4 = "WEBP"
+  //   ANMF1: 8 (hdr) + anmf1Padded
+  //   ANMF2: 8 (hdr) + anmf2Padded
+  final int riffPayloadSize = 4 + 18 + 14 + 8 + anmf1Padded + 8 + anmf2Padded;
   final int totalSize = 8 + riffPayloadSize; // 8 = "RIFF" + size field
 
   final buf = Uint8List(totalSize);
@@ -495,25 +551,46 @@ WebPData wrapSingleFrameAsAnimated(
   setLE24(canvasW - 1);
   setLE24(canvasH - 1);
 
-  // ANIM chunk
+  // ANIM chunk — 0xffffffff matches WebPAnimEncoderOptionsInit's default
+  // and what every working WhatsApp animated sticker carries; 0x00000000
+  // (transparent black) is structurally legal but trips WhatsApp's
+  // validator.
   setStr('ANIM');
   setLE32(6); // chunk size
-  setLE32(0x00000000); // bgcolor = transparent black
+  setLE32(0xffffffff); // bgcolor: opaque white (libwebp default)
   buf[pos++] = loopCount & 0xFF;
   buf[pos++] = (loopCount >> 8) & 0xFF;
 
-  // ANMF chunk
+  // ANMF #1 — the visible sticker frame, full canvas.
+  // flags = 0x02 (NO_BLEND, dispose=none): replace the canvas wholesale,
+  // matching every frame produced by WebPAnimEncoder for animated stickers.
   setStr('ANMF');
-  setLE32(anmfPayloadSize);
+  setLE32(anmf1PayloadSize);
   setLE24(0); // x_offset / 2
   setLE24(0); // y_offset / 2
   setLE24(canvasW - 1);
   setLE24(canvasH - 1);
   setLE24(durationMs);
-  setU8(0x00); // flags: alpha-blend (default), no dispose
+  setU8(0x02);
   buf.setAll(pos, frameChunks);
   pos += frameChunks.length;
-  if (anmfPayloadSize & 1 != 0) buf[pos++] = 0; // padding
+  if (anmf1PayloadSize & 1 != 0) buf[pos++] = 0; // padding
+
+  // ANMF #2 — 1×1 fully-transparent placeholder at (0,0).
+  // flags = 0x00 (alpha-blend, dispose=none): src.alpha = 0 → canvas pixel
+  // unchanged → animation is visually identical to a still image while
+  // satisfying frameCount > 1.
+  setStr('ANMF');
+  setLE32(anmf2PayloadSize);
+  setLE24(0); // x_offset / 2
+  setLE24(0); // y_offset / 2
+  setLE24(0); // width - 1  → 1 px
+  setLE24(0); // height - 1 → 1 px
+  setLE24(placeholderDurationMs);
+  setU8(0x00);
+  buf.setAll(pos, placeholderChunks);
+  pos += placeholderChunks.length;
+  if (anmf2PayloadSize & 1 != 0) buf[pos++] = 0; // padding
 
   // Copy into a calloc-owned WebPData that the caller can free normally.
   final Pointer<Uint8> outPtr = calloc<Uint8>(totalSize);
