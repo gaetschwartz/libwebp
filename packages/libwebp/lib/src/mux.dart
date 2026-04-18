@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:libwebp/libwebp.dart';
@@ -27,18 +28,20 @@ class WebPMuxer implements Finalizable {
   WebPMuxer._(this._mux);
 
   void pushFrame(
-    WebPConfig config,
     WebPMuxFrameInfo data, {
     bool copyData = false,
   }) {
     if (_disposed) {
       throw StateError('WebPMuxer already disposed.');
     }
-    checkVp8(libwebp.WebPMuxPushFrame(
+    final int result = libwebp.WebPMuxPushFrame(
       _mux,
       data.ptr,
       copyData.c.value,
-    ));
+    );
+    if (result != bindings.WebPMuxError.WEBP_MUX_OK) {
+      throw LibWebPException('Failed to push frame to WebPMux: $result');
+    }
   }
 
   WebPMuxAnimParams get animationParams {
@@ -116,6 +119,7 @@ class WebPMuxer implements Finalizable {
     if (_disposed) {
       throw StateError('WebPMuxer already disposed.');
     }
+    muxFinalizer.detach(this);
     libwebp.WebPMuxDelete(_mux);
     _disposed = true;
   }
@@ -128,6 +132,32 @@ final class WebPMuxFrameInfo implements Finalizable {
 
   WebPMuxFrameInfo._() : ptr = calloc<bindings.WebPMuxFrameInfo>() {
     callocFinalizer.attach(this, ptr.cast(), detach: this);
+  }
+
+  /// Construct a fully populated [WebPMuxFrameInfo].
+  ///
+  /// [bitstream] may be a raw VP8/VP8L payload OR a complete single-image
+  /// WebP file; the mux will extract what it needs.
+  factory WebPMuxFrameInfo.fromBitstream({
+    required WebPData bitstream,
+    Duration duration = const Duration(milliseconds: 100),
+    WebPMuxAnimDispose dispose = WebPMuxAnimDispose.none,
+    WebPMuxAnimBlend blend = WebPMuxAnimBlend.noBlend,
+    WebPChunkType chunkType = WebPChunkType.anmf,
+    int xOffset = 0,
+    int yOffset = 0,
+  }) {
+    final info = WebPMuxFrameInfo._();
+    final bindings.WebPData raw = bitstream.ptr.ref;
+    info.ptr.ref.bitstream.bytes = raw.bytes;
+    info.ptr.ref.bitstream.size = raw.size;
+    info.ptr.ref.duration = duration.inMilliseconds;
+    info.ptr.ref.dispose_method = dispose.value;
+    info.ptr.ref.blend_method = blend.value;
+    info.ptr.ref.id = chunkType._value;
+    info.ptr.ref.x_offset = xOffset;
+    info.ptr.ref.y_offset = yOffset;
+    return info;
   }
 
   /// image data: can be a raw VP8/VP8L bitstream
@@ -303,6 +333,141 @@ extension type const CBool(int value) {
 
 extension BoolToCBool on bool {
   CBool get c => CBool.fromBool(this);
+}
+
+/// Mux a single-frame WebP (VP8/VP8L or complete single-image WebP) into a
+/// 1×ANMF animated container (VP8X + ANIM + ANMF). Useful when a downstream
+/// consumer demands every sticker in an "animated" pack to carry the
+/// animation chunks, even when semantically static.
+///
+/// libwebp's `WebPMuxAssemble` intentionally collapses a single-frame
+/// animation back to a plain WebP. To avoid this, this helper manually
+/// constructs the RIFF container in Dart without re-encoding.
+///
+/// Ownership: the caller is responsible for freeing [singleFrame] after this
+/// returns; the returned [WebPData] owns its buffer independently.
+WebPData wrapSingleFrameAsAnimated(
+  WebPData singleFrame, {
+  Duration duration = const Duration(milliseconds: 100),
+  int loopCount = WebPMuxAnimParams.infiniteLoop,
+}) {
+  // Parse the input to obtain canvas dimensions.
+  final Pointer<bindings.WebPMux> srcMux = libwebp.WebPMuxCreateInternal(
+    singleFrame.ptr,
+    0 /* copy_data = false */,
+    bindings.WEBP_MUX_ABI_VERSION,
+  );
+  if (srcMux == nullptr) {
+    throw LibWebPException('wrapSingleFrameAsAnimated: failed to parse input WebP');
+  }
+  int canvasW;
+  int canvasH;
+  try {
+    final Pointer<Int> wPtr = calloc<Int>();
+    final Pointer<Int> hPtr = calloc<Int>();
+    try {
+      final int err = libwebp.WebPMuxGetCanvasSize(srcMux, wPtr, hPtr);
+      if (err != bindings.WebPMuxError.WEBP_MUX_OK) {
+        throw LibWebPException(
+            'wrapSingleFrameAsAnimated: WebPMuxGetCanvasSize failed: $err');
+      }
+      canvasW = wPtr.value;
+      canvasH = hPtr.value;
+    } finally {
+      calloc.free(wPtr);
+      calloc.free(hPtr);
+    }
+  } finally {
+    libwebp.WebPMuxDelete(srcMux);
+  }
+
+  // Build the RIFF container manually:
+  //   RIFF WEBP VP8X ANIM ANMF(<frame-data>)
+  //
+  // Frame data is the entire [singleFrame] buffer (a complete single-image
+  // WebP), which is valid per the WebP container spec.
+  final Uint8List frameBytes = singleFrame.asTypedList;
+  final int durationMs = duration.inMilliseconds.clamp(0, 0xFFFFFF);
+
+  // ANMF payload: 16-byte header + frame bitstream.
+  //   x_offset/2 (3), y_offset/2 (3), width-1 (3), height-1 (3),
+  //   duration (3), flags (1) = 16 bytes.
+  final int anmfPayloadSize = 16 + frameBytes.length;
+  final int anmfPadded = anmfPayloadSize + (anmfPayloadSize & 1); // RIFF 2-byte align
+
+  // VP8X payload: flags (4) + canvas_width-1 (3) + canvas_height-1 (3) = 10 bytes.
+  // ANIM payload: bgcolor (4) + loop_count (2) = 6 bytes.
+  // Total RIFF data after "WEBP":
+  //   VP8X: 8 (hdr) + 10 = 18
+  //   ANIM: 8 (hdr) + 6  = 14
+  //   ANMF: 8 (hdr) + anmfPadded
+  final int riffPayloadSize = 4 + 18 + 14 + 8 + anmfPadded; // 4 = "WEBP"
+  final int totalSize = 8 + riffPayloadSize; // 8 = "RIFF" + size field
+
+  final buf = Uint8List(totalSize);
+  var pos = 0;
+
+  void setStr(String s) {
+    for (final int c in s.codeUnits) {
+      buf[pos++] = c;
+    }
+  }
+
+  void setLE32(int v) {
+    buf[pos++] = v & 0xFF;
+    buf[pos++] = (v >> 8) & 0xFF;
+    buf[pos++] = (v >> 16) & 0xFF;
+    buf[pos++] = (v >> 24) & 0xFF;
+  }
+
+  void setLE24(int v) {
+    buf[pos++] = v & 0xFF;
+    buf[pos++] = (v >> 8) & 0xFF;
+    buf[pos++] = (v >> 16) & 0xFF;
+  }
+
+  void setU8(int v) => buf[pos++] = v & 0xFF;
+
+  // RIFF header
+  setStr('RIFF');
+  setLE32(riffPayloadSize);
+  setStr('WEBP');
+
+  // VP8X chunk — animation flag (bit 1) set
+  setStr('VP8X');
+  setLE32(10); // chunk size
+  setLE32(0x00000002); // flags: animation bit
+  setLE24(canvasW - 1);
+  setLE24(canvasH - 1);
+
+  // ANIM chunk
+  setStr('ANIM');
+  setLE32(6); // chunk size
+  setLE32(0x00000000); // bgcolor = transparent black
+  buf[pos++] = loopCount & 0xFF;
+  buf[pos++] = (loopCount >> 8) & 0xFF;
+
+  // ANMF chunk
+  setStr('ANMF');
+  setLE32(anmfPayloadSize);
+  setLE24(0); // x_offset / 2
+  setLE24(0); // y_offset / 2
+  setLE24(canvasW - 1);
+  setLE24(canvasH - 1);
+  setLE24(durationMs);
+  setU8(0x00); // flags: no blend, no dispose
+  buf.setAll(pos, frameBytes);
+  pos += frameBytes.length;
+  if (anmfPayloadSize & 1 != 0) buf[pos++] = 0; // padding
+
+  // Copy into a calloc-owned WebPData that the caller can free normally.
+  final Pointer<Uint8> outPtr = calloc<Uint8>(totalSize);
+  outPtr.asTypedList(totalSize).setAll(0, buf);
+
+  final result = WebPData();
+  result.bytes = outPtr;
+  result.size = totalSize;
+  return result;
 }
 
 sealed class WebpChunk {
