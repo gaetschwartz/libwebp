@@ -335,6 +335,38 @@ extension BoolToCBool on bool {
   CBool get c => CBool.fromBool(this);
 }
 
+/// Walks the chunk list of a single-image WebP file and returns a
+/// concatenation of only the bitstream-level chunks that are valid inside an
+/// ANMF frame-data field: `ALPH`, `ICCP`, `VP8 ` (with trailing space), and
+/// `VP8L`.  The outer `RIFF`/`WEBP` framing and any `VP8X` chunk are skipped
+/// so the result can be embedded directly into an ANMF payload.
+Uint8List _extractFrameChunks(Uint8List webp) {
+  if (webp.length < 12 ||
+      String.fromCharCodes(webp.sublist(0, 4)) != 'RIFF' ||
+      String.fromCharCodes(webp.sublist(8, 12)) != 'WEBP') {
+    throw LibWebPException('wrapSingleFrameAsAnimated: input is not a WebP');
+  }
+  const kept = {'ALPH', 'ICCP', 'VP8 ', 'VP8L'};
+  final out = BytesBuilder();
+  var pos = 12;
+  while (pos + 8 <= webp.length) {
+    final cc = String.fromCharCodes(webp.sublist(pos, pos + 4));
+    final size =
+        webp[pos + 4] |
+        (webp[pos + 5] << 8) |
+        (webp[pos + 6] << 16) |
+        (webp[pos + 7] << 24);
+    final padded = size + (size & 1);
+    final chunkEnd = pos + 8 + padded;
+    if (chunkEnd > webp.length) break;
+    if (kept.contains(cc)) {
+      out.add(webp.sublist(pos, chunkEnd));
+    }
+    pos = chunkEnd;
+  }
+  return out.toBytes();
+}
+
 /// Mux a single-frame WebP (VP8/VP8L or complete single-image WebP) into a
 /// 1×ANMF animated container (VP8X + ANIM + ANMF). Useful when a downstream
 /// consumer demands every sticker in an "animated" pack to carry the
@@ -384,15 +416,18 @@ WebPData wrapSingleFrameAsAnimated(
   // Build the RIFF container manually:
   //   RIFF WEBP VP8X ANIM ANMF(<frame-data>)
   //
-  // Frame data is the entire [singleFrame] buffer (a complete single-image
-  // WebP), which is valid per the WebP container spec.
-  final Uint8List frameBytes = singleFrame.asTypedList;
+  // Per the WebP container spec, ANMF frame data must contain only
+  // bitstream-level chunks (ALPH?, ICCP?, VP8 or VP8L).  The outer
+  // RIFF/WEBP header and any VP8X chunk from the source file must be
+  // stripped; libwebp's demuxer rejects files that embed a full
+  // single-image WebP inside an ANMF payload.
+  final Uint8List frameChunks = _extractFrameChunks(singleFrame.asTypedList);
   final int durationMs = duration.inMilliseconds.clamp(0, 0xFFFFFF);
 
   // ANMF payload: 16-byte header + frame bitstream.
   //   x_offset/2 (3), y_offset/2 (3), width-1 (3), height-1 (3),
   //   duration (3), flags (1) = 16 bytes.
-  final int anmfPayloadSize = 16 + frameBytes.length;
+  final int anmfPayloadSize = 16 + frameChunks.length;
   final int anmfPadded = anmfPayloadSize + (anmfPayloadSize & 1); // RIFF 2-byte align
 
   // VP8X payload: flags (4) + canvas_width-1 (3) + canvas_height-1 (3) = 10 bytes.
@@ -456,8 +491,8 @@ WebPData wrapSingleFrameAsAnimated(
   setLE24(canvasH - 1);
   setLE24(durationMs);
   setU8(0x00); // flags: no blend, no dispose
-  buf.setAll(pos, frameBytes);
-  pos += frameBytes.length;
+  buf.setAll(pos, frameChunks);
+  pos += frameChunks.length;
   if (anmfPayloadSize & 1 != 0) buf[pos++] = 0; // padding
 
   // Copy into a calloc-owned WebPData that the caller can free normally.
