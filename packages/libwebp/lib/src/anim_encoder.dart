@@ -383,13 +383,20 @@ final class WebPData implements Finalizable {
     if (_disposed) {
       throw StateError('WebPData has been disposed.');
     }
+    // Read the inner buffer pointer BEFORE freeing the struct that holds it.
+    final Pointer<Uint8> innerBytes = freeInnerBuffer ? ptr.ref.bytes : nullptr;
+
     if (freeData) {
       calloc.free(ptr);
       callocFinalizer.detach(this);
     }
 
-    if (freeInnerBuffer) {
-      libwebp.WebPFree(ptr.ref.bytes.cast());
+    if (freeInnerBuffer && innerBytes != nullptr) {
+      // The inner buffer may have been allocated by libwebp (WebPMuxAssemble,
+      // WebPAnimEncoderAssemble) or by calloc (wrapSingleFrameAsAnimated).
+      // Both use the system allocator on all supported platforms, so
+      // WebPFree (which calls the C runtime free()) is safe for both.
+      libwebp.WebPFree(innerBytes.cast());
       webpFreeFinalizer.detach(this);
     }
     _disposed = true;

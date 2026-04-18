@@ -335,12 +335,20 @@ extension BoolToCBool on bool {
   CBool get c => CBool.fromBool(this);
 }
 
-/// Walks the chunk list of a single-image WebP file and returns a
+/// Walks the chunk list of a single-image WebP file and returns the
 /// concatenation of only the bitstream-level chunks that are valid inside an
-/// ANMF frame-data field: `ALPH`, `ICCP`, `VP8 ` (with trailing space), and
-/// `VP8L`.  The outer `RIFF`/`WEBP` framing and any `VP8X` chunk are skipped
-/// so the result can be embedded directly into an ANMF payload.
-Uint8List _extractFrameChunks(Uint8List webp) {
+/// ANMF frame-data field (`ALPH`, `ICCP`, `VP8 ` with trailing space, `VP8L`)
+/// together with a flag indicating whether the source carries alpha.
+///
+/// The outer `RIFF`/`WEBP` framing and any `VP8X` chunk are skipped so the
+/// result can be embedded directly into an ANMF payload.
+///
+/// Alpha detection:
+/// - An `ALPH` chunk is the explicit alpha channel for lossy VP8 frames.
+/// - A `VP8L` chunk may embed alpha directly; we check the alpha-is-used bit
+///   at byte offset 4 of the VP8L payload (bit 4), as documented in the
+///   libwebp VP8L spec and `src/enc/vp8l_enc.c`.
+({Uint8List chunks, bool hasAlpha}) _extractFrameChunks(Uint8List webp) {
   if (webp.length < 12 ||
       String.fromCharCodes(webp.sublist(0, 4)) != 'RIFF' ||
       String.fromCharCodes(webp.sublist(8, 12)) != 'WEBP') {
@@ -348,11 +356,11 @@ Uint8List _extractFrameChunks(Uint8List webp) {
   }
   const kept = {'ALPH', 'ICCP', 'VP8 ', 'VP8L'};
   final out = BytesBuilder();
+  var hasAlpha = false;
   var pos = 12;
   while (pos + 8 <= webp.length) {
     final cc = String.fromCharCodes(webp.sublist(pos, pos + 4));
-    final size =
-        webp[pos + 4] |
+    final size = webp[pos + 4] |
         (webp[pos + 5] << 8) |
         (webp[pos + 6] << 16) |
         (webp[pos + 7] << 24);
@@ -361,10 +369,18 @@ Uint8List _extractFrameChunks(Uint8List webp) {
     if (chunkEnd > webp.length) break;
     if (kept.contains(cc)) {
       out.add(webp.sublist(pos, chunkEnd));
+      if (cc == 'ALPH') hasAlpha = true;
+    }
+    // VP8L has built-in alpha — check the alpha-is-used bit at payload
+    // byte 4, bit 4.  VP8L payload layout: bytes 0-3 encode signature +
+    // packed width/height; byte 4 bit 4 is alpha_is_used.
+    if (cc == 'VP8L' && size >= 5) {
+      final alphaIsUsedBit = (webp[pos + 8 + 4] >> 4) & 0x01;
+      if (alphaIsUsedBit == 1) hasAlpha = true;
     }
     pos = chunkEnd;
   }
-  return out.toBytes();
+  return (chunks: out.toBytes(), hasAlpha: hasAlpha);
 }
 
 /// Mux a single-frame WebP (VP8/VP8L or complete single-image WebP) into a
@@ -421,7 +437,9 @@ WebPData wrapSingleFrameAsAnimated(
   // RIFF/WEBP header and any VP8X chunk from the source file must be
   // stripped; libwebp's demuxer rejects files that embed a full
   // single-image WebP inside an ANMF payload.
-  final Uint8List frameChunks = _extractFrameChunks(singleFrame.asTypedList);
+  final extracted = _extractFrameChunks(singleFrame.asTypedList);
+  final Uint8List frameChunks = extracted.chunks;
+  final bool hasAlpha = extracted.hasAlpha;
   final int durationMs = duration.inMilliseconds.clamp(0, 0xFFFFFF);
 
   // ANMF payload: 16-byte header + frame bitstream.
@@ -468,10 +486,12 @@ WebPData wrapSingleFrameAsAnimated(
   setLE32(riffPayloadSize);
   setStr('WEBP');
 
-  // VP8X chunk — animation flag (bit 1) set
+  // VP8X chunk — animation flag (bit 1) always set; alpha flag (bit 4) when
+  // the source carries an ALPH chunk or VP8L-with-alpha.
   setStr('VP8X');
   setLE32(10); // chunk size
-  setLE32(0x00000002); // flags: animation bit
+  final int vp8xFlags = 0x00000002 | (hasAlpha ? 0x00000010 : 0);
+  setLE32(vp8xFlags);
   setLE24(canvasW - 1);
   setLE24(canvasH - 1);
 
@@ -490,7 +510,7 @@ WebPData wrapSingleFrameAsAnimated(
   setLE24(canvasW - 1);
   setLE24(canvasH - 1);
   setLE24(durationMs);
-  setU8(0x00); // flags: no blend, no dispose
+  setU8(0x00); // flags: alpha-blend (default), no dispose
   buf.setAll(pos, frameChunks);
   pos += frameChunks.length;
   if (anmfPayloadSize & 1 != 0) buf[pos++] = 0; // padding
@@ -499,7 +519,7 @@ WebPData wrapSingleFrameAsAnimated(
   final Pointer<Uint8> outPtr = calloc<Uint8>(totalSize);
   outPtr.asTypedList(totalSize).setAll(0, buf);
 
-  final result = WebPData();
+  final result = WebPData(freeInnerBuffer: true);
   result.bytes = outPtr;
   result.size = totalSize;
   return result;
