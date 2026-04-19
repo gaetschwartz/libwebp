@@ -389,32 +389,79 @@ Uint8List _encodePlaceholderFrameChunks() {
       String.fromCharCodes(webp.sublist(8, 12)) != 'WEBP') {
     throw LibWebPException('wrapSingleFrameAsAnimated: input is not a WebP');
   }
-  const kept = {'ALPH', 'ICCP', 'VP8 ', 'VP8L'};
   final out = BytesBuilder();
   var hasAlpha = false;
-  var pos = 12;
-  while (pos + 8 <= webp.length) {
-    final cc = String.fromCharCodes(webp.sublist(pos, pos + 4));
-    final size = webp[pos + 4] |
-        (webp[pos + 5] << 8) |
-        (webp[pos + 6] << 16) |
-        (webp[pos + 7] << 24);
-    final padded = size + (size & 1);
-    final chunkEnd = pos + 8 + padded;
-    if (chunkEnd > webp.length) break;
-    if (kept.contains(cc)) {
-      out.add(webp.sublist(pos, chunkEnd));
-      if (cc == 'ALPH') hasAlpha = true;
+  var anmfStart = -1;
+
+  // Walk [start, end) as a sequence of RIFF chunks, collecting
+  // bitstream-level chunks into [out] and setting [hasAlpha] when an
+  // alpha signal is encountered. Also records the first ANMF position
+  // seen in the outer walk so the caller can descend if the top-level
+  // scan found no bitstream.
+  void scan(int start, int end) {
+    var pos = start;
+    while (pos + 8 <= end) {
+      final cc = String.fromCharCodes(webp.sublist(pos, pos + 4));
+      final size = webp[pos + 4] |
+          (webp[pos + 5] << 8) |
+          (webp[pos + 6] << 16) |
+          (webp[pos + 7] << 24);
+      final padded = size + (size & 1);
+      final chunkEnd = pos + 8 + padded;
+      if (chunkEnd > end) break;
+      switch (cc) {
+        case 'ALPH':
+        case 'ICCP':
+        case 'VP8 ':
+        case 'VP8L':
+          out.add(webp.sublist(pos, chunkEnd));
+          if (cc == 'ALPH') hasAlpha = true;
+          // VP8L has built-in alpha — check the alpha-is-used bit at
+          // payload byte 4, bit 4.  VP8L payload layout: bytes 0-3
+          // encode signature + packed width/height; byte 4 bit 4 is
+          // alpha_is_used.
+          if (cc == 'VP8L' && size >= 5) {
+            final alphaIsUsedBit = (webp[pos + 8 + 4] >> 4) & 0x01;
+            if (alphaIsUsedBit == 1) hasAlpha = true;
+          }
+        case 'ANMF':
+          if (anmfStart < 0) anmfStart = pos;
+      }
+      pos = chunkEnd;
     }
-    // VP8L has built-in alpha — check the alpha-is-used bit at payload
-    // byte 4, bit 4.  VP8L payload layout: bytes 0-3 encode signature +
-    // packed width/height; byte 4 bit 4 is alpha_is_used.
-    if (cc == 'VP8L' && size >= 5) {
-      final alphaIsUsedBit = (webp[pos + 8 + 4] >> 4) & 0x01;
-      if (alphaIsUsedBit == 1) hasAlpha = true;
-    }
-    pos = chunkEnd;
   }
+
+  scan(12, webp.length);
+
+  // WebPAnimEncoderAssemble runs OptimizeSingleFrame on single-frame
+  // inputs (anim_encode.c:1801) which re-encodes the canvas as a plain
+  // WebP and adopts it only if strictly smaller than the animated
+  // container (line 1740). For inputs where the animated container
+  // wins — observed on libwebp 1.5.0 (iOS) for non-square stretched
+  // canvases in certain tiers — the bitstream lives inside the first
+  // ANMF's payload (16-byte frame header + bitstream chunks). Without
+  // this descent we emit a zero-length frame and produce the 114-byte
+  // empty-wrap bug.
+  if (out.isEmpty && anmfStart >= 0) {
+    final size = webp[anmfStart + 4] |
+        (webp[anmfStart + 5] << 8) |
+        (webp[anmfStart + 6] << 16) |
+        (webp[anmfStart + 7] << 24);
+    final padded = size + (size & 1);
+    final payloadStart = anmfStart + 8 + 16;
+    final payloadEnd = anmfStart + 8 + padded;
+    if (payloadStart <= payloadEnd && payloadEnd <= webp.length) {
+      scan(payloadStart, payloadEnd);
+    }
+  }
+
+  if (out.isEmpty) {
+    throw LibWebPException(
+      'wrapSingleFrameAsAnimated: input WebP contains no VP8/VP8L/ALPH '
+      'bitstream chunks at top level or inside ANMF (${webp.length} bytes)',
+    );
+  }
+
   return (chunks: out.toBytes(), hasAlpha: hasAlpha);
 }
 

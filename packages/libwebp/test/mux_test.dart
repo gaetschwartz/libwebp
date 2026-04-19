@@ -176,6 +176,167 @@ void main() {
     }
     plain.free();
   });
+
+  test('wrapSingleFrameAsAnimated descends into ANMF when input is animated-shape', () {
+    // Regression for the 114-byte empty-wrap bug: when
+    // WebPAnimEncoderAssemble's OptimizeSingleFrame doesn't collapse to
+    // plain (because the animated container was already smaller),
+    // _extractFrameChunks used to return an empty bitstream and the wrap
+    // produced a ~114-byte container with a zero-payload ANMF. This test
+    // hand-builds an animated-shape WebP (VP8X + ANIM + ANMF{header +
+    // bitstream}) and asserts the wrapper extracts the inner bitstream
+    // correctly.
+
+    // First, produce a plain WebP via the encoder so we have a real VP8L
+    // bitstream to embed — hand-crafting a valid VP8L stream is tedious
+    // and version-fragile.
+    final encoder = WebPAnimEncoder(
+      width: 8,
+      height: 8,
+      config: WebPConfig(preset: WebPPreset.default_, quality: 80)..lossless = 1,
+      options: WebPAnimEncoderOptions(minimizeSize: false),
+    );
+    final rgba = Uint8List.fromList(List.filled(8 * 8 * 4, 0xff));
+    using((a) {
+      final ptr = a.allocate<Uint8>(8 * 8 * 4);
+      ptr.asTypedList(8 * 8 * 4).setAll(0, rgba);
+      encoder.addFrames([
+        (rgba: ptr, w: 8, h: 8, duration: const Duration(milliseconds: 40)),
+      ]);
+    });
+    final plain = encoder.assemble();
+    encoder.free();
+
+    final plainBytes = plain.asTypedList;
+    // The plain output contains a top-level VP8L (or VP8+ALPH). Extract
+    // that chunk verbatim — header + payload — to embed inside an ANMF.
+    final inner = _extractBitstreamChunks(plainBytes);
+    expect(inner, isNotEmpty,
+        reason: 'plain single-frame encode must have a VP8/VP8L chunk');
+
+    // Hand-build an animated-shape WebP wrapping `inner` in a single
+    // ANMF. This is exactly the byte shape libwebp emits when
+    // OptimizeSingleFrame keeps the animated container.
+    const int canvasW = 8;
+    const int canvasH = 8;
+    final anmfPayloadSize = 16 + inner.length;
+    final anmfPadded = anmfPayloadSize + (anmfPayloadSize & 1);
+    final riffPayloadSize = 4 + 18 + 14 + 8 + anmfPadded;
+    final totalSize = 8 + riffPayloadSize;
+
+    final buf = Uint8List(totalSize);
+    var pos = 0;
+    void setStr(String s) {
+      for (final c in s.codeUnits) buf[pos++] = c;
+    }
+    void setLE32(int v) {
+      buf[pos++] = v & 0xFF;
+      buf[pos++] = (v >> 8) & 0xFF;
+      buf[pos++] = (v >> 16) & 0xFF;
+      buf[pos++] = (v >> 24) & 0xFF;
+    }
+    void setLE24(int v) {
+      buf[pos++] = v & 0xFF;
+      buf[pos++] = (v >> 8) & 0xFF;
+      buf[pos++] = (v >> 16) & 0xFF;
+    }
+
+    setStr('RIFF');
+    setLE32(riffPayloadSize);
+    setStr('WEBP');
+    // VP8X: animation + alpha.
+    setStr('VP8X');
+    setLE32(10);
+    setLE32(0x00000012);
+    setLE24(canvasW - 1);
+    setLE24(canvasH - 1);
+    // ANIM: opaque-white bg, infinite loop.
+    setStr('ANIM');
+    setLE32(6);
+    setLE32(0xffffffff);
+    buf[pos++] = 0;
+    buf[pos++] = 0;
+    // ANMF: full-canvas frame with duration and NO_BLEND dispose=none.
+    setStr('ANMF');
+    setLE32(anmfPayloadSize);
+    setLE24(0); // x_offset / 2
+    setLE24(0); // y_offset / 2
+    setLE24(canvasW - 1);
+    setLE24(canvasH - 1);
+    setLE24(100); // duration
+    buf[pos++] = 0x02;
+    buf.setRange(pos, pos + inner.length, inner);
+    pos += inner.length;
+    if (anmfPayloadSize & 1 != 0) buf[pos++] = 0;
+
+    expect(pos, totalSize, reason: 'synthetic animated WebP built to expected size');
+    // Sanity: our synthetic input is the shape we claim.
+    expect(_hasChunk(buf, 'ANIM'), isTrue);
+    expect(_hasChunk(buf, 'ANMF'), isTrue);
+
+    // Wrap the synthetic input through a WebPData so the helper can
+    // parse its canvas size.
+    final synthetic = _webPDataFromBytes(buf);
+    try {
+      final wrapped = wrapSingleFrameAsAnimated(synthetic);
+      try {
+        // The wrap output MUST contain the real bitstream (not a 114-byte
+        // empty shell). Before the fix this was ~114 bytes.
+        expect(wrapped.asTypedList.length, greaterThan(inner.length),
+            reason: 'wrap output must carry the inner bitstream, not be an '
+                'empty-frame shell');
+
+        final decoded = WebPImage(Uint8List.fromList(wrapped.asTypedList));
+        expect(decoded.info.frameCount, 2);
+        expect(decoded.info.canvasWidth, canvasW);
+        expect(decoded.info.canvasHeight, canvasH);
+        expect(decoded.framesMetadata[0].width, canvasW);
+        expect(decoded.framesMetadata[0].height, canvasH);
+        expect(decoded.framesMetadata[1].width, 1);
+        expect(decoded.framesMetadata[1].height, 1);
+      } finally {
+        wrapped.free();
+      }
+    } finally {
+      synthetic.free();
+    }
+    plain.free();
+  });
+}
+
+/// Copy top-level VP8/VP8L/ALPH chunks (header+payload+padding) out of a
+/// plain WebP so we can embed them as bitstream data inside a synthetic
+/// ANMF payload.
+Uint8List _extractBitstreamChunks(Uint8List webp) {
+  const kept = {'ALPH', 'ICCP', 'VP8 ', 'VP8L'};
+  final out = BytesBuilder();
+  var pos = 12;
+  while (pos + 8 <= webp.length) {
+    final cc = String.fromCharCodes(webp.sublist(pos, pos + 4));
+    final size = webp[pos + 4] |
+        (webp[pos + 5] << 8) |
+        (webp[pos + 6] << 16) |
+        (webp[pos + 7] << 24);
+    final padded = size + (size & 1);
+    final chunkEnd = pos + 8 + padded;
+    if (chunkEnd > webp.length) break;
+    if (kept.contains(cc)) {
+      out.add(webp.sublist(pos, chunkEnd));
+    }
+    pos = chunkEnd;
+  }
+  return out.toBytes();
+}
+
+/// Build a [WebPData] around an owned copy of [bytes] so the mux helpers
+/// can read it as if it came from libwebp.
+WebPData _webPDataFromBytes(Uint8List bytes) {
+  final data = WebPData(freeInnerBuffer: true);
+  final ptr = calloc<Uint8>(bytes.length);
+  ptr.asTypedList(bytes.length).setAll(0, bytes);
+  data.bytes = ptr;
+  data.size = bytes.length;
+  return data;
 }
 
 bool _hasChunk(Uint8List buf, String fourcc) {
